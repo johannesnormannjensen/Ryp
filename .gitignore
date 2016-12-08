@@ -1,2 +1,4 @@
 .idea/
 Ryp.iml
+target/
+src/main/resources/application.properties
