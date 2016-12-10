@@ -120,11 +120,18 @@
         </dependency>
 
         <!-- Riot API wrapper -->
-        <!-- If jitpack won't build the .jar properly, you still have to add it manually -->
         <dependency>
             <groupId>com.github.rithms</groupId>
             <artifactId>riot-api-java</artifactId>
             <version>v3.9.0</version>
+        </dependency>
+        <!-- If jitpack won't build the .jar properly, you still have to add it manually -->
+        <dependency>
+            <groupId>net.rithms.riot.constant</groupId>
+            <artifactId>riot-api-java</artifactId>
+            <version>v3.9.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/riot-api-java.jar</systemPath>
         </dependency>
 
     </dependencies>
