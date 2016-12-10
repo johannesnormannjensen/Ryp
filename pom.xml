@@ -16,6 +16,13 @@
         <mysql.connector.version>5.1.31</mysql.connector.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- Spring -->
         <dependency>
@@ -110,6 +117,14 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
+        </dependency>
+
+        <!-- Riot API wrapper -->
+        <!-- If jitpack won't build the .jar properly, you still have to add it manually -->
+        <dependency>
+            <groupId>com.github.rithms</groupId>
+            <artifactId>riot-api-java</artifactId>
+            <version>v3.9.0</version>
         </dependency>
 
     </dependencies>
