@@ -81,15 +81,15 @@ public class AppController {
             return "registration";
         }
 
-        if (!userService.isUserSSOUnique(user.getId(), user.getSsoId())) {
-            FieldError ssoError = new FieldError("user", "ssoId", messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
+        if (!userService.isUserSSOUnique(user.getId(), user.getUsername())) {
+            FieldError ssoError = new FieldError("user", "username", messageSource.getMessage("non.unique.username", new String[]{user.getUsername()}, Locale.getDefault()));
             result.addError(ssoError);
             return "registration";
         }
 
         userService.saveUser(user);
 
-        model.addAttribute("success", "User " + user.getFirstName() + " " + user.getLastName() + " registered successfully");
+        model.addAttribute("success", "User " + user.getUsername() + " registered successfully");
         model.addAttribute("loggedinuser", getPrincipal());
         //return "success";
         return "registrationsuccess";
@@ -99,9 +99,9 @@ public class AppController {
     /**
      * This method will provide the medium to update an existing user.
      */
-    @RequestMapping(value = {"/edit-user-{ssoId}"}, method = RequestMethod.GET)
-    public String editUser(@PathVariable String ssoId, ModelMap model) {
-        User user = userService.findBySSO(ssoId);
+    @RequestMapping(value = {"/edit-user-{username}"}, method = RequestMethod.GET)
+    public String editUser(@PathVariable String username, ModelMap model) {
+        User user = userService.findBySSO(username);
         model.addAttribute("user", user);
         model.addAttribute("edit", true);
         model.addAttribute("loggedinuser", getPrincipal());
@@ -112,17 +112,17 @@ public class AppController {
      * This method will be called on form submission, handling POST request for
      * updating user in database. It also validates the user input
      */
-    @RequestMapping(value = {"/edit-user-{ssoId}"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/edit-user-{username}"}, method = RequestMethod.POST)
     public String updateUser(@Valid User user, BindingResult result,
-                             ModelMap model, @PathVariable String ssoId) {
+                             ModelMap model, @PathVariable String username) {
 
         if (result.hasErrors()) {
             return "registration";
         }
 
         /*//Uncomment below 'if block' if you WANT TO ALLOW UPDATING SSO_ID in UI which is a unique key to a User.
-        if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-            FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
+        if(!userService.isUserSSOUnique(user.getId(), user.getUsername())){
+            FieldError ssoError =new FieldError("user","username",messageSource.getMessage("non.unique.username", new String[]{user.getUsername()}, Locale.getDefault()));
             result.addError(ssoError);
             return "registration";
         }*/
@@ -130,18 +130,18 @@ public class AppController {
 
         userService.updateUser(user);
 
-        model.addAttribute("success", "User " + user.getFirstName() + " " + user.getLastName() + " updated successfully");
+        model.addAttribute("success", "User " + user.getUsername() + " updated successfully");
         model.addAttribute("loggedinuser", getPrincipal());
         return "registrationsuccess";
     }
 
 
     /**
-     * This method will delete an user by it's SSOID value.
+     * This method will delete an user by it's username value.
      */
-    @RequestMapping(value = {"/delete-user-{ssoId}"}, method = RequestMethod.GET)
-    public String deleteUser(@PathVariable String ssoId) {
-        userService.deleteUserBySSO(ssoId);
+    @RequestMapping(value = {"/delete-user-{username}"}, method = RequestMethod.GET)
+    public String deleteUser(@PathVariable String username) {
+        userService.deleteUserBySSO(username);
         return "redirect:/list";
     }
 

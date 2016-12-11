@@ -4,14 +4,14 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "USER_PROFILE")
+@Table(name = "user_profile")
 public class UserProfile implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "TYPE", length = 15, unique = true, nullable = false)
+    @Column(name = "type", length = 15, unique = true, nullable = false)
     private String type = UserProfileType.USER.getUserProfileType();
 
     public Integer getId() {

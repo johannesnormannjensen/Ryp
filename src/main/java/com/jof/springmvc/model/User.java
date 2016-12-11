@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "APP_USER")
+@Table(name = "user")
 public class User implements Serializable {
 
     @Id
@@ -16,30 +16,22 @@ public class User implements Serializable {
     private Integer id;
 
     @NotEmpty
-    @Column(name = "SSO_ID", unique = true, nullable = false)
-    private String ssoId;
+    @Column(name = "username", unique = true, nullable = false)
+    private String username;
 
     @NotEmpty
-    @Column(name = "PASSWORD", nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @NotEmpty
-    @Column(name = "FIRST_NAME", nullable = false)
-    private String firstName;
-
-    @NotEmpty
-    @Column(name = "LAST_NAME", nullable = false)
-    private String lastName;
-
-    @NotEmpty
-    @Column(name = "EMAIL", nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
     @NotEmpty
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "APP_USER_USER_PROFILE",
-            joinColumns = {@JoinColumn(name = "USER_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "USER_PROFILE_ID")})
+    @JoinTable(name = "user_user_profile",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_profile_id")})
     private Set<UserProfile> userProfiles = new HashSet<UserProfile>();
 
     public Integer getId() {
@@ -50,12 +42,10 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getSsoId() {
-        return ssoId;
-    }
+    public String getUsername() { return username; }
 
-    public void setSsoId(String ssoId) {
-        this.ssoId = ssoId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -64,22 +54,6 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -103,7 +77,7 @@ public class User implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((ssoId == null) ? 0 : ssoId.hashCode());
+        result = prime * result + ((username == null) ? 0 : username.hashCode());
         return result;
     }
 
@@ -121,10 +95,10 @@ public class User implements Serializable {
                 return false;
         } else if (!id.equals(other.id))
             return false;
-        if (ssoId == null) {
-            if (other.ssoId != null)
+        if (username == null) {
+            if (other.username != null)
                 return false;
-        } else if (!ssoId.equals(other.ssoId))
+        } else if (!username.equals(other.username))
             return false;
         return true;
     }
@@ -133,12 +107,15 @@ public class User implements Serializable {
      * DO-NOT-INCLUDE passwords in toString function.
      * It is done here just for convenience purpose.
      */
+
     @Override
     public String toString() {
-        return "User [id=" + id + ", ssoId=" + ssoId + ", password=" + password
-                + ", firstName=" + firstName + ", lastName=" + lastName
-                + ", email=" + email + "]";
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", userProfiles=" + userProfiles +
+                '}';
     }
-
-
 }
