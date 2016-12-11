@@ -14,6 +14,7 @@
         <springsecurity.version>4.0.4.RELEASE</springsecurity.version>
         <hibernate.version>4.3.11.Final</hibernate.version>
         <mysql.connector.version>5.1.31</mysql.connector.version>
+		<tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
     </properties>
 
     <repositories>
@@ -137,6 +138,15 @@
     </dependencies>
 
     <build>
+        <finalName>RateYourPeers</finalName>
+	    <resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>application.properties.model</exclude>
+				</excludes>
+			</resource>
+		</resources>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -158,8 +168,18 @@
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
                 </plugin>
+                <plugin>
+					<groupId>org.apache.tomcat.maven</groupId>
+					<artifactId>tomcat7-maven-plugin</artifactId>
+					<version>${tomcat7-maven-plugin.version}</version>
+					<configuration>
+						<server>${server}</server>
+						<path>${path}</path>
+						<update>${update}</update>
+						<url>${url}</url>
+					</configuration>
+				</plugin>
             </plugins>
         </pluginManagement>
-        <finalName>RateYourPeers</finalName>
     </build>
 </project>
