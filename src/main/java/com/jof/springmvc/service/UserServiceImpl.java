@@ -15,10 +15,11 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserDao dao;
-
+    private  UserDao dao;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private  PasswordEncoder passwordEncoder;
+
+
 
     public User findById(int id) {
         return dao.findById(id);
