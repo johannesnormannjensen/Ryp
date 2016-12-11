@@ -14,7 +14,7 @@ Installation of Apache Tomcat 8.5.X installed on your system (preferably 8.5.8).
 	The project is by default packaged in a war file for ease of deployment.
 	
 2. Running
-	To run RYP you need to deploy it to your instance of Tomcat, see deployment section.
+	Just run mvn tomcat7:run. This works in debug mode too. Just add the project as a source.
 	
 3. Deploying
 	Environments:
