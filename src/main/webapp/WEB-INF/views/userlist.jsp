@@ -21,8 +21,6 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>Firstname</th>
-                <th>Lastname</th>
                 <th>Email</th>
                 <th>Username</th>
                 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
@@ -37,8 +35,6 @@
             <tbody>
             <c:forEach items="${users}" var="user">
                 <tr>
-                    <td>${user.firstName}</td>
-                    <td>${user.lastName}</td>
                     <td>${user.email}</td>
                     <td>${user.username}</td>
                     <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
