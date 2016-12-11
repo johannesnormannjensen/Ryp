@@ -14,15 +14,12 @@ import java.util.List;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private final UserDao dao;
-
-    private final PasswordEncoder passwordEncoder;
-
     @Autowired
-    public UserServiceImpl(UserDao dao, PasswordEncoder passwordEncoder) {
-        this.dao = dao;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private  UserDao dao;
+    @Autowired
+    private  PasswordEncoder passwordEncoder;
+
+
 
     public User findById(int id) {
         return dao.findById(id);
