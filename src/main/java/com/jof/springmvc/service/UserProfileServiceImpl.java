@@ -13,13 +13,8 @@ import java.util.List;
 @Transactional
 public class UserProfileServiceImpl implements UserProfileService {
 
-    final
-    UserProfileDao dao;
-
     @Autowired
-    public UserProfileServiceImpl(UserProfileDao dao) {
-        this.dao = dao;
-    }
+    UserProfileDao dao;
 
     public UserProfile findById(int id) {
         return dao.findById(id);

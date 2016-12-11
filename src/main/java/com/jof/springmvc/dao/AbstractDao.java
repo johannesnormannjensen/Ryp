@@ -11,13 +11,12 @@ import java.lang.reflect.ParameterizedType;
 public abstract class AbstractDao<PK extends Serializable, T> {
 
     private final Class<T> persistentClass;
-    private final SessionFactory sessionFactory;
-
     @Autowired
+    private SessionFactory sessionFactory;
+
     @SuppressWarnings("unchecked")
-    public AbstractDao(SessionFactory sessionFactory) {
+    public AbstractDao() {
         this.persistentClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-        this.sessionFactory = sessionFactory;
     }
 
     protected Session getSession() {

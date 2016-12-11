@@ -2,11 +2,9 @@ package com.jof.springmvc.dao;
 
 import com.jof.springmvc.model.PersistentLogin;
 import org.hibernate.Criteria;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Repository;
@@ -20,11 +18,6 @@ public class HibernateTokenRepositoryImpl extends AbstractDao<String, Persistent
         implements PersistentTokenRepository {
 
     static final Logger logger = LoggerFactory.getLogger(HibernateTokenRepositoryImpl.class);
-
-    @Autowired
-    public HibernateTokenRepositoryImpl(SessionFactory sessionFactory) {
-        super(sessionFactory);
-    }
 
     @Override
     public void createNewToken(PersistentRememberMeToken token) {

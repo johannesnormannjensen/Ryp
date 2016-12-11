@@ -16,13 +16,8 @@ public class RoleToUserProfileConverter implements Converter<Object, UserProfile
 
     static final Logger logger = LoggerFactory.getLogger(RoleToUserProfileConverter.class);
 
-    final
-    UserProfileService userProfileService;
-
     @Autowired
-    public RoleToUserProfileConverter(UserProfileService userProfileService) {
-        this.userProfileService = userProfileService;
-    }
+    UserProfileService userProfileService;
 
     /**
      * Gets UserProfile by Id
