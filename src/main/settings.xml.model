@@ -1,0 +1,47 @@
+<settings>
+  <profiles>
+
+    <profile>
+      <id>devserverConfig</id>
+      <properties>
+        <server>devserver</server>
+        <path>/RateYourPeers</path>
+		<update>true</update>
+		<url>http://localhost:8080/manager/text</url>
+      </properties>
+    </profile>
+
+	// production profile example
+    <profile>
+      <id>prodserverConfig</id>
+      <properties>
+        <server>prodserver</server>
+        <path>/RateYourPeers</path>
+		<update>true</update>
+		<url></url> // always include /manager/text in the end
+      </properties>
+    </profile>
+
+  </profiles>
+
+  <servers>
+  	//production server example
+      <server>
+        <id>prodserver</id>
+        <username>USERNAME</username> 
+        <password>PASSWORD</password> 
+        <privateKey>PATH_TO_YOUR_PRIVATE_KEY</privateKey>
+        <filePermissions>664</filePermissions> //usually 664
+        <directoryPermissions>775</directoryPermissions> //usually 775
+        <configuration></configuration>
+      </server>
+
+      <server>
+        <id>devserver</id>
+        <username>rype</username> //tomcat username
+        <password>pussword</password> //tomcat password
+        <configuration></configuration>
+      </server>
+    </servers>
+
+</settings>
