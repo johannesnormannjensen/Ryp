@@ -2,8 +2,10 @@ package com.jof.springmvc.controller;
 
 import com.jof.springmvc.model.User;
 import com.jof.springmvc.model.UserProfile;
+import com.jof.springmvc.service.RiotApiService;
 import com.jof.springmvc.service.UserProfileService;
 import com.jof.springmvc.service.UserService;
+import net.rithms.riot.api.RiotApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpRequest;
@@ -36,6 +38,9 @@ public class AppController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    RiotApiService riotApiService;
 
     @Autowired
     UserProfileService userProfileService;
