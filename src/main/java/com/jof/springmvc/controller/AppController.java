@@ -82,8 +82,8 @@ public class AppController {
         }
 
         if (!userService.isUsernameUnique(user.getId(), user.getUsername())) {
-            FieldError ssoError = new FieldError("user", "username", messageSource.getMessage("non.unique.username", new String[]{user.getUsername()}, Locale.getDefault()));
-            result.addError(ssoError);
+            FieldError usernameError = new FieldError("user", "username", messageSource.getMessage("non.unique.username", new String[]{user.getUsername()}, Locale.getDefault()));
+            result.addError(usernameError);
             return "registration";
         }
 

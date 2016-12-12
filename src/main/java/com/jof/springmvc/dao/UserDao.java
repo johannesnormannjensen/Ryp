@@ -9,11 +9,11 @@ public interface UserDao {
 
     User findById(int id);
 
-    User findByUsername(String sso);
+    User findByUsername(String username);
 
     void save(User user);
 
-    void deleteByUsername(String sso);
+    void deleteByUsername(String username);
 
     List<User> findAllUsers();
 

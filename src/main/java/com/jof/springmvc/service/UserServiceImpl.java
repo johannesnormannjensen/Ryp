@@ -25,8 +25,8 @@ public class UserServiceImpl implements UserService {
         return dao.findById(id);
     }
 
-    public User findByUserName(String sso) {
-        User user = dao.findByUsername(sso);
+    public User findByUserName(String username) {
+        User user = dao.findByUsername(username);
         return user;
     }
 
@@ -53,16 +53,16 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public void deleteUserByUsername(String sso) {
-        dao.deleteByUsername(sso);
+    public void deleteUserByUsername(String username) {
+        dao.deleteByUsername(username);
     }
 
     public List<User> findAllUsers() {
         return dao.findAllUsers();
     }
 
-    public boolean isUsernameUnique(Integer id, String sso) {
-        User user = findByUserName(sso);
+    public boolean isUsernameUnique(Integer id, String username) {
+        User user = findByUserName(username);
         return (user == null || ((id != null) && (user.getId() == id)));
     }
 
