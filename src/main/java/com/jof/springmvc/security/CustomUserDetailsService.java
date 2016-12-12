@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
-        User user = userService.findBySSO(username);
+        User user = userService.findByUserName(username);
         logger.info("User : {}", user);
         if (user == null) {
             logger.info("User not found");

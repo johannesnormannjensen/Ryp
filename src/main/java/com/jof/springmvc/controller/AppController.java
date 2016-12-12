@@ -81,7 +81,7 @@ public class AppController {
             return "registration";
         }
 
-        if (!userService.isUserSSOUnique(user.getId(), user.getUsername())) {
+        if (!userService.isUsernameUnique(user.getId(), user.getUsername())) {
             FieldError ssoError = new FieldError("user", "username", messageSource.getMessage("non.unique.username", new String[]{user.getUsername()}, Locale.getDefault()));
             result.addError(ssoError);
             return "registration";
@@ -101,7 +101,7 @@ public class AppController {
      */
     @RequestMapping(value = {"/edit-user-{username}"}, method = RequestMethod.GET)
     public String editUser(@PathVariable String username, ModelMap model) {
-        User user = userService.findBySSO(username);
+        User user = userService.findByUserName(username);
         model.addAttribute("user", user);
         model.addAttribute("edit", true);
         model.addAttribute("loggedinuser", getPrincipal());
@@ -121,7 +121,7 @@ public class AppController {
         }
 
         /*//Uncomment below 'if block' if you WANT TO ALLOW UPDATING SSO_ID in UI which is a unique key to a User.
-        if(!userService.isUserSSOUnique(user.getId(), user.getUsername())){
+        if(!userService.isUsernameUnique(user.getId(), user.getUsername())){
             FieldError ssoError =new FieldError("user","username",messageSource.getMessage("non.unique.username", new String[]{user.getUsername()}, Locale.getDefault()));
             result.addError(ssoError);
             return "registration";
@@ -141,7 +141,7 @@ public class AppController {
      */
     @RequestMapping(value = {"/delete-user-{username}"}, method = RequestMethod.GET)
     public String deleteUser(@PathVariable String username) {
-        userService.deleteUserBySSO(username);
+        userService.deleteUserByUsername(username);
         return "redirect:/list";
     }
 
