@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public User findBySSO(String sso) {
-        User user = dao.findBySSO(sso);
+        User user = dao.findByUsername(sso);
         return user;
     }
 
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
 
     public void deleteUserBySSO(String sso) {
-        dao.deleteBySSO(sso);
+        dao.deleteByUsername(sso);
     }
 
     public List<User> findAllUsers() {
