@@ -2,6 +2,7 @@
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <html>
 
@@ -62,7 +63,7 @@
                 </div>
             </div>
         </div>
-		<c:if test="${not empty sessionScope.remoteUser && sessionScope.remoteUser.admin == true}"> 
+		<sec:authorize access="hasRole('ADMIN')">
 	        <div class="row">
 	            <div class="form-group col-md-12">
 	                <label class="col-md-3 control-lable" for="userProfiles">Roles</label>
@@ -74,7 +75,7 @@
 	                </div>
 	            </div>
 	        </div>
-		</c:if>
+		</sec:authorize>
         <div class="row">
             <div class="form-actions floatRight">
                 <c:choose>

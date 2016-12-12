@@ -118,10 +118,4 @@ public class User implements Serializable {
                 '}';
     }
     
-    public boolean getAdmin() {
-    	for(UserProfile up : getUserProfiles()) {
-    		if (up.getType().equals(UserProfileType.ADMIN.toString())) return true;
-    	}
-    	return false;
-    }
 }
