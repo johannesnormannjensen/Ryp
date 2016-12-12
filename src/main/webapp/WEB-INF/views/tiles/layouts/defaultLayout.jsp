@@ -13,6 +13,8 @@
 	</head>
 	  
 	<body>
+	<c:choose>
+		<c:when test="${not empty sessionScope.remoteUser}">
 	        <tiles:insertAttribute name="header" />
 	     	<div class="container-fluid">
 				<div class="col-sm-2">
@@ -24,5 +26,12 @@
 				</div>
 	     	</div>
 	        <tiles:insertAttribute name="footer" />
+		</c:when>
+		<c:otherwise>
+		    <tiles:insertAttribute name="menu" />
+		    <tiles:insertAttribute name="body" />
+	        <tiles:insertAttribute name="footer" />
+		</c:otherwise>
+	</c:choose>
 	</body>
 </html>
