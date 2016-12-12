@@ -129,11 +129,11 @@
         </dependency>
 
         <!--&lt;!&ndash; Riot API wrapper &ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>com.github.rithms</groupId>-->
-            <!--<artifactId>riot-api-java</artifactId>-->
-            <!--<version>v3.9.0</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.5</version>
+        </dependency>
         <!-- If jitpack won't build the .jar properly, you still have to add it manually -->
         <dependency>
             <groupId>com.github.rithms</groupId>

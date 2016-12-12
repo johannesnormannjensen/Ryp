@@ -5,10 +5,10 @@ import com.jof.springmvc.model.UserProfile;
 import com.jof.springmvc.service.RiotApiService;
 import com.jof.springmvc.service.UserProfileService;
 import com.jof.springmvc.service.UserService;
-import net.rithms.riot.api.RiotApi;
+import net.rithms.riot.api.RiotApiException;
+import net.rithms.riot.constant.Region;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,12 +24,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.UUID;
 
 
 @Controller
@@ -57,24 +55,24 @@ public class AppController {
 
 
     /**
-	 * This method will list all existing users.
-	 */
-	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
-	public String listUsers(ModelMap model, HttpServletRequest request) {
-		if (request.getSession().getAttribute("remoteUser") == null && getPrincipal() != null) {
-			User user = userService.findByUserName(getPrincipal());
-			request.getSession().setAttribute("remoteUser", user);
-		}
-		List<User> users = userService.findAllUsers();
-		model.addAttribute("users", users);
-		model.addAttribute("loggedinuser", getPrincipal());
-		return "userlist";
-	}
+     * This method will list all existing users.
+     */
+    @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
+    public String listUsers(ModelMap model, HttpServletRequest request) {
+        if (request.getSession().getAttribute("remoteUser") == null && getPrincipal() != null) {
+            User user = userService.findByUserName(getPrincipal());
+            request.getSession().setAttribute("remoteUser", user);
+        }
+        List<User> users = userService.findAllUsers();
+        model.addAttribute("users", users);
+        model.addAttribute("loggedinuser", getPrincipal());
+        return "userlist";
+    }
 
     /**
      * This method will provide the medium to add a new user.
      */
-    @RequestMapping(value = {"/registration"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/newuser"}, method = RequestMethod.GET)
     public String newUser(ModelMap model, HttpServletRequest request) {
         User user = new User();
         model.addAttribute("user", user);
@@ -85,80 +83,47 @@ public class AppController {
 
     /**
      * This method will be called on form submission, handling POST request for
-     * registering a new user in the database. It also validates the user input
+     * saving user in database. It also validates the user input
      */
-    @RequestMapping(value = {"/registration"}, method = RequestMethod.POST)
-    public String registerUser(@Valid User user, BindingResult result,
+    @RequestMapping(value = {"/newuser"}, method = RequestMethod.POST)
+    public String saveUser(@Valid User user, BindingResult result,
                            ModelMap model) {
-    	if (result.hasErrors()) {
-    		return "registration";
-    	}
-    	
-    	if (user.getUserProfiles().isEmpty()) {
-    		Set<UserProfile> profiles = new HashSet<UserProfile>();
-    		profiles.add(userProfileService.findByType("USER"));
-    		user.setUserProfiles(profiles);
-    	}
+
+        try {
+            long l = riotApiService.getSummonerIdByName(Region.EUNE, user.getUsername());
+            if (riotApiService.userHasRunePage(Region.EUNE, l, "RYP") == false) {
+                result.addError(new ObjectError("User", "user.validation.noMatchingRunePage"));
+            }
+        } catch (RiotApiException e) {
+            result.addError(new ObjectError("User", "user.validation.noMatchingSummoner"));
+        }
+        if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
+            return "registration";
+        }
+
+        if (user.getUserProfiles().isEmpty()) {
+            Set<UserProfile> profiles = new HashSet<UserProfile>();
+            profiles.add(userProfileService.findByType("USER"));
+            user.setUserProfiles(profiles);
+        }
 
         if (!userService.isUsernameUnique(user.getId(), user.getUsername())) {
             FieldError usernameError = new FieldError("user", "username", messageSource.getMessage("non.unique.username", new String[]{user.getUsername()}, Locale.getDefault()));
             result.addError(usernameError);
             return "registration";
         }
-        userService.saveUser(user);
-
-        model.addAttribute("success", "User " + user.getUsername() + " registered successfully");
-        model.addAttribute("loggedinuser", getPrincipal());
-        //return "success";
-        return "login";
-    }
-	
-    /**
-     * This method will provide the medium for users to be registered
-     */
-    @RequestMapping(value = {"/newuser"}, method = RequestMethod.GET)
-    public String registerNewUser(ModelMap model, HttpServletRequest request) {
-        User user = new User();
-        // generate user for testing
-//        String s = UUID.randomUUID().toString();
-//        user.setUsername(s);
-//        user.setPassword("1234");
-//        user.setEmail(s + "@" + s + ".com");
-        model.addAttribute("user", user);
-        model.addAttribute("edit", false);
-        model.addAttribute("loggedinuser", getPrincipal());
-        
-        return "newUser";
-    }
-
-    /**
-     * This method will be called on form submission, handling POST request for
-     * saving user in database. It also validates the user input
-     */
-    @RequestMapping(value = {"/newuser"}, method = RequestMethod.POST)
-    public String saveUser(@Valid User user, BindingResult result,
-                           ModelMap model) {
-    	if (result.hasErrors()) {
-    		return "newUser";
-    	}
-    	
-    	if (user.getUserProfiles().isEmpty()) {
-    		Set<UserProfile> profiles = new HashSet<UserProfile>();
-    		profiles.add(userProfileService.findByType("USER"));
-    		user.setUserProfiles(profiles);
-    	}
-
-        if (!userService.isUsernameUnique(user.getId(), user.getUsername())) {
-            FieldError usernameError = new FieldError("user", "username", messageSource.getMessage("non.unique.username", new String[]{user.getUsername()}, Locale.getDefault()));
-            result.addError(usernameError);
-            return "newUser";
+        if (user.getUserProfiles().isEmpty()) {
+            Set<UserProfile> profiles = new HashSet<UserProfile>();
+            profiles.add(userProfileService.findByType("USER"));
+            user.setUserProfiles(profiles);
         }
         userService.saveUser(user);
 
         model.addAttribute("success", "User " + user.getUsername() + " registered successfully");
         model.addAttribute("loggedinuser", getPrincipal());
         //return "success";
-        return "registrationSuccess";
+        return "registrationsuccess";
     }
 
 
@@ -198,7 +163,7 @@ public class AppController {
 
         model.addAttribute("success", "User " + user.getUsername() + " updated successfully");
         model.addAttribute("loggedinuser", getPrincipal());
-        return "registrationSuccess";
+        return "registrationsuccess";
     }
 
 

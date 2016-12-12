@@ -1,14 +1,12 @@
 package com.jof.springmvc.service;
 
 import net.rithms.riot.api.RiotApi;
+import net.rithms.riot.constant.Region;
 import net.rithms.riot.dto.Summoner.RunePage;
 import net.rithms.riot.dto.Summoner.RunePages;
+import net.rithms.riot.dto.Summoner.Summoner;
 import org.junit.Before;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.StandardEnvironment;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +25,14 @@ public class RiotApiServiceImplTest {
     RiotApi mockRiotApi;
     RiotApiService mockRiotApiService;
 
+
+    // Summoner mock
+    @Mock
+    Summoner summoner;
+    long summId = 1;
+    String name = "Summ_name";
+    Region region = Region.EUNE;
+
     private String trueRunePageName;
 
     @Before
@@ -34,21 +40,25 @@ public class RiotApiServiceImplTest {
         mockRiotApi = mock(RiotApi.class);
         mockRiotApiService = new RiotApiServiceImpl(null, mockRiotApi);
 
+        // Summoner mock
+        summoner = mock(Summoner.class);
+        when(summoner.getId()).thenReturn(summId);
+
         // Runepages mock
         RunePages runePages = mock(RunePages.class);
         Set<RunePage> runePages1 = getRunePages();
         when(runePages.getPages()).thenReturn(runePages1);
-        when(mockRiotApi.getRunePages(0)).thenReturn(runePages);
+        when(mockRiotApi.getRunePages(region, summId)).thenReturn(runePages);
     }
 
     @org.junit.Test
     public void testUserHasRunePageMock() throws Exception {
-        assertTrue(mockRiotApiService.userHasRunePage(0, trueRunePageName));
+        assertTrue(mockRiotApiService.userHasRunePage(region, summId, trueRunePageName));
     }
 
     @org.junit.Test
     public void testNoUserHasRunePageMock() throws Exception {
-        assertFalse(mockRiotApiService.userHasRunePage(0, "NO RUNEPAGE"));
+        assertFalse(mockRiotApiService.userHasRunePage(region, summId, "NORUNEPAGE"));
     }
 
     // Utils

@@ -7,3 +7,6 @@ hibernate.show_sql = true
 hibernate.format_sql = true 
 hibernate.hbm2ddl.auto = update
 riot.api.key = RGAPI-YOUR-API-KEY
+
+user.validation.noMatchingSummoner = "No summoner found with that name in the region selected."
+user.validation.noMatchingRunePage = "No matching runepage.";

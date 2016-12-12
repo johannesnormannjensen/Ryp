@@ -2,6 +2,7 @@ package com.jof.springmvc.service;
 
 import net.rithms.riot.api.RiotApi;
 import net.rithms.riot.api.RiotApiException;
+import net.rithms.riot.constant.Region;
 import net.rithms.riot.dto.Summoner.RunePage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -32,14 +33,27 @@ public class RiotApiServiceImpl implements RiotApiService {
 
     @PostConstruct
     private void init() {
-        // TODO: find a better way to instatiate it
-        //this.riotApi = new RiotApi(environment.getRequiredProperty("riot.api.key"));
+        this.riotApi = new RiotApi(environment.getRequiredProperty("riot.api.key"));
 
     }
 
     @Override
-    public boolean userHasRunePage(long id, final String runePageName) throws RiotApiException {
-        Set<RunePage> pages = riotApi.getRunePages(id).getPages();
+    public long getSummonerIdByName(Region region, String summonerName) throws RiotApiException {
+        return riotApi.getSummonerByName(region, summonerName).getId();
+    }
+
+    @Override
+    public boolean userHasRunePage(Region region, long id, String runePageName) throws RiotApiException {
+        Set<RunePage> pages = riotApi.getRunePages(region, id).getPages();
+        for (RunePage page : pages) {
+            if (page.getName().equals(runePageName)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean userHasRunePage(Region region, String summonerName, String runePageName) throws RiotApiException {
+        Set<RunePage> pages = riotApi.getRunePages(region, summonerName).get(summonerName).getPages();
         for (RunePage page : pages) {
             if (page.getName().equals(runePageName)) return true;
         }
