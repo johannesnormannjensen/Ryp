@@ -50,13 +50,4 @@ public class RiotApiServiceImpl implements RiotApiService {
         }
         return false;
     }
-
-    @Override
-    public boolean userHasRunePage(Region region, String summonerName, String runePageName) throws RiotApiException {
-        Set<RunePage> pages = riotApi.getRunePages(region, summonerName).get(summonerName).getPages();
-        for (RunePage page : pages) {
-            if (page.getName().equals(runePageName)) return true;
-        }
-        return false;
-    }
 }

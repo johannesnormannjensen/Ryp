@@ -10,6 +10,4 @@ public interface RiotApiService {
     long getSummonerIdByName(Region region, String summonerName) throws RiotApiException;
 
     boolean userHasRunePage(Region region, long id, String runePageName) throws RiotApiException;
-
-    boolean userHasRunePage(Region region, String summonerName, String runePageName) throws RiotApiException;
 }
