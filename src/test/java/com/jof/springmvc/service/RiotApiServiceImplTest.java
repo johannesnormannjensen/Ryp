@@ -4,8 +4,11 @@ import net.rithms.riot.api.RiotApi;
 import net.rithms.riot.dto.Summoner.RunePage;
 import net.rithms.riot.dto.Summoner.RunePages;
 import org.junit.Before;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Spy;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.StandardEnvironment;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,17 +21,18 @@ import static org.mockito.Mockito.when;
 /**
  * Created by Ferenc_S on 12/10/2016.
  */
+
 public class RiotApiServiceImplTest {
     @Mock
     RiotApi mockRiotApi;
+    RiotApiService mockRiotApiService;
 
-    RiotApiService riotApiService;
     private String trueRunePageName;
 
     @Before
     public void setUp() throws Exception {
         mockRiotApi = mock(RiotApi.class);
-        riotApiService = new RiotApiServiceImpl(null, mockRiotApi);
+        mockRiotApiService = new RiotApiServiceImpl(null, mockRiotApi);
 
         // Runepages mock
         RunePages runePages = mock(RunePages.class);
@@ -39,12 +43,12 @@ public class RiotApiServiceImplTest {
 
     @org.junit.Test
     public void testUserHasRunePageMock() throws Exception {
-        assertTrue(riotApiService.userHasRunePage(0, trueRunePageName));
+        assertTrue(mockRiotApiService.userHasRunePage(0, trueRunePageName));
     }
 
     @org.junit.Test
     public void testNoUserHasRunePageMock() throws Exception {
-        assertFalse(riotApiService.userHasRunePage(0, "NO RUNEPAGE"));
+        assertFalse(mockRiotApiService.userHasRunePage(0, "NO RUNEPAGE"));
     }
 
     // Utils
