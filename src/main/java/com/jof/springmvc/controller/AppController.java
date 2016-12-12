@@ -6,6 +6,7 @@ import com.jof.springmvc.service.UserProfileService;
 import com.jof.springmvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,13 +16,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 
 @Controller
@@ -46,22 +51,25 @@ public class AppController {
 
 
     /**
-     * This method will list all existing users.
-     */
-    @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
-    public String listUsers(ModelMap model) {
-
-        List<User> users = userService.findAllUsers();
-        model.addAttribute("users", users);
-        model.addAttribute("loggedinuser", getPrincipal());
-        return "userlist";
-    }
+	 * This method will list all existing users.
+	 */
+	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
+	public String listUsers(ModelMap model, HttpServletRequest request) {
+		if (request.getSession().getAttribute("remoteUser") == null && getPrincipal() != null) {
+			User user = userService.findByUserName(getPrincipal());
+			request.getSession().setAttribute("remoteUser", user);
+		}
+		List<User> users = userService.findAllUsers();
+		model.addAttribute("users", users);
+		model.addAttribute("loggedinuser", getPrincipal());
+		return "userlist";
+	}
 
     /**
      * This method will provide the medium to add a new user.
      */
     @RequestMapping(value = {"/newuser"}, method = RequestMethod.GET)
-    public String newUser(ModelMap model) {
+    public String newUser(ModelMap model, HttpServletRequest request) {
         User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("edit", false);
@@ -76,17 +84,26 @@ public class AppController {
     @RequestMapping(value = {"/newuser"}, method = RequestMethod.POST)
     public String saveUser(@Valid User user, BindingResult result,
                            ModelMap model) {
-
-        if (result.hasErrors()) {
-            return "registration";
-        }
+    	if (result.hasErrors()) {
+    		return "registration";
+    	}
+    	
+    	if (user.getUserProfiles().isEmpty()) {
+    		Set<UserProfile> profiles = new HashSet<UserProfile>();
+    		profiles.add(userProfileService.findByType("USER"));
+    		user.setUserProfiles(profiles);
+    	}
 
         if (!userService.isUsernameUnique(user.getId(), user.getUsername())) {
             FieldError usernameError = new FieldError("user", "username", messageSource.getMessage("non.unique.username", new String[]{user.getUsername()}, Locale.getDefault()));
             result.addError(usernameError);
             return "registration";
         }
-
+        if (user.getUserProfiles().isEmpty()) {
+        	Set<UserProfile> profiles = new HashSet<UserProfile>();
+        	profiles.add(userProfileService.findByType("USER"));
+        	user.setUserProfiles(profiles);
+        }
         userService.saveUser(user);
 
         model.addAttribute("success", "User " + user.getUsername() + " registered successfully");
@@ -187,6 +204,7 @@ public class AppController {
             //new SecurityContextLogoutHandler().logout(request, response, auth);
             persistentTokenBasedRememberMeServices.logout(request, response, auth);
             SecurityContextHolder.getContext().setAuthentication(null);
+            request.getSession().setAttribute("remoteUser", null);
         }
         return "redirect:/login?logout";
     }

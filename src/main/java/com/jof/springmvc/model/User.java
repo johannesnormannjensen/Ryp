@@ -27,7 +27,6 @@ public class User implements Serializable {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @NotEmpty
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_user_profile",
             joinColumns = {@JoinColumn(name = "user_id")},
@@ -117,5 +116,12 @@ public class User implements Serializable {
                 ", email='" + email + '\'' +
                 ", userProfiles=" + userProfiles +
                 '}';
+    }
+    
+    public boolean getAdmin() {
+    	for(UserProfile up : getUserProfiles()) {
+    		if (up.getType().equals(UserProfileType.ADMIN.toString())) return true;
+    	}
+    	return false;
     }
 }

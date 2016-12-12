@@ -11,6 +11,8 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 
 @Configuration
@@ -22,23 +24,31 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Autowired
     RoleToUserProfileConverter roleToUserProfileConverter;
 
-
+    
+    /**
+     * Configure TilesConfigurer.
+     */
+    @Bean
+    public TilesConfigurer tilesConfigurer(){
+        TilesConfigurer tilesConfigurer = new TilesConfigurer();
+        tilesConfigurer.setDefinitions(new String[] {"/WEB-INF/views/**/tiles.xml"});
+        tilesConfigurer.setCheckRefresh(true);
+        return tilesConfigurer;
+    }
+    
     /**
      * Configure ViewResolvers to deliver preferred views.
      */
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
-
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setViewClass(JstlView.class);
-        viewResolver.setPrefix("/WEB-INF/views/");
-        viewResolver.setSuffix(".jsp");
+        TilesViewResolver viewResolver = new TilesViewResolver();
         registry.viewResolver(viewResolver);
     }
-
+    
     /**
      * Configure ResourceHandlers to serve static resources like CSS/ Javascript etc...
      */
+     
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
