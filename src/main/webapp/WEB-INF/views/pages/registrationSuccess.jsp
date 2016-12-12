@@ -4,13 +4,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
-<div id="mainWrapper">
-	<div class="login-container">
-		<div class="login-card">
-			<div class="alert alert-success lead">${success}</div>
-			<span class="well floatRight"> Go to <a
-				href="<c:url value='/list' />">Users List</a>
-			</span>
-		</div>
+<div class="generic-container">
+    <div class="alert alert-success lead">
+        ${success}
+    </div>
+	<div class="row">
+		<span class="well floatRight">
+		    Go to <a href="<c:url value='/list' />">Users List</a>
+		</span>
 	</div>
 </div>

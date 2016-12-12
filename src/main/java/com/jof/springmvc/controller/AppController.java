@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.UUID;
 
 
 @Controller
@@ -118,9 +119,15 @@ public class AppController {
     @RequestMapping(value = {"/newuser"}, method = RequestMethod.GET)
     public String registerNewUser(ModelMap model, HttpServletRequest request) {
         User user = new User();
+        // generate user for testing
+//        String s = UUID.randomUUID().toString();
+//        user.setUsername(s);
+//        user.setPassword("1234");
+//        user.setEmail(s + "@" + s + ".com");
         model.addAttribute("user", user);
         model.addAttribute("edit", false);
         model.addAttribute("loggedinuser", getPrincipal());
+        
         return "newUser";
     }
 
