@@ -9,15 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
 import java.util.List;
 
 
 @Repository("userDao")
-public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
+public class UserDaoImpl extends AbstractDao<BigInteger, User> implements UserDao {
 
     static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
-    public User findById(int id) {
+    public User findById(BigInteger id) {
         User user = getByKey(id);
         if (user != null) {
             Hibernate.initialize(user.getUserProfiles());

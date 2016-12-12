@@ -2,12 +2,13 @@ package com.jof.springmvc.dao;
 
 import com.jof.springmvc.model.User;
 
+import java.math.BigInteger;
 import java.util.List;
 
 
 public interface UserDao {
 
-    User findById(int id);
+    User findById(BigInteger id);
 
     User findByUsername(String username);
 

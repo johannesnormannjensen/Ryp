@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.util.List;
 
 
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
 
 
-    public User findById(int id) {
+    public User findById(BigInteger id) {
         return dao.findById(id);
     }
 
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService {
         return dao.findAllUsers();
     }
 
-    public boolean isUsernameUnique(Integer id, String username) {
+    public boolean isUsernameUnique(BigInteger id, String username) {
         User user = findByUserName(username);
         return (user == null || ((id != null) && (user.getId() == id)));
     }
