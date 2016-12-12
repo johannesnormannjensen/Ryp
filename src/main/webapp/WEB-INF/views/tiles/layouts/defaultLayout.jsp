@@ -2,6 +2,7 @@
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" />
  
 <html>
  
@@ -28,9 +29,7 @@
 	        <tiles:insertAttribute name="footer" />
 		</c:when>
 		<c:otherwise>
-		    <tiles:insertAttribute name="menu" />
 		    <tiles:insertAttribute name="body" />
-	        <tiles:insertAttribute name="footer" />
 		</c:otherwise>
 	</c:choose>
 	</body>

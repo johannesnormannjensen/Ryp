@@ -73,7 +73,7 @@ public class AppController {
     /**
      * This method will provide the medium to add a new user.
      */
-    @RequestMapping(value = {"/newuser"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/registration"}, method = RequestMethod.GET)
     public String newUser(ModelMap model, HttpServletRequest request) {
         User user = new User();
         model.addAttribute("user", user);
@@ -84,10 +84,10 @@ public class AppController {
 
     /**
      * This method will be called on form submission, handling POST request for
-     * saving user in database. It also validates the user input
+     * registering a new user in the database. It also validates the user input
      */
-    @RequestMapping(value = {"/newuser"}, method = RequestMethod.POST)
-    public String saveUser(@Valid User user, BindingResult result,
+    @RequestMapping(value = {"/registration"}, method = RequestMethod.POST)
+    public String registerUser(@Valid User user, BindingResult result,
                            ModelMap model) {
     	if (result.hasErrors()) {
     		return "registration";
@@ -104,17 +104,54 @@ public class AppController {
             result.addError(usernameError);
             return "registration";
         }
-        if (user.getUserProfiles().isEmpty()) {
-        	Set<UserProfile> profiles = new HashSet<UserProfile>();
-        	profiles.add(userProfileService.findByType("USER"));
-        	user.setUserProfiles(profiles);
+        userService.saveUser(user);
+
+        model.addAttribute("success", "User " + user.getUsername() + " registered successfully");
+        model.addAttribute("loggedinuser", getPrincipal());
+        //return "success";
+        return "login";
+    }
+	
+    /**
+     * This method will provide the medium for users to be registered
+     */
+    @RequestMapping(value = {"/newuser"}, method = RequestMethod.GET)
+    public String registerNewUser(ModelMap model, HttpServletRequest request) {
+        User user = new User();
+        model.addAttribute("user", user);
+        model.addAttribute("edit", false);
+        model.addAttribute("loggedinuser", getPrincipal());
+        return "newUser";
+    }
+
+    /**
+     * This method will be called on form submission, handling POST request for
+     * saving user in database. It also validates the user input
+     */
+    @RequestMapping(value = {"/newuser"}, method = RequestMethod.POST)
+    public String saveUser(@Valid User user, BindingResult result,
+                           ModelMap model) {
+    	if (result.hasErrors()) {
+    		return "newUser";
+    	}
+    	
+    	if (user.getUserProfiles().isEmpty()) {
+    		Set<UserProfile> profiles = new HashSet<UserProfile>();
+    		profiles.add(userProfileService.findByType("USER"));
+    		user.setUserProfiles(profiles);
+    	}
+
+        if (!userService.isUsernameUnique(user.getId(), user.getUsername())) {
+            FieldError usernameError = new FieldError("user", "username", messageSource.getMessage("non.unique.username", new String[]{user.getUsername()}, Locale.getDefault()));
+            result.addError(usernameError);
+            return "newUser";
         }
         userService.saveUser(user);
 
         model.addAttribute("success", "User " + user.getUsername() + " registered successfully");
         model.addAttribute("loggedinuser", getPrincipal());
         //return "success";
-        return "registrationsuccess";
+        return "registrationSuccess";
     }
 
 
@@ -154,7 +191,7 @@ public class AppController {
 
         model.addAttribute("success", "User " + user.getUsername() + " updated successfully");
         model.addAttribute("loggedinuser", getPrincipal());
-        return "registrationsuccess";
+        return "registrationSuccess";
     }
 
 

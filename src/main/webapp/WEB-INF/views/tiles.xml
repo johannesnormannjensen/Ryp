@@ -24,11 +24,20 @@
    <!-- Register Page -->
    <definition name="registration" extends="base-definition">  
        <put-attribute name="title" value="Register" />  
+       <put-attribute name="header" value="/WEB-INF/views/tiles/template/defaultHeader.jsp" />
+       <put-attribute name="menu" value="/WEB-INF/views/tiles/template/emptyMenu.jsp" />  
        <put-attribute name="body" value="/WEB-INF/views/pages/registration.jsp" />  
+       <put-attribute name="footer" value="/WEB-INF/views/tiles/template/defaultFooter.jsp" />  
    </definition>  
    <definition name="registrationSuccess" extends="base-definition">  
        <put-attribute name="title" value="Registration completed" />  
        <put-attribute name="body" value="/WEB-INF/views/pages/registrationSuccess.jsp" />  
+   </definition>  
+   
+   <!-- New User Page -->
+   <definition name="newUser" extends="base-definition">  
+       <put-attribute name="title" value="New User" />  
+       <put-attribute name="body" value="/WEB-INF/views/pages/newuser.jsp" />  
    </definition>  
  
    <!-- Product Page -->
