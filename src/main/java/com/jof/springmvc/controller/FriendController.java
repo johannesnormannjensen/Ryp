@@ -59,7 +59,7 @@ public class FriendController {
 		}
 
 		// for testing
-		remoteUser = userService.findById(BigInteger.valueOf(21232));
+		remoteUser = userService.findById(Long.valueOf(21232));
 
 		List<Friend> friends = friendService.findAllFriends(remoteUser);
 		List<User> users = userService.getFriendsAsUsers(friends);

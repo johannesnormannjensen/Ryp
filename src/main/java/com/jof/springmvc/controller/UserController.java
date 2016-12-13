@@ -104,7 +104,7 @@ public class UserController {
      //   validateSummonerRunePage(region, result, user.getUsername());
         
         //TODO: get ID from API HERE
-        user.setId(BigInteger.valueOf(new Random().nextInt()));
+        user.setId(Long.valueOf(new Random().nextInt()));
         if (result.hasErrors()) {
             return "registration";
         }

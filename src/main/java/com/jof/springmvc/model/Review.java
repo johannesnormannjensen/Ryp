@@ -1,17 +1,12 @@
 package com.jof.springmvc.model;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.math.BigInteger;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "review")
@@ -40,7 +35,7 @@ public class Review implements Serializable {
 	
 	@NotEmpty
 	@Column(name = "game_id",  nullable = false, columnDefinition = "BIGINT(20)")
-	private BigInteger game_id;
+	private Long game_id;
 
 	@NotEmpty
 	@Column(name = "title", nullable = false, columnDefinition = "VARCHAR(45)")
@@ -83,11 +78,11 @@ public class Review implements Serializable {
 		this.target_user_id = target_user_id;
 	}
 
-	public BigInteger getGame_id() {
+	public Long getGame_id() {
 		return game_id;
 	}
 
-	public void setGame_id(BigInteger game_id) {
+	public void setGame_id(Long game_id) {
 		this.game_id = game_id;
 	}
 

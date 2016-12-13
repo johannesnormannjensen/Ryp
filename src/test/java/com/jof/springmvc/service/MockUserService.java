@@ -22,7 +22,7 @@ public class MockUserService implements UserService {
         user = new User();
         user.setUsername("AdminName");
         user.setEmail("admin@f23fff.sem");
-        user.setId(BigInteger.valueOf(66));
+        user.setId(Long.valueOf(66));
         user.setPassword("pwd");
         Role profile = new Role();
         profile.setId(66);
@@ -34,7 +34,7 @@ public class MockUserService implements UserService {
             user = new User();
             user.setUsername("Name " + i);
             user.setEmail("useremail" + i + "@f23fff.sem");
-            user.setId(BigInteger.valueOf(i));
+            user.setId(Long.valueOf(i));
             user.setPassword("pwd");
             profile = new Role();
             profile.setId(i);
@@ -45,7 +45,7 @@ public class MockUserService implements UserService {
     }
 
     @Override
-    public User findById(BigInteger id) {
+    public User findById(Long id) {
         return users.get(id.intValue());
     }
 
@@ -82,7 +82,7 @@ public class MockUserService implements UserService {
     }
 
     @Override
-    public boolean isUsernameUnique(BigInteger id, String username) {
+    public boolean isUsernameUnique(Long id, String username) {
         return findByUserName(username) == null;
     }
 }

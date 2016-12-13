@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
 
 
 
-    public User findById(BigInteger id) {
+    public User findById(Long id) {
         return dao.findById(id);
     }
 
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
         return dao.findAllUsers();
     }
 
-    public boolean isUsernameUnique(BigInteger id, String username) {
+    public boolean isUsernameUnique(Long id, String username) {
         User user = findByUserName(username);
         return (user == null || ((id != null) && (user.getId() == id)));
     }

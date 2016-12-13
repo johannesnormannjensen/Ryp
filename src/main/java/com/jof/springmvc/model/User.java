@@ -20,7 +20,7 @@ public class User implements Serializable {
 	
 	@Id
 	@Column(name = "id", nullable = false, columnDefinition = "BIGINT(20)")
-	private BigInteger id;
+	private Long id;
 
 	
 	@OneToMany(mappedBy = "source_user_id", cascade = CascadeType.ALL, orphanRemoval = true)	
@@ -59,16 +59,12 @@ public class User implements Serializable {
 			@JoinColumn(name = "user_profile_id") })
 	private Set<Role> roles = new HashSet<Role>();
 
-	public BigInteger getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(BigInteger id) {
+	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public void setId(int id) {
-		this.id = new BigInteger(String.valueOf(id));
 	}
 
 	public String getUsername() {

@@ -1,6 +1,5 @@
 package com.jof.springmvc.service;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ public class FriendServiceImpl implements FriendService
     private  FriendDao dao;
 
 	@Override
-	public Friend findFriendshipByIds(BigInteger id_alpha, BigInteger id_omega) {
+	public Friend findFriendshipByIds(Long id_alpha, Long id_omega) {
 		return dao.findFriendshipByIds(id_alpha, id_omega);
 	}
 
@@ -40,7 +39,7 @@ public class FriendServiceImpl implements FriendService
 	}
 
 	@Override
-	public void deleteByIds(BigInteger alpha_id, BigInteger omega_id) {
+	public void deleteByIds(Long alpha_id, Long omega_id) {
 		dao.deleteByIds(alpha_id, omega_id);
 		
 	}

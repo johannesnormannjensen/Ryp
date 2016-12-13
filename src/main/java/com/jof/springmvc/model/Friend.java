@@ -62,12 +62,12 @@ public class Friend {
 	
 	
 	
-	public BigInteger getAlpha_user_id() {
+	public Long getAlpha_user_id() {
 		return alpha_user_id.getId();
 	}
 	
 
-	public BigInteger getOmega_user_id() {
+	public Long getOmega_user_id() {
 		return omega_user_id.getId();
 	}
 

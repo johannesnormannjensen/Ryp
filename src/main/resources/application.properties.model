@@ -6,6 +6,7 @@ hibernate.dialect = org.hibernate.dialect.MySQLDialect
 hibernate.show_sql = true
 hibernate.format_sql = true 
 hibernate.hbm2ddl.auto = update
+hibernate.hbm2ddl.import_files = sql/populate.sql
 riot.api.key = RGAPI-YOUR-API-KEY
 
 user.validation.noMatchingSummoner = "No summoner found with that name in the region selected."

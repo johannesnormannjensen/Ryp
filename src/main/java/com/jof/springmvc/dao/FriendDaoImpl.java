@@ -1,6 +1,5 @@
 package com.jof.springmvc.dao;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -19,7 +18,7 @@ public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements Frien
 	 static final Logger logger = LoggerFactory.getLogger(FriendDaoImpl.class);
 	
 	@Override
-	public Friend findFriendshipByIds(BigInteger id_alpha, BigInteger id_omega) {
+	public Friend findFriendshipByIds(Long id_alpha, Long id_omega) {
 		
 		Criteria criteria = createEntityCriteria().addOrder(Order.asc("aplha_user_id"));
 		criteria.add(Restrictions.eq("aplha_user_id", id_alpha));
@@ -37,7 +36,7 @@ public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements Frien
 	}
 
 	@Override
-	public void deleteByIds(BigInteger alpha_id,BigInteger omega_id) {
+	public void deleteByIds(Long alpha_id, Long omega_id) {
 		Criteria crit = createEntityCriteria();
         crit.add(Restrictions.eq("alpha_user_id", alpha_id));
         crit.add(Restrictions.eq("omega_user_id", omega_id));

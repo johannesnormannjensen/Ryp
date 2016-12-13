@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserDao {
 
-    User findById(BigInteger id);
+    User findById(Long id);
 
     User findByUsername(String username);
 

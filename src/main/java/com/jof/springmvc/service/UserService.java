@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserService {
 
-    User findById(BigInteger id);
+    User findById(Long id);
 
     User findByUserName(String username);
 
@@ -23,6 +23,6 @@ public interface UserService {
     
     List<User> getFriendsAsUsers(List<Friend> friends);
 
-    boolean isUsernameUnique(BigInteger id, String username);
+    boolean isUsernameUnique(Long id, String username);
 
 }
