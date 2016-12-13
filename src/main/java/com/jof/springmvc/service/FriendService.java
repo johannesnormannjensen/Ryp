@@ -18,4 +18,5 @@ public interface FriendService {
 
 	// returns omega ids
 	List<Friend> findAllFriends(User user);
+	
 }

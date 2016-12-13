@@ -1,7 +1,7 @@
 package com.jof.springmvc.security;
 
+import com.jof.springmvc.model.Role;
 import com.jof.springmvc.model.User;
-import com.jof.springmvc.model.UserProfile;
 import com.jof.springmvc.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,9 +43,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private List<GrantedAuthority> getGrantedAuthorities(User user) {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
-        for (UserProfile userProfile : user.getUserProfiles()) {
-            logger.info("UserProfile : {}", userProfile);
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + userProfile.getType()));
+        for (Role role : user.getRoles()) {
+            logger.info("Role : {}", role);
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getType()));
         }
         logger.info("authorities : {}", authorities);
         return authorities;

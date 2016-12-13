@@ -1,6 +1,5 @@
 package com.jof.springmvc.model;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -56,9 +55,9 @@ public class User implements Serializable {
 
 	
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "user_user_profile", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "user_profile_id") })
-	private Set<UserProfile> userProfiles = new HashSet<UserProfile>();
+	private Set<Role> roles = new HashSet<Role>();
 
 	public BigInteger getId() {
 		return id;
@@ -66,6 +65,10 @@ public class User implements Serializable {
 
 	public void setId(BigInteger id) {
 		this.id = id;
+	}
+
+	public void setId(int id) {
+		this.id = new BigInteger(String.valueOf(id));
 	}
 
 	public String getUsername() {
@@ -92,12 +95,12 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public Set<UserProfile> getUserProfiles() {
-		return userProfiles;
+	public Set<Role> getRoles() {
+		return roles;
 	}
 
-	public void setUserProfiles(Set<UserProfile> userProfiles) {
-		this.userProfiles = userProfiles;
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 	public Date getCreated_at() {
@@ -203,6 +206,6 @@ public class User implements Serializable {
 	@Override
 	public String toString() {
 		return "User{" + "id=" + id + ", username='" + username + '\'' + ", password='" + password + '\'' + ", email='"
-				+ email + '\'' + ", userProfiles=" + userProfiles + ", Created at=" + created_at + '}';
+				+ email + '\'' + ", roles=" + roles + ", Created at=" + created_at + '}';
 	}
 }

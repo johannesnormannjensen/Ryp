@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
-import com.jof.springmvc.converter.RoleToUserProfileConverter;
+import com.jof.springmvc.converter.DbRoleToRoleConverter;
 
 
 @Configuration
@@ -25,7 +25,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
 
     @Autowired
-    RoleToUserProfileConverter roleToUserProfileConverter;
+    DbRoleToRoleConverter dbRoleToRoleConverter;
 
     
     /**
@@ -59,11 +59,10 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
     /**
      * Configure Converter to be used.
-     * In our example, we need a converter to convert string values[Roles] to UserProfiles in newUser.jsp
      */
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(roleToUserProfileConverter);
+        registry.addConverter(dbRoleToRoleConverter);
     }
 
 

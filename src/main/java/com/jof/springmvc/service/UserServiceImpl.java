@@ -1,6 +1,7 @@
 package com.jof.springmvc.service;
 
 import com.jof.springmvc.dao.UserDao;
+import com.jof.springmvc.model.Friend;
 import com.jof.springmvc.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -49,7 +51,7 @@ public class UserServiceImpl implements UserService {
                 entity.setPassword(passwordEncoder.encode(user.getPassword()));
             }
             entity.setEmail(user.getEmail());
-            entity.setUserProfiles(user.getUserProfiles());
+            entity.setRoles(user.getRoles());
         }
     }
 
@@ -66,5 +68,18 @@ public class UserServiceImpl implements UserService {
         User user = findByUserName(username);
         return (user == null || ((id != null) && (user.getId() == id)));
     }
+
+	
+	public List<User> getFriendsAsUsers(List<Friend> friends) {		
+		
+		List<User> users = new ArrayList<User>();
+		
+		for(int i= 0; i < friends.size();i++)
+		{
+			users.add(findById(friends.get(i).getOmega_user_id()));
+		}
+		
+		return users;
+	}
 
 }

@@ -1,8 +1,7 @@
 package com.jof.springmvc.service;
 
+import com.jof.springmvc.model.Role;
 import com.jof.springmvc.model.User;
-import com.jof.springmvc.model.UserProfile;
-import org.mockito.Mock;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -25,11 +24,11 @@ public class MockUserService implements UserService {
         user.setEmail("admin@f23fff.sem");
         user.setId(BigInteger.valueOf(66));
         user.setPassword("pwd");
-        UserProfile profile = new UserProfile();
+        Role profile = new Role();
         profile.setId(66);
         profile.setType("USER");
         profile.setType("ADMIN");
-        user.setUserProfiles(new HashSet<UserProfile>(Arrays.asList(profile)));
+        user.setRoles(new HashSet<Role>(Arrays.asList(profile)));
 
         for (int i = 0; i < 5; i++) {
             user = new User();
@@ -37,10 +36,10 @@ public class MockUserService implements UserService {
             user.setEmail("useremail" + i + "@f23fff.sem");
             user.setId(BigInteger.valueOf(i));
             user.setPassword("pwd");
-            profile = new UserProfile();
+            profile = new Role();
             profile.setId(i);
             profile.setType("USER");
-            user.setUserProfiles(new HashSet<UserProfile>(Arrays.asList(profile)));
+            user.setRoles(new HashSet<Role>(Arrays.asList(profile)));
             users.add(new User());
         }
     }
