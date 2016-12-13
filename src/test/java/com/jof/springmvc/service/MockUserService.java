@@ -4,6 +4,7 @@ import com.jof.springmvc.model.User;
 import com.jof.springmvc.model.UserProfile;
 import org.mockito.Mock;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -22,7 +23,7 @@ public class MockUserService implements UserService {
         user = new User();
         user.setUsername("AdminName");
         user.setEmail("admin@f23fff.sem");
-        user.setId(66);
+        user.setId(BigInteger.valueOf(66));
         user.setPassword("pwd");
         UserProfile profile = new UserProfile();
         profile.setId(66);
@@ -34,7 +35,7 @@ public class MockUserService implements UserService {
             user = new User();
             user.setUsername("Name " + i);
             user.setEmail("useremail" + i + "@f23fff.sem");
-            user.setId(i);
+            user.setId(BigInteger.valueOf(i));
             user.setPassword("pwd");
             profile = new UserProfile();
             profile.setId(i);
@@ -45,8 +46,8 @@ public class MockUserService implements UserService {
     }
 
     @Override
-    public User findById(int id) {
-        return users.get(id);
+    public User findById(BigInteger id) {
+        return users.get(id.intValue());
     }
 
     @Override
@@ -82,7 +83,7 @@ public class MockUserService implements UserService {
     }
 
     @Override
-    public boolean isUsernameUnique(Integer id, String username) {
+    public boolean isUsernameUnique(BigInteger id, String username) {
         return findByUserName(username) == null;
     }
 }

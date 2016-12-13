@@ -24,9 +24,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
+import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.Set;
 
 
@@ -89,8 +92,10 @@ public class UserController {
     public String registerUser(@Valid User user, BindingResult result,
                                ModelMap model) {
         Region region = Region.EUNE;
-        validateSummonerRunePage(region, result, user.getUsername());
-
+     //   validateSummonerRunePage(region, result, user.getUsername());
+        
+        //TODO: get ID from API HERE
+        user.setId(BigInteger.valueOf(new Random().nextInt()));
         if (result.hasErrors()) {
             return "registration";
         }

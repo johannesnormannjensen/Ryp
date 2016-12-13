@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jof.springmvc.dao.ReviewDao;
 import com.jof.springmvc.model.Review;
 
-@Service("userService")
+@Service("reviewService")
 @Transactional
 public class ReviewServiceImpl implements ReviewService {
 

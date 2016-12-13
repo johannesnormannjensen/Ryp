@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jof.springmvc.dao.CommentDao;
 import com.jof.springmvc.model.Comment;
 
-@Service("userService")
+@Service("commentService")
 @Transactional
 public class CommentServiceImpl implements CommentService {
 

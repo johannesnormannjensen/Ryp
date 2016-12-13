@@ -4,11 +4,15 @@ import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jof.springmvc.dao.FriendDao;
 import com.jof.springmvc.model.Friend;
 import com.jof.springmvc.model.User;
 
+@Service("friendService")
+@Transactional
 public class FriendServiceImpl implements FriendService
 {
 	

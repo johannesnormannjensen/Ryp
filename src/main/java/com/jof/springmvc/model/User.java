@@ -4,6 +4,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import java.util.List;
 import java.io.Serializable;
@@ -17,7 +18,7 @@ import java.util.Set;
 @Table(name = "user")
 public class User implements Serializable {
 
-	@NotEmpty
+	
 	@Id
 	@Column(name = "id", nullable = false, columnDefinition = "BIGINT(20)")
 	private BigInteger id;
@@ -29,7 +30,7 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "created_by", cascade = CascadeType.ALL, orphanRemoval = true)	
 	private List<Comment> comments = new ArrayList<Comment>();
 
-	@NotEmpty
+	
 	@Column(name = "removed", nullable = false, columnDefinition = "TINYINT(1) DEFAULT '0'")
 	private int removed;
 
@@ -45,15 +46,15 @@ public class User implements Serializable {
 	@Column(name = "email", nullable = false)
 	private String email;
 
-	@NotEmpty
+	
 	@Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = true)
 	private Date created_at;
 
-	@NotEmpty
+	
 	@Column(name = "active", nullable = false, columnDefinition = "TINYINT(1) DEFAULT '0'")
 	private int active;
 
-	@NotEmpty
+	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_user_profile", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "user_profile_id") })
