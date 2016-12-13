@@ -5,6 +5,6 @@
 	<li class="list-group-item"><a href="<c:url value="/user/matchhistory"/>">Match History</a></li>
 	<li class="list-group-item"><a href="<c:url value="/user/friend/list"/>">Friends</a></li>
 	<sec:authorize access="hasRole('ADMIN')">
-		<li class="list-group-item"><a href="<c:url value="/admin/newuser"/>">Register new User</a></li>
+		<li class="list-group-item"><a href="<c:url value="/admin/list"/>">Users</a></li>
 	</sec:authorize>
 </ul>

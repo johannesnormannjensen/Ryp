@@ -37,5 +37,6 @@
             </c:forEach>
             </tbody>
         </table>
+        <a class="btn btn-primary pull-right" style="margin-top:5px;" href="<c:url value="/admin/newuser"/>">Register new User</a>
     </div>
 </div>
