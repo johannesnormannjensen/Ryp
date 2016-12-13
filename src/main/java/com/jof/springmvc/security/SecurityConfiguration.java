@@ -37,11 +37,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/list").access("hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')")
-                .antMatchers("/edit-user-*").access("hasRole('ADMIN') or hasRole('DBA')")
-                .and().formLogin().loginPage("/login").loginProcessingUrl("/login").usernameParameter("username").passwordParameter("password")
-                .and().rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository).tokenValiditySeconds(86400).and().csrf()
-                .and().exceptionHandling().accessDeniedPage("/Access_Denied");
+	        .antMatchers("/login", "/registration", "/static/**").permitAll()
+	        .antMatchers("/", "/user/**").access("hasRole('ADMIN') or hasRole('USER')").anyRequest().authenticated()
+	        .antMatchers("/admin/**", "/list").access("hasRole('ADMIN')").anyRequest().authenticated()
+            .and().formLogin().loginPage("/login").loginProcessingUrl("/login").usernameParameter("username").passwordParameter("password")
+            .and().rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository).tokenValiditySeconds(86400).and().csrf()
+            .and().exceptionHandling().accessDeniedPage("/Access_Denied");
     }
 
     @Bean

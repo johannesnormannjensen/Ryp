@@ -57,5 +57,11 @@
        <put-attribute name="title" value="Friends" />  
        <put-attribute name="body" value="/WEB-INF/views/pages/friend/friendList.jsp" />  
    </definition>  
+   
+   <!-- Reviews Page -->
+   <definition name="reviewList" extends="base-definition">  
+       <put-attribute name="title" value="Friends" />  
+       <put-attribute name="body" value="/WEB-INF/views/pages/review/reviewList.jsp" />  
+   </definition>  
   
 </tiles-definitions>

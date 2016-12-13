@@ -20,7 +20,7 @@
 					</c:otherwise>
 					</c:choose>
 				</strong>, You are not authorized to access this page.
-			</span> <span class="floatRight"><a href="<c:url value="/logout" />">Logout</a></span>
+			</span>
 		</div>
 	</div>
 </body>

@@ -35,7 +35,7 @@ import java.util.UUID;
 
 
 @Controller
-@RequestMapping("/friend")
+@RequestMapping("/user/friend")
 public class FriendController {
 
     @Autowired

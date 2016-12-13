@@ -60,15 +60,25 @@ public class UserController {
     /**
      * This method will list all existing users.
      */
-    @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/"}, method = RequestMethod.GET)
+    public String reviews(ModelMap model, HttpServletRequest request) {
+    	if (request.getSession().getAttribute("remoteUser") == null && getPrincipal() != null) {
+    		User user = userService.findByUserName(getPrincipal());
+    		request.getSession().setAttribute("remoteUser", user);
+    	}
+    	//TODO GET REVIEWS
+    	List<User> users = userService.findAllUsers();
+        model.addAttribute("users", users);
+    	return "reviewList";
+    }
+    
+    /**
+     * This method will list all existing users.
+     */
+    @RequestMapping(value = {"/admin/list"}, method = RequestMethod.GET)
     public String listUsers(ModelMap model, HttpServletRequest request) {
-        if (request.getSession().getAttribute("remoteUser") == null && getPrincipal() != null) {
-            User user = userService.findByUserName(getPrincipal());
-            request.getSession().setAttribute("remoteUser", user);
-        }
         List<User> users = userService.findAllUsers();
         model.addAttribute("users", users);
-        model.addAttribute("loggedinuser", getPrincipal());
         return "userlist";
     }
 
@@ -80,7 +90,6 @@ public class UserController {
         User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("edit", false);
-        model.addAttribute("loggedinuser", getPrincipal());
         return "registration";
     }
 
@@ -114,7 +123,6 @@ public class UserController {
         userService.saveUser(user);
 
         model.addAttribute("success", "User " + user.getUsername() + " registered successfully");
-        model.addAttribute("loggedinuser", getPrincipal());
         //return "success";
         return "login";
     }
@@ -123,7 +131,7 @@ public class UserController {
     /**
      * This method will provide the medium for users to be registered
      */
-    @RequestMapping(value = {"/newuser"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/admin/newuser"}, method = RequestMethod.GET)
     public String registerNewUser(ModelMap model, HttpServletRequest request) {
         User user = new User();
         // generate user for testing
@@ -133,7 +141,6 @@ public class UserController {
 //        user.setEmail(s + "@" + s + ".com");
         model.addAttribute("user", user);
         model.addAttribute("edit", false);
-        model.addAttribute("loggedinuser", getPrincipal());
 
         return "newUser";
     }
@@ -142,7 +149,7 @@ public class UserController {
      * This method will be called on form submission, handling POST request for
      * saving user in database. It also validates the user input
      */
-    @RequestMapping(value = {"/newuser"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/admin/newuser"}, method = RequestMethod.POST)
     public String saveUser(@Valid User user, BindingResult result,
                            ModelMap model) {
         Region region = Region.EUNE;
@@ -165,7 +172,6 @@ public class UserController {
         userService.saveUser(user);
 
         model.addAttribute("success", "User " + user.getUsername() + " registered successfully");
-        model.addAttribute("loggedinuser", getPrincipal());
         //return "success";
         return "registrationSuccess";
     }
@@ -174,12 +180,11 @@ public class UserController {
     /**
      * This method will provide the medium to update an existing user.
      */
-    @RequestMapping(value = {"/edit-user-{username}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/admin/edit-user-{username}"}, method = RequestMethod.GET)
     public String editUser(@PathVariable String username, ModelMap model) {
         User user = userService.findByUserName(username);
         model.addAttribute("user", user);
         model.addAttribute("edit", true);
-        model.addAttribute("loggedinuser", getPrincipal());
         return "registration";
     }
 
@@ -187,7 +192,7 @@ public class UserController {
      * This method will be called on form submission, handling POST request for
      * updating user in database. It also validates the user input
      */
-    @RequestMapping(value = {"/edit-user-{username}"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/admin/edit-user-{username}"}, method = RequestMethod.POST)
     public String updateUser(@Valid User user, BindingResult result,
                              ModelMap model, @PathVariable String username) {
 
@@ -206,7 +211,6 @@ public class UserController {
         userService.updateUser(user);
 
         model.addAttribute("success", "User " + user.getUsername() + " updated successfully");
-        model.addAttribute("loggedinuser", getPrincipal());
         return "registrationSuccess";
     }
 
@@ -214,7 +218,7 @@ public class UserController {
     /**
      * This method will delete an user by it's username value.
      */
-    @RequestMapping(value = {"/delete-user-{username}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/admin/delete-user-{username}"}, method = RequestMethod.GET)
     public String deleteUser(@PathVariable String username) {
         userService.deleteUserByUsername(username);
         return "redirect:/list";
@@ -234,7 +238,6 @@ public class UserController {
      */
     @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
     public String accessDeniedPage(ModelMap model) {
-        model.addAttribute("loggedinuser", getPrincipal());
         return "accessDenied";
     }
 
@@ -247,7 +250,7 @@ public class UserController {
         if (isCurrentAuthenticationAnonymous()) {
             return "login";
         } else {
-            return "redirect:/list";
+            return "redirect:/";
         }
     }
 
