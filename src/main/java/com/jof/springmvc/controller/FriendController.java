@@ -49,17 +49,13 @@ public class FriendController {
     @RequestMapping(value = {"/list"}, method = RequestMethod.GET)
     public String listUsers(ModelMap model, HttpServletRequest request) {
 
-        User remoteUser;
+        User remoteUser = new User();
 
-        if (request.getSession().getAttribute("remoteUser") == null) {
+        if (request.getSession().getAttribute("remoteUser") != null) {
             remoteUser = (User) request.getSession().getAttribute("remoteUser");
         }
-
-        // for testing
-        remoteUser = userService.findById(Long.valueOf(21232));
-
-        List<Friend> friends = friendService.findAllFriends(remoteUser);
-        List<User> users = userService.getFriendsAsUsers(friends);
+        
+        List<User> users = userService.getFriendsAsUsers(friendService.findAllFriends(remoteUser));
 
         model.addAttribute("users", users);
 
