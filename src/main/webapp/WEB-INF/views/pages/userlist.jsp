@@ -13,7 +13,7 @@
             <tr>
                 <th>Email</th>
                 <th>Username</th>
-                <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+                <sec:authorize access="hasRole('ADMIN')">
                     <th width="100"></th>
                 </sec:authorize>
                 <sec:authorize access="hasRole('ADMIN')">
