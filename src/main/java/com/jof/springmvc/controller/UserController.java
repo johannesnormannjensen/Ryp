@@ -1,9 +1,9 @@
 package com.jof.springmvc.controller;
 
+import com.jof.springmvc.model.Role;
 import com.jof.springmvc.model.User;
-import com.jof.springmvc.model.UserProfile;
 import com.jof.springmvc.service.RiotApiService;
-import com.jof.springmvc.service.UserProfileService;
+import com.jof.springmvc.service.RoleService;
 import com.jof.springmvc.service.UserService;
 import net.rithms.riot.api.RiotApiException;
 import net.rithms.riot.constant.Region;
@@ -45,7 +45,7 @@ public class UserController {
     RiotApiService riotApiService;
 
     @Autowired
-    UserProfileService userProfileService;
+    RoleService roleService;
 
     @Autowired
     MessageSource messageSource;
@@ -100,10 +100,10 @@ public class UserController {
             return "registration";
         }
 
-        if (user.getUserProfiles().isEmpty()) {
-            Set<UserProfile> profiles = new HashSet<UserProfile>();
-            profiles.add(userProfileService.findByType("USER"));
-            user.setUserProfiles(profiles);
+        if (user.getRoles().isEmpty()) {
+            Set<Role> profiles = new HashSet<Role>();
+            profiles.add(roleService.findByType("USER"));
+            user.setRoles(profiles);
         }
 
         if (!userService.isUsernameUnique(user.getId(), user.getUsername())) {
@@ -151,10 +151,10 @@ public class UserController {
             return "newUser";
         }
 
-        if (user.getUserProfiles().isEmpty()) {
-            Set<UserProfile> profiles = new HashSet<UserProfile>();
-            profiles.add(userProfileService.findByType("USER"));
-            user.setUserProfiles(profiles);
+        if (user.getRoles().isEmpty()) {
+            Set<Role> profiles = new HashSet<Role>();
+            profiles.add(roleService.findByType("USER"));
+            user.setRoles(profiles);
         }
 
         if (!userService.isUsernameUnique(user.getId(), user.getUsername())) {
@@ -222,11 +222,11 @@ public class UserController {
 
 
     /**
-     * This method will provide UserProfile list to views
+     * This method will provide Role list to views
      */
     @ModelAttribute("roles")
-    public List<UserProfile> initializeProfiles() {
-        return userProfileService.findAll();
+    public List<Role> initializeProfiles() {
+        return roleService.findAll();
     }
 
     /**

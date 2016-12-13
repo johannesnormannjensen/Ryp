@@ -21,7 +21,7 @@ public class UserDaoImpl extends AbstractDao<BigInteger, User> implements UserDa
     public User findById(BigInteger id) {
         User user = getByKey(id);
         if (user != null) {
-            Hibernate.initialize(user.getUserProfiles());
+            Hibernate.initialize(user.getRoles());
         }
         return user;
     }
@@ -32,7 +32,7 @@ public class UserDaoImpl extends AbstractDao<BigInteger, User> implements UserDa
         crit.add(Restrictions.eq("username", username));
         User user = (User) crit.uniqueResult();
         if (user != null) {
-            Hibernate.initialize(user.getUserProfiles());
+            Hibernate.initialize(user.getRoles());
         }
         return user;
     }
@@ -47,7 +47,7 @@ public class UserDaoImpl extends AbstractDao<BigInteger, User> implements UserDa
         // Uncomment below lines for eagerly fetching of userProfiles if you want.
         /*
         for(User user : users){
-            Hibernate.initialize(user.getUserProfiles());
+            Hibernate.initialize(user.getRoles());
         }*/
         return users;
     }

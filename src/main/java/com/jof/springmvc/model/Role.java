@@ -4,15 +4,15 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "user_profile")
-public class UserProfile implements Serializable {
+@Table(name = "role")
+public class Role implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "type", length = 15, unique = true, nullable = false)
-    private String type = UserProfileType.USER.getUserProfileType();
+    private String type = RoleType.USER.getRoleType();
 
     public Integer getId() {
         return id;
@@ -45,9 +45,9 @@ public class UserProfile implements Serializable {
             return true;
         if (obj == null)
             return false;
-        if (!(obj instanceof UserProfile))
+        if (!(obj instanceof Role))
             return false;
-        UserProfile other = (UserProfile) obj;
+        Role other = (Role) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
@@ -63,7 +63,7 @@ public class UserProfile implements Serializable {
 
     @Override
     public String toString() {
-        return "UserProfile [id=" + id + ", type=" + type + "]";
+        return "Role [id=" + id + ", type=" + type + "]";
     }
 
 

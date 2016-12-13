@@ -1,6 +1,6 @@
 package com.jof.springmvc.dao;
 
-import com.jof.springmvc.model.UserProfile;
+import com.jof.springmvc.model.Role;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -9,24 +9,24 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 
-@Repository("userProfileDao")
-public class UserProfileDaoImpl extends AbstractDao<Integer, UserProfile> implements UserProfileDao {
+@Repository("roleDao")
+public class RoleDaoImpl extends AbstractDao<Integer, Role> implements RoleDao {
 
-    public UserProfile findById(int id) {
+    public Role findById(int id) {
         return getByKey(id);
     }
 
-    public UserProfile findByType(String type) {
+    public Role findByType(String type) {
         Criteria crit = createEntityCriteria();
         crit.add(Restrictions.eq("type", type));
-        return (UserProfile) crit.uniqueResult();
+        return (Role) crit.uniqueResult();
     }
 
     @SuppressWarnings("unchecked")
-    public List<UserProfile> findAll() {
+    public List<Role> findAll() {
         Criteria crit = createEntityCriteria();
         crit.addOrder(Order.asc("type"));
-        return (List<UserProfile>) crit.list();
+        return (List<Role>) crit.list();
     }
 
 }

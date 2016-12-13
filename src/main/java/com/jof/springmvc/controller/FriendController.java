@@ -1,37 +1,20 @@
 package com.jof.springmvc.controller;
 
 import com.jof.springmvc.model.User;
-import com.jof.springmvc.model.UserProfile;
 import com.jof.springmvc.service.RiotApiService;
-import com.jof.springmvc.service.UserProfileService;
+import com.jof.springmvc.service.RoleService;
 import com.jof.springmvc.service.UserService;
-import net.rithms.riot.api.RiotApi;
-import net.rithms.riot.api.RiotApiException;
-import net.rithms.riot.constant.Region;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.UUID;
 
 
 @Controller
@@ -45,7 +28,7 @@ public class FriendController {
     RiotApiService riotApiService;
 
     @Autowired
-    UserProfileService userProfileService;
+    RoleService roleService;
 
     @Autowired
     MessageSource messageSource;
