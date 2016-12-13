@@ -1,16 +1,20 @@
 package com.jof.springmvc.model;
 
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.math.BigInteger;
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 
 @Entity
@@ -32,8 +36,8 @@ public class Comment {
 
 		
 	@NotEmpty
-	@Column(name = "content", nullable = false, columnDefinition = "VARCHAR(512)")
-	private String content;
+	@Column(name = "body", nullable = false, columnDefinition = "VARCHAR(512)")
+	private String body;
 
 	@NotEmpty
 	@Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = true)
@@ -72,12 +76,12 @@ public class Comment {
 		this.review_id = review_id;
 	}
 
-	public String getContent() {
-		return content;
+	public String getBody() {
+		return body;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setBody(String body) {
+		this.body = body;
 	}
 
 
@@ -110,7 +114,7 @@ public class Comment {
 
 	@Override
 	public String toString() {
-		return "Review{" + "id=" + id + ", content='" + content + '\'' + ", source_user_id='" + created_by + '\''+
+		return "Review{" + "id=" + id + ", content='" + body + '\'' + ", source_user_id='" + created_by + '\''+
 				'}';
 	}
 }

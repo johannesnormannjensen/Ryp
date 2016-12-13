@@ -47,8 +47,8 @@ public class Review implements Serializable {
 	private String title;
 
 	@NotEmpty
-	@Column(name = "review", nullable = false, columnDefinition = "VARCHAR(512)")
-	private String review;
+	@Column(name = "body", nullable = false, columnDefinition = "VARCHAR(512)")
+	private String body;
 
 	@NotEmpty
 	@Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = true)
@@ -99,12 +99,12 @@ public class Review implements Serializable {
 		this.title = title;
 	}
 
-	public String getReview() {
-		return review;
+	public String getBody() {
+		return body;
 	}
 
-	public void setReview(String review) {
-		this.review = review;
+	public void setBody(String body) {
+		this.body = body;
 	}
 
 	public Date getCreated_at() {
@@ -169,6 +169,6 @@ public class Review implements Serializable {
 	@Override
 	public String toString() {
 		return "Review{" + "id=" + id + ", title='" + title + '\'' + ", source_user_id='" + source_user_id + '\'' + ", target_user_id='"
-				+ target_user_id + '}';
+				+ target_user_id + ", body='" +body+  "'}";
 	}
 }

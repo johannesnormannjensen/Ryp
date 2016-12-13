@@ -1,16 +1,11 @@
 package com.jof.springmvc.model;
 
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
-import java.io.Serializable;
-import java.lang.annotation.Annotation;
+
 import java.math.BigInteger;
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Entity
@@ -33,26 +28,49 @@ public class Friend {
 	@Column(name = "accepted", nullable = false, columnDefinition = "TINYINT(1) DEFAULT '0'")
 	private int accepted;
 
+	
+
 	@NotEmpty
 	@Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = true)
 	private Date created_at;
 
 	
-	public User getAlpha_user_id() {
+	public int getAccepted() {
+		return accepted;
+	}
+
+	public void setAccepted(int accepted) {
+		this.accepted = accepted;
+	}
+	
+	
+	public User getAlpha_user() {
 		return alpha_user_id;
 	}
 
-	public void setAlpha_user_id(User alpha_user_id) {
+	public void setAlpha_user(User alpha_user_id) {
 		this.alpha_user_id = alpha_user_id;
 	}
 
-	public User getOmega_user_id() {
+	public User getOmega_user() {
 		return omega_user_id;
 	}
 
-	public void setOmega_user_id(User omega_user_id) {
+	public void setOmega_user(User omega_user_id) {
 		this.omega_user_id = omega_user_id;
 	}
+	
+	
+	
+	public BigInteger getAlpha_user_id() {
+		return alpha_user_id.getId();
+	}
+	
+
+	public BigInteger getOmega_user_id() {
+		return omega_user_id.getId();
+	}
+
 	
 	public Date getCreated_at() {
 		return created_at;
