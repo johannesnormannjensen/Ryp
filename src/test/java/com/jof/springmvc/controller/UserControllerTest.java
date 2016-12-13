@@ -5,6 +5,7 @@ import com.jof.springmvc.service.MockUserService;
 import com.jof.springmvc.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -14,6 +15,8 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.ui.ModelMap;
 
 import static org.junit.Assert.*;
@@ -22,6 +25,8 @@ import static org.mockito.Mockito.*;
 /**
  * Created by Ferenc_S on 12/13/2016.
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration
 public class UserControllerTest {
     @Spy
     UserService service = new MockUserService();
@@ -83,11 +88,11 @@ public class UserControllerTest {
         assertEquals(((User) model.get("user")).getId(), null);
     }
 
-    /*@Test
+    @Test
     public void registerUser() throws Exception {
 
+        assertEquals(userController.registerNewUser(model, request), "registration");
     }
-
     @Test
     public void registerNewUser() throws Exception {
 
@@ -110,7 +115,6 @@ public class UserControllerTest {
 
     @Test
     public void deleteUser() throws Exception {
-
     }
 
     @Test
@@ -131,6 +135,6 @@ public class UserControllerTest {
     @Test
     public void logoutPage() throws Exception {
 
-    }*/
+    }
 
 }
