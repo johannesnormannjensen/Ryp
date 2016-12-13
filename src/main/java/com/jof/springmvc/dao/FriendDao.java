@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface FriendDao {
 
-	Friend findFriendshipByIds(Long id_alpha, Long id_omega);
+    Friend findFriendshipByIds(Long id_alpha, Long id_omega);
 
-	void save(Friend friend);
+    void save(Friend friend);
 
-	void deleteByIds(Long alpha_id, Long omega_id);
+    void deleteByIds(Long alpha_id, Long omega_id);
 
-	//returns omega ids
-	List<Friend> findAllFriends(User user);
+    //returns omega ids
+    List<Friend> findAllFriends(User user);
 
 }

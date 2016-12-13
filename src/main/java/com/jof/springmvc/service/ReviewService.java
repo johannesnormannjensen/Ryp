@@ -6,19 +6,19 @@ import java.util.List;
 
 public interface ReviewService {
 
-	
-	    Review findById(int id);
 
-	    void saveReview(Review review);	    
+    Review findById(int id);
 
-	    void updateReview(Review review);
+    void saveReview(Review review);
 
-	    void deleteById(int id);
+    void updateReview(Review review);
 
-	    List<Review> findAllReviewByUser(Long source_user_id);
-	    
-	    List<Review> findAllReviewAboutUser(Long target_user_id);
-	    
-	    List<Review> findAllReviewForGame(int game_id);
-	    
+    void deleteById(int id);
+
+    List<Review> findAllReviewByUser(Long source_user_id);
+
+    List<Review> findAllReviewAboutUser(Long target_user_id);
+
+    List<Review> findAllReviewForGame(int game_id);
+
 }

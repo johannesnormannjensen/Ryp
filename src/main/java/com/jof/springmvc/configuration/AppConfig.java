@@ -22,18 +22,18 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Autowired
     DbRoleToRoleConverter dbRoleToRoleConverter;
 
-    
+
     /**
      * Configure TilesConfigurer.
      */
     @Bean
-    public TilesConfigurer tilesConfigurer(){
+    public TilesConfigurer tilesConfigurer() {
         TilesConfigurer tilesConfigurer = new TilesConfigurer();
-        tilesConfigurer.setDefinitions(new String[] {"/WEB-INF/views/**/tiles.xml"});
+        tilesConfigurer.setDefinitions(new String[]{"/WEB-INF/views/**/tiles.xml"});
         tilesConfigurer.setCheckRefresh(true);
         return tilesConfigurer;
     }
-    
+
     /**
      * Configure ViewResolvers to deliver preferred views.
      */
@@ -42,11 +42,11 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         TilesViewResolver viewResolver = new TilesViewResolver();
         registry.viewResolver(viewResolver);
     }
-    
+
     /**
      * Configure ResourceHandlers to serve static resources like CSS/ Javascript etc...
      */
-     
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");

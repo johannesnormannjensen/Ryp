@@ -17,11 +17,11 @@ public class ReviewDaoImpl extends AbstractDao<Integer, Review> implements Revie
     static final Logger logger = LoggerFactory.getLogger(ReviewDaoImpl.class);
 
     public Review findById(int id) {
-    	Review review = getByKey(id);
-        
+        Review review = getByKey(id);
+
         return review;
     }
-    
+
     public void save(Review review) {
         persist(review);
     }
@@ -32,7 +32,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, Review> implements Revie
         Review review = (Review) crit.uniqueResult();
         delete(review);
     }
-  
+
     @SuppressWarnings("unchecked")
     public List<Review> findAllReviewByUser(Long source_user_id) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("id"));
@@ -40,10 +40,10 @@ public class ReviewDaoImpl extends AbstractDao<Integer, Review> implements Revie
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
         List<Review> reviews = (List<Review>) criteria.list();
 
-      
+
         return reviews;
     }
-    
+
     @SuppressWarnings("unchecked")
     public List<Review> findAllReviewAboutUser(Long target_user_id) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("id"));
@@ -51,10 +51,10 @@ public class ReviewDaoImpl extends AbstractDao<Integer, Review> implements Revie
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
         List<Review> reviews = (List<Review>) criteria.list();
 
-      
+
         return reviews;
     }
-    
+
     @SuppressWarnings("unchecked")
     public List<Review> findAllReviewForGame(int game_id) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("id"));
@@ -62,7 +62,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, Review> implements Revie
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
         List<Review> reviews = (List<Review>) criteria.list();
 
-      
+
         return reviews;
     }
 
