@@ -45,14 +45,19 @@ public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements Frien
         delete(friend);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Friend> findAllFriends(User user) {
-		 Criteria criteria = createEntityCriteria().addOrder(Order.asc("id"));
-	        criteria.add(Restrictions.eq("alpha_user_id", user.getId()));
-	        criteria.add(Restrictions.eq("accepted", true));
+		 Criteria criteria = createEntityCriteria();
+	        criteria.add(Restrictions.eq("alpha_user_id", user));
+	        criteria.add(Restrictions.eq("accepted", 1));
 	        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
-	        List<Friend> friends = (List<Friend>) criteria.list();
+	        criteria.addOrder(Order.asc("created_at"));
+	        
+			List<Friend> friends = (List<Friend>) criteria.list();
 	      
 	        return friends;
 	}
+	
+	
 }

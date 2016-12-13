@@ -1,5 +1,6 @@
 package com.jof.springmvc.service;
 
+import com.jof.springmvc.model.Friend;
 import com.jof.springmvc.model.User;
 
 import java.math.BigInteger;
@@ -19,6 +20,8 @@ public interface UserService {
     void deleteUserByUsername(String username);
 
     List<User> findAllUsers();
+    
+    List<User> getFriendsAsUsers(List<Friend> friends);
 
     boolean isUsernameUnique(BigInteger id, String username);
 
