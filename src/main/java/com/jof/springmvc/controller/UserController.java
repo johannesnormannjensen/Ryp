@@ -5,12 +5,10 @@ import com.jof.springmvc.model.UserProfile;
 import com.jof.springmvc.service.RiotApiService;
 import com.jof.springmvc.service.UserProfileService;
 import com.jof.springmvc.service.UserService;
-import net.rithms.riot.api.RiotApi;
 import net.rithms.riot.api.RiotApiException;
 import net.rithms.riot.constant.Region;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,18 +24,16 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.UUID;
 
 
 @Controller
 @RequestMapping("/")
 @SessionAttributes("roles")
-public class AppController {
+public class UserController {
 
     @Autowired
     UserService userService;
@@ -59,19 +55,19 @@ public class AppController {
 
 
     /**
-	 * This method will list all existing users.
-	 */
-	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
-	public String listUsers(ModelMap model, HttpServletRequest request) {
-		if (request.getSession().getAttribute("remoteUser") == null && getPrincipal() != null) {
-			User user = userService.findByUserName(getPrincipal());
-			request.getSession().setAttribute("remoteUser", user);
-		}
-		List<User> users = userService.findAllUsers();
-		model.addAttribute("users", users);
-		model.addAttribute("loggedinuser", getPrincipal());
-		return "userlist";
-	}
+     * This method will list all existing users.
+     */
+    @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
+    public String listUsers(ModelMap model, HttpServletRequest request) {
+        if (request.getSession().getAttribute("remoteUser") == null && getPrincipal() != null) {
+            User user = userService.findByUserName(getPrincipal());
+            request.getSession().setAttribute("remoteUser", user);
+        }
+        List<User> users = userService.findAllUsers();
+        model.addAttribute("users", users);
+        model.addAttribute("loggedinuser", getPrincipal());
+        return "userlist";
+    }
 
     /**
      * This method will provide the medium to add a new user.
@@ -91,25 +87,19 @@ public class AppController {
      */
     @RequestMapping(value = {"/registration"}, method = RequestMethod.POST)
     public String registerUser(@Valid User user, BindingResult result,
-                           ModelMap model) {
-        try {
-            long l = riotApiService.getSummonerIdByName(Region.EUNE, user.getUsername());
-            if (riotApiService.userHasRunePage(Region.EUNE, l, "RYP") == false) {
-                result.addError(new ObjectError("User", "user.validation.noMatchingRunePage"));
-            }
-        } catch (RiotApiException e) {
-            result.addError(new ObjectError("User", "user.validation.noMatchingSummoner"));
-        }
+                               ModelMap model) {
+        Region region = Region.EUNE;
+        validateSummonerRunePage(region, result, user.getUsername());
 
         if (result.hasErrors()) {
-    		return "registration";
-    	}
-    	
-    	if (user.getUserProfiles().isEmpty()) {
-    		Set<UserProfile> profiles = new HashSet<UserProfile>();
-    		profiles.add(userProfileService.findByType("USER"));
-    		user.setUserProfiles(profiles);
-    	}
+            return "registration";
+        }
+
+        if (user.getUserProfiles().isEmpty()) {
+            Set<UserProfile> profiles = new HashSet<UserProfile>();
+            profiles.add(userProfileService.findByType("USER"));
+            user.setUserProfiles(profiles);
+        }
 
         if (!userService.isUsernameUnique(user.getId(), user.getUsername())) {
             FieldError usernameError = new FieldError("user", "username", messageSource.getMessage("non.unique.username", new String[]{user.getUsername()}, Locale.getDefault()));
@@ -123,7 +113,8 @@ public class AppController {
         //return "success";
         return "login";
     }
-	
+
+
     /**
      * This method will provide the medium for users to be registered
      */
@@ -138,7 +129,7 @@ public class AppController {
         model.addAttribute("user", user);
         model.addAttribute("edit", false);
         model.addAttribute("loggedinuser", getPrincipal());
-        
+
         return "newUser";
     }
 
@@ -149,24 +140,17 @@ public class AppController {
     @RequestMapping(value = {"/newuser"}, method = RequestMethod.POST)
     public String saveUser(@Valid User user, BindingResult result,
                            ModelMap model) {
-        try {
-            long l = riotApiService.getSummonerIdByName(Region.EUNE, user.getUsername());
-            if (riotApiService.userHasRunePage(Region.EUNE, l, "RYP") == false) {
-                result.addError(new ObjectError("User", "user.validation.noMatchingRunePage"));
-            }
-        } catch (RiotApiException e) {
-            result.addError(new ObjectError("User", "user.validation.noMatchingSummoner"));
+        Region region = Region.EUNE;
+        validateSummonerRunePage(region, result, user.getUsername());
+        if (result.hasErrors()) {
+            return "newUser";
         }
 
-        if (result.hasErrors()) {
-    		return "newUser";
-    	}
-    	
-    	if (user.getUserProfiles().isEmpty()) {
-    		Set<UserProfile> profiles = new HashSet<UserProfile>();
-    		profiles.add(userProfileService.findByType("USER"));
-    		user.setUserProfiles(profiles);
-    	}
+        if (user.getUserProfiles().isEmpty()) {
+            Set<UserProfile> profiles = new HashSet<UserProfile>();
+            profiles.add(userProfileService.findByType("USER"));
+            user.setUserProfiles(profiles);
+        }
 
         if (!userService.isUsernameUnique(user.getId(), user.getUsername())) {
             FieldError usernameError = new FieldError("user", "username", messageSource.getMessage("non.unique.username", new String[]{user.getUsername()}, Locale.getDefault()));
@@ -286,7 +270,7 @@ public class AppController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails) {
-            userName = ((UserDetails) principal).getUsername();
+            userName = ((UserDetails) principal).getUserndame();
         } else {
             userName = principal.toString();
         }
@@ -299,6 +283,21 @@ public class AppController {
     private boolean isCurrentAuthenticationAnonymous() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authenticationTrustResolver.isAnonymous(authentication);
+    }
+
+    /**
+     * This methods checks if the summoner has a runepage called "RYP"
+     */
+
+    private void validateSummonerRunePage(Region region, BindingResult result, String username) {
+        try {
+            long l = riotApiService.getSummonerIdByName(Region.EUNE, username);
+            if (riotApiService.userHasRunePage(Region.EUNE, l, "RYP") == false) {
+                result.addError(new ObjectError("User", "user.validation.noMatchingRunePage"));
+            }
+        } catch (RiotApiException e) {
+            result.addError(new ObjectError("User", "user.validation.noMatchingSummoner"));
+        }
     }
 
 
