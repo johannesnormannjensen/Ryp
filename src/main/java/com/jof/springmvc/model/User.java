@@ -103,7 +103,7 @@ public class User implements Serializable {
         this.created_at = created_at;
     }
 
-    public Boolean isActive() {
+    public boolean isActive() {
         return this.active;
     }
 
@@ -111,7 +111,7 @@ public class User implements Serializable {
         this.active = active;
     }
 
-    public Boolean isRemoved() {
+    public boolean isRemoved() {
         return this.removed;
     }
 
