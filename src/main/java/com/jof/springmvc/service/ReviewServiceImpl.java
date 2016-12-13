@@ -1,14 +1,12 @@
 package com.jof.springmvc.service;
 
-import java.math.BigInteger;
-import java.util.List;
-
+import com.jof.springmvc.dao.ReviewDao;
+import com.jof.springmvc.model.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jof.springmvc.dao.ReviewDao;
-import com.jof.springmvc.model.Review;
+import java.util.List;
 
 @Service("reviewService")
 @Transactional
@@ -47,12 +45,12 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<Review> findAllReviewByUser(BigInteger source_user_id) {
+	public List<Review> findAllReviewByUser(Long source_user_id) {
 		 return dao.findAllReviewByUser(source_user_id);
 	}
 
 	@Override
-	public List<Review> findAllReviewAboutUser(BigInteger target_user_id) {
+	public List<Review> findAllReviewAboutUser(Long target_user_id) {
 		return dao.findAllReviewAboutUser(target_user_id);
 	}
 

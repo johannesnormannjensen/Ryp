@@ -1,14 +1,13 @@
 package com.jof.springmvc.service;
 
-import java.util.List;
-
+import com.jof.springmvc.dao.FriendDao;
+import com.jof.springmvc.model.Friend;
+import com.jof.springmvc.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jof.springmvc.dao.FriendDao;
-import com.jof.springmvc.model.Friend;
-import com.jof.springmvc.model.User;
+import java.util.List;
 
 @Service("friendService")
 @Transactional

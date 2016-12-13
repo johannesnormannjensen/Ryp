@@ -9,12 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigInteger;
 import java.util.List;
 
 
 @Repository("userDao")
-public class UserDaoImpl extends AbstractDao<BigInteger, User> implements UserDao {
+public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 
     static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 

@@ -1,13 +1,12 @@
 package com.jof.springmvc.service;
 
-import java.util.List;
-
+import com.jof.springmvc.dao.CommentDao;
+import com.jof.springmvc.model.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jof.springmvc.dao.CommentDao;
-import com.jof.springmvc.model.Comment;
+import java.util.List;
 
 @Service("commentService")
 @Transactional

@@ -2,7 +2,6 @@ package com.jof.springmvc.dao;
 
 import com.jof.springmvc.model.User;
 
-import java.math.BigInteger;
 import java.util.List;
 
 

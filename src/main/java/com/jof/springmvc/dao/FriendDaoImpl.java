@@ -1,7 +1,7 @@
 package com.jof.springmvc.dao;
 
-import java.util.List;
-
+import com.jof.springmvc.model.Friend;
+import com.jof.springmvc.model.User;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -9,8 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.jof.springmvc.model.Friend;
-import com.jof.springmvc.model.User;
+import java.util.List;
 
 @Repository("friendDao")
 public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements FriendDao {

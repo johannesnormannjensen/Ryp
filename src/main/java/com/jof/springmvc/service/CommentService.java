@@ -1,9 +1,9 @@
 package com.jof.springmvc.service;
 
 
-import java.util.List;
-
 import com.jof.springmvc.model.Comment;
+
+import java.util.List;
 
 public interface CommentService {
 

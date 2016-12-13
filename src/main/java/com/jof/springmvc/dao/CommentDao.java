@@ -1,6 +1,7 @@
 package com.jof.springmvc.dao;
 
 import com.jof.springmvc.model.Comment;
+
 import java.util.List;
 
 public interface CommentDao {

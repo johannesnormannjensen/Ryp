@@ -1,9 +1,9 @@
 package com.jof.springmvc.service;
 
+import com.jof.springmvc.model.Friend;
 import com.jof.springmvc.model.Role;
 import com.jof.springmvc.model.User;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -79,6 +79,11 @@ public class MockUserService implements UserService {
     @Override
     public List<User> findAllUsers() {
         return users;
+    }
+
+    @Override
+    public List<User> getFriendsAsUsers(List<Friend> friends) {
+        return null;
     }
 
     @Override
