@@ -19,7 +19,7 @@ public interface UserService {
     void deleteUserByUsername(String username);
 
     List<User> findAllUsers();
-    
+
     List<User> getFriendsAsUsers(List<Friend> friends);
 
     boolean isUsernameUnique(Long id, String username);

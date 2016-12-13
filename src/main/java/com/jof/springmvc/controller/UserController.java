@@ -56,16 +56,16 @@ public class UserController {
      */
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String reviews(ModelMap model, HttpServletRequest request) {
-    	if (request.getSession().getAttribute("remoteUser") == null && getPrincipal() != null) {
-    		User user = userService.findByUserName(getPrincipal());
-    		request.getSession().setAttribute("remoteUser", user);
-    	}
-    	//TODO GET REVIEWS
-    	List<User> users = userService.findAllUsers();
+        if (request.getSession().getAttribute("remoteUser") == null && getPrincipal() != null) {
+            User user = userService.findByUserName(getPrincipal());
+            request.getSession().setAttribute("remoteUser", user);
+        }
+        //TODO GET REVIEWS
+        List<User> users = userService.findAllUsers();
         model.addAttribute("users", users);
-    	return "reviewList";
+        return "reviewList";
     }
-    
+
     /**
      * This method will list all existing users.
      */
@@ -95,8 +95,8 @@ public class UserController {
     public String registerUser(@Valid User user, BindingResult result,
                                ModelMap model) {
         Region region = Region.EUNE;
-     //   validateSummonerRunePage(region, result, user.getUsername());
-        
+        //   validateSummonerRunePage(region, result, user.getUsername());
+
         //TODO: get ID from API HERE
         user.setId(Long.valueOf(new Random().nextInt()));
         if (result.hasErrors()) {

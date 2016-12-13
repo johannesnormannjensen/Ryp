@@ -18,18 +18,17 @@ public class CommentDaoImpl extends AbstractDao<Integer, Comment> implements Com
 
     public Comment findById(int id) {
         Comment comment = getByKey(id);
-       
+
         return comment;
-    }    
+    }
 
     @SuppressWarnings("unchecked")
-    public List<Comment> findAllCommentsForReview(int review_id) 
-    {
+    public List<Comment> findAllCommentsForReview(int review_id) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("created_at"));
         criteria.add(Restrictions.eq("review_id", review_id));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
         List<Comment> comments = (List<Comment>) criteria.list();
-       
+
         return comments;
     }
 

@@ -17,10 +17,9 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private  UserDao dao;
+    private UserDao dao;
     @Autowired
-    private  PasswordEncoder passwordEncoder;
-
+    private PasswordEncoder passwordEncoder;
 
 
     public User findById(Long id) {
@@ -68,17 +67,16 @@ public class UserServiceImpl implements UserService {
         return (user == null || ((id != null) && (user.getId() == id)));
     }
 
-	
-	public List<User> getFriendsAsUsers(List<Friend> friends) {		
-		
-		List<User> users = new ArrayList<User>();
-		
-		for(int i= 0; i < friends.size();i++)
-		{
-			users.add(findById(friends.get(i).getOmega_user_id()));
-		}
-		
-		return users;
-	}
+
+    public List<User> getFriendsAsUsers(List<Friend> friends) {
+
+        List<User> users = new ArrayList<User>();
+
+        for (int i = 0; i < friends.size(); i++) {
+            users.add(findById(friends.get(i).getOmega_user_id()));
+        }
+
+        return users;
+    }
 
 }

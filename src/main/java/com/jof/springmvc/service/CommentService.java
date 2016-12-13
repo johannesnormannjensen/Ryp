@@ -7,14 +7,14 @@ import java.util.List;
 
 public interface CommentService {
 
-	   Comment findById(int id);
-	    
-	    void saveComment(Comment comment);
+    Comment findById(int id);
 
-	    void updateComment(Comment comment);
+    void saveComment(Comment comment);
 
-	    void deleteCommentById(int id);
+    void updateComment(Comment comment);
 
-	    List<Comment> findAllCommentsForReview(int id);
+    void deleteCommentById(int id);
+
+    List<Comment> findAllCommentsForReview(int id);
 
 }

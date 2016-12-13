@@ -6,16 +6,16 @@ import com.jof.springmvc.model.User;
 import java.util.List;
 
 public interface FriendService {
-	
-	Friend findFriendshipByIds(Long id_alpha, Long id_omega);
 
-	void saveFriend(Friend friend);
-	
-	void updateFriend(Friend friend);
+    Friend findFriendshipByIds(Long id_alpha, Long id_omega);
 
-	void deleteByIds(Long alpha_id, Long omega_id);
+    void saveFriend(Friend friend);
 
-	// returns omega ids
-	List<Friend> findAllFriends(User user);
-	
+    void updateFriend(Friend friend);
+
+    void deleteByIds(Long alpha_id, Long omega_id);
+
+    // returns omega ids
+    List<Friend> findAllFriends(User user);
+
 }

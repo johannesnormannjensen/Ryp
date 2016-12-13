@@ -32,7 +32,7 @@ public class RiotApiServiceImpl implements RiotApiService {
     }
 
     @PostConstruct
-    private void init() {	
+    private void init() {
         this.riotApi = new RiotApi(environment.getRequiredProperty("riot.api.key"));
 
     }
