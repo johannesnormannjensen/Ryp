@@ -3,7 +3,6 @@ package com.jof.springmvc.controller;
 import com.jof.springmvc.model.User;
 import com.jof.springmvc.service.MockUserService;
 import com.jof.springmvc.service.UserService;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -17,6 +16,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.ModelMap;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -59,20 +59,31 @@ public class UserControllerTest {
      * Tests if the wiring is correct in the constructor
      */
     @Test
-    public void listUsersTest() throws Exception {
+    public void testListUsers() throws Exception {
         request.getSession().setAttribute("remoteUser", user);
-        Assert.assertEquals(userController.listUsers(model, request), "userlist");
-        Assert.assertEquals(model.get("users"), service.findAllUsers());
+        assertEquals(userController.listUsers(model, request), "userlist");
+        assertEquals(model.get("users"), service.findAllUsers());
+        verify(service, atLeastOnce()).findAllUsers();
+        verify(service, atLeastOnce()).findAllUsers();
+    }
+
+    @Test
+    public void testListUsersNoRemoteData() throws Exception {
+        assertEquals(userController.listUsers(model, request), "userlist");
+        assertEquals(model.get("users"), service.findAllUsers());
         verify(service, atLeastOnce()).findAllUsers();
         verify(service, atLeastOnce()).findAllUsers();
     }
 
     @Test
     public void newUser() throws Exception {
-
+        assertEquals(userController.newUser(model, request), "registration");
+        assertNotNull(model.get("user"));
+        assertFalse((Boolean) model.get("edit"));
+        assertEquals(((User) model.get("user")).getId(), null);
     }
 
-    @Test
+    /*@Test
     public void registerUser() throws Exception {
 
     }
@@ -120,6 +131,6 @@ public class UserControllerTest {
     @Test
     public void logoutPage() throws Exception {
 
-    }
+    }*/
 
 }
