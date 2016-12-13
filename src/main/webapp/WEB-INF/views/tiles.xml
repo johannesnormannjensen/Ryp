@@ -60,7 +60,7 @@
    
    <!-- Reviews Page -->
    <definition name="reviewList" extends="base-definition">  
-       <put-attribute name="title" value="Friends" />  
+       <put-attribute name="title" value="Reviews" />  
        <put-attribute name="body" value="/WEB-INF/views/pages/review/reviewList.jsp" />  
    </definition>  
   
