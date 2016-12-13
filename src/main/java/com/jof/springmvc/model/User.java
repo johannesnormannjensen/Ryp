@@ -27,9 +27,6 @@ public class User implements Serializable {
     private List<Comment> comments = new ArrayList<Comment>();
 
 
-    @Column(name = "removed", nullable = false, columnDefinition = "TINYINT(1) DEFAULT '0'")
-    private int removed;
-
     @NotEmpty
     @Column(name = "username", unique = true, nullable = false)
     private String username;
@@ -47,9 +44,11 @@ public class User implements Serializable {
     private Date created_at;
 
 
-    @Column(name = "active", nullable = false, columnDefinition = "TINYINT(1) DEFAULT '0'")
-    private int active;
+    @Column(name = "active", nullable = false, columnDefinition = "TINYINT(1) DEFAULT '1'")
+    private boolean active;
 
+    @Column(name = "removed", nullable = false, columnDefinition = "TINYINT(1) DEFAULT '0'")
+    private boolean removed;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {
@@ -104,19 +103,19 @@ public class User implements Serializable {
         this.created_at = created_at;
     }
 
-    public int getActive() {
+    public Boolean isActive() {
         return this.active;
     }
 
-    public void setActive(int active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
-    public int getRemoved() {
+    public Boolean isRemoved() {
         return this.removed;
     }
 
-    public void setRemoved(int removed) {
+    public void setRemoved(boolean removed) {
         this.removed = removed;
     }
 

@@ -25,7 +25,7 @@ public class Friend {
 
     @NotEmpty
     @Column(name = "accepted", nullable = false, columnDefinition = "TINYINT(1) DEFAULT '0'")
-    private int accepted;
+    private Boolean accepted;
 
 
     @NotEmpty
@@ -33,11 +33,11 @@ public class Friend {
     private Date created_at;
 
 
-    public int getAccepted() {
+    public Boolean getAccepted() {
         return accepted;
     }
 
-    public void setAccepted(int accepted) {
+    public void setAccepted(Boolean accepted) {
         this.accepted = accepted;
     }
 

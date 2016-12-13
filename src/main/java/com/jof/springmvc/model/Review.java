@@ -50,7 +50,7 @@ public class Review implements Serializable {
 
     @NotEmpty
     @Column(name = "positive", nullable = false, columnDefinition = "TINYINT(4) DEFAULT '0'")
-    private int positive;
+    private boolean positive;
 
 
     public Integer getId() {
@@ -109,11 +109,11 @@ public class Review implements Serializable {
         this.created_at = created_at;
     }
 
-    public int getPositive() {
+    public Boolean isPositive() {
         return positive;
     }
 
-    public void setPositive(int positive) {
+    public void setPositive(boolean positive) {
         this.positive = positive;
     }
 
