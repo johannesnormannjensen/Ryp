@@ -27,18 +27,12 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/user/reviews")
@@ -160,8 +154,8 @@ public class ReviewController {
 		return "redirect:/user/reviews/list";
 	}
 
-	@RequestMapping(value = { "/createReview?target_user_id={target_user_id}&game_id={game_id}" }, method = RequestMethod.GET)
-	public String listIncomingFriendRequests(ModelMap model, HttpServletRequest request, Long  target_user_id,Long game_id) {
+	@RequestMapping(value = { "/createReview" }, method = RequestMethod.GET)
+	public String listIncomingFriendRequests(ModelMap model, HttpServletRequest request, @RequestParam Map<String,String> requestParams) {
 
 		User remoteUser = new User();
 
@@ -171,6 +165,8 @@ public class ReviewController {
 
 		ReviewForm reviewForm = new ReviewForm();
 
+		long game_id = Long.parseLong(requestParams.get("game_id"));
+		long target_user_id = Long.parseLong(requestParams.get("target_user_id"));
 		reviewForm.setGame_id(Long.valueOf(game_id));
 		reviewForm.setSource_user_id(Long.valueOf(remoteUser.getId()));
 		reviewForm.setTarget_user_id(Long.valueOf(target_user_id));
