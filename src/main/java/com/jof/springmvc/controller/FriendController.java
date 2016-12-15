@@ -56,7 +56,7 @@ public class FriendController {
         }
         
         List<User> users = userService.getFriendsAsUsers(friendService.findAllFriends(remoteUser));
-
+        
         model.addAttribute("users", users);
 
         return "friendList";
@@ -66,11 +66,19 @@ public class FriendController {
      * This method will be called on form submission, handling POST request for
      * registering a new user in the database. It also validates the user input
      */
-    @RequestMapping(value = {"/delete{omegaId}"}, method = RequestMethod.GET)
-    public String registerUser(@PathVariable String omegaId) {
+    @RequestMapping(value = {"/deleteFriendship{omegaId}"}, method = RequestMethod.GET)
+    public String registerUser(@PathVariable String omegaId, HttpServletRequest request) {
         // DELETE FRIENDSHIP HERE
+    	
+    	 User remoteUser = new User();
 
-        return "redirect:/friend/list";
+         if (request.getSession().getAttribute("remoteUser") != null) {
+             remoteUser = (User) request.getSession().getAttribute("remoteUser");
+         }
+    	
+    	friendService.deleteByIds(remoteUser, userService.findById(Long.valueOf(omegaId)));
+    	
+        return "redirect:/user/friend/list";
     }
 
 }

@@ -1,5 +1,7 @@
 package com.jof.springmvc.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -15,19 +17,20 @@ public class Review implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Integer id;
 
 
-    @OneToMany(mappedBy = "review_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "review_id", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<Comment>();
 
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "source_user_id", nullable = false, foreignKey = @ForeignKey(name = "FK_SOURCE_USER_ID"))
     private User source_user_id;
 
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "target_user_id", nullable = false, foreignKey = @ForeignKey(name = "FK_TARGET_USER_ID"))
     private User target_user_id;
 

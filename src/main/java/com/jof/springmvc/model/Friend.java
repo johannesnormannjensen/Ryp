@@ -13,27 +13,37 @@ import java.sql.Date;
 public class Friend {
 
     @Id
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "alpha_user_id", nullable = false, foreignKey = @ForeignKey(name = "FK_ALPHA_USER_ID"))
     private User alpha_user_id;
 
     @Id
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "omega_user_id", nullable = false, foreignKey = @ForeignKey(name = "FK_OMEGA_USER_ID"))
     private User omega_user_id;
 
 
-    @NotEmpty
     @Column(name = "accepted", nullable = false, columnDefinition = "TINYINT(1) DEFAULT '0'")
     private Boolean accepted;
 
-
-    @NotEmpty
+    
     @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = true)
     private Date created_at;
+    
+    
+    @Column(name = "active", columnDefinition = "TINYINT(1) DEFAULT '1'", nullable = true)
+    private boolean active;
 
 
-    public Boolean getAccepted() {
+    public boolean getActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public Boolean getAccepted() {
         return accepted;
     }
 

@@ -7,15 +7,21 @@ import java.util.List;
 
 public interface FriendService {
 
-    Friend findFriendshipByIds(Long id_alpha, Long id_omega);
+    Friend findFriendshipByIds(User id_alpha, User id_omega);
 
     void saveFriend(Friend friend);
 
     void updateFriend(Friend friend);
 
-    void deleteByIds(Long alpha_id, Long omega_id);
+    void deleteByIds(User alpha_id, User omega_id);
 
     // returns omega ids
     List<Friend> findAllFriends(User user);
+    
+  //returns list of friends
+    List<Friend> findAllIncomingFriendRequests(User user);
+    
+  //returns list of friends
+    List<Friend> findAllOutGoingFriendRequests(User user);
 
 }
