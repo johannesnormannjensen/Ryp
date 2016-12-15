@@ -2,8 +2,13 @@ package com.jof.springmvc.controller;
 
 import com.jof.springmvc.configuration.AppConfig;
 import com.jof.springmvc.model.User;
+import com.jof.springmvc.service.MockRoleService;
 import com.jof.springmvc.service.MockUserService;
+import com.jof.springmvc.service.RoleService;
 import com.jof.springmvc.service.UserService;
+
+import net.rithms.riot.constant.Region;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -33,6 +38,9 @@ import static org.mockito.Mockito.*;
 public class UserControllerTest {
     @Spy
     UserService service = new MockUserService();
+    
+    @Spy
+    RoleService roleService = new MockRoleService();
 
     @InjectMocks
     UserController userController;
@@ -87,30 +95,23 @@ public class UserControllerTest {
     }
 
     @Test
-    public void newUser() throws Exception {
-        assertEquals("register", userController.newUser(model, request));
-        assertNotNull(model.get("user"));
-        assertFalse((Boolean) model.get("edit"));
-        assertEquals(null, ((User) model.get("user")).getId());
-    }
-
-    @Test
-    public void registerUser() throws Exception {
-        assertEquals("register", userController.registerUser(user, bindingResult, model));
+    public void testRegisterGet() throws Exception {
+    	assertEquals("register", userController.registerUser(model, request));
+    	assertNotNull(model.get("user"));
+    	assertEquals(null, ((User) model.get("user")).getId());
     }
     
     @Test
-    public void registerNewUser() throws Exception {
-		assertEquals("register", userController.newUser(model, request));
-		assertNotNull(model.get("user"));
-		assertNotNull(model.get("edit"));
+    public void testregisterPost() throws Exception {
+    	user.setRegion(Region.EUW.toString());
+    	assertEquals("login", userController.registerUser(user, bindingResult, model));
     }
-
+    
     @Test
-    public void saveUser() throws Exception {
-
+    public void testregisterPostNoRegion() throws Exception {
+    	assertEquals("register", userController.registerUser(user, bindingResult, model));
     }
-
+    
     @Test
     public void editUser() throws Exception {
 

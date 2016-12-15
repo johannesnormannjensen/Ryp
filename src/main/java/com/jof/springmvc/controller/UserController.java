@@ -79,7 +79,7 @@ public class UserController {
      * This method will provide the medium to add a new user.
      */
     @RequestMapping(value = {"/register"}, method = RequestMethod.GET)
-    public String newUser(ModelMap model, HttpServletRequest request) {
+    public String registerUser(ModelMap model, HttpServletRequest request) {
     	request.setAttribute("regions", RegionUtil.getRegions());
         User user = new User();
         model.addAttribute("user", user);
@@ -95,7 +95,9 @@ public class UserController {
     public String registerUser(@Valid User user, BindingResult result,
                                ModelMap model) {
     	Region region = null;
-    	for (Region regionType : Region.values()) if(regionType.name().equals(user.getRegion())) region = regionType;
+    	for (Region regionType : Region.values()) {
+    		if(regionType.name().toLowerCase().equals(user.getRegion().toLowerCase())) region = regionType;
+    	}
     	  
         //   validateSummonerRunePage(region, result, user.getUsername());
 
@@ -128,7 +130,7 @@ public class UserController {
      * This method will provide the medium for users to be registered
      */
     @RequestMapping(value = {"/admin/newUser"}, method = RequestMethod.GET)
-    public String registerNewUser(ModelMap model, HttpServletRequest request) {
+    public String editNewUser(ModelMap model, HttpServletRequest request) {
         User user = new User();
         // generate user for testing
 //        String s = UUID.randomUUID().toString();
@@ -146,7 +148,7 @@ public class UserController {
      * saving user in database. It also validates the user input
      */
     @RequestMapping(value = {"/admin/newUser"}, method = RequestMethod.POST)
-    public String saveUser(@Valid User user, BindingResult result,
+    public String createNewUser(@Valid User user, BindingResult result,
                            ModelMap model) {
     	Region region = null;
     	for (Region regionType : Region.values()) {
