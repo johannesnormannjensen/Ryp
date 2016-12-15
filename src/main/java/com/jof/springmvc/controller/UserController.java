@@ -65,10 +65,9 @@ public class UserController {
 //            }
             request.getSession().setAttribute("remoteUser", user);
         }
-        //TODO GET REVIEWS
-        List<User> users = userService.findAllUsers();
-        model.addAttribute("users", users);
-        return "reviewList";
+       
+       
+        return "redirect:/user/reviews/list";
     }
 
     /**

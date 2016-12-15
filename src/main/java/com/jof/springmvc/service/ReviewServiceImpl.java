@@ -1,7 +1,10 @@
 package com.jof.springmvc.service;
 
 import com.jof.springmvc.dao.ReviewDao;
+import com.jof.springmvc.model.Friend;
 import com.jof.springmvc.model.Review;
+import com.jof.springmvc.model.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,17 +44,23 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void deleteById(int id) {
-        dao.deleteById(id);
+    	
+    	Review review = findById(id);
+    	review.setActive(false);
+    	updateReview(review);
+    	
+    	//we just set them as inactive
+       //dao.deleteById(id);
     }
 
     @Override
-    public List<Review> findAllReviewByUser(Long source_user_id) {
-        return dao.findAllReviewByUser(source_user_id);
+    public List<Review> findAllReviewByUser(User source_user) {
+        return dao.findAllReviewByUser(source_user);
     }
 
     @Override
-    public List<Review> findAllReviewAboutUser(Long target_user_id) {
-        return dao.findAllReviewAboutUser(target_user_id);
+    public List<Review> findAllReviewAboutUser(User target_user) {
+        return dao.findAllReviewAboutUser(target_user);
     }
 
     @Override

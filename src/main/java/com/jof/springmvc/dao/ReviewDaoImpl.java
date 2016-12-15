@@ -1,6 +1,8 @@
 package com.jof.springmvc.dao;
 
 import com.jof.springmvc.model.Review;
+import com.jof.springmvc.model.User;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -34,8 +36,9 @@ public class ReviewDaoImpl extends AbstractDao<Integer, Review> implements Revie
     }
 
     @SuppressWarnings("unchecked")
-    public List<Review> findAllReviewByUser(Long source_user_id) {
+    public List<Review> findAllReviewByUser(User source_user_id) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("id"));
+        criteria.add(Restrictions.eq("active", true));
         criteria.add(Restrictions.eq("source_user_id", source_user_id));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
         List<Review> reviews = (List<Review>) criteria.list();
@@ -45,7 +48,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, Review> implements Revie
     }
 
     @SuppressWarnings("unchecked")
-    public List<Review> findAllReviewAboutUser(Long target_user_id) {
+    public List<Review> findAllReviewAboutUser(User target_user_id) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("target_user_id", target_user_id));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
