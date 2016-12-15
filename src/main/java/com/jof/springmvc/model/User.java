@@ -52,7 +52,7 @@ public class User implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {
-            @JoinColumn(name = "user_profile_id")})
+            @JoinColumn(name = "role_id")})
     private Set<Role> roles = new HashSet<Role>();
 
     public Long getId() {
