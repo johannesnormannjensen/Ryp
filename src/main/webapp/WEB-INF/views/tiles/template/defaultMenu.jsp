@@ -7,4 +7,5 @@
 	<sec:authorize access="hasRole('ADMIN')">
 		<li class="list-group-item"><a href="<c:url value="/admin/list"/>">Users</a></li>
 	</sec:authorize>
+	<li class="list-group-item"><a href="<c:url value="/logout"/>">Log out</a></li>
 </ul>

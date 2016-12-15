@@ -60,9 +60,6 @@ public class UserController {
     public String reviews(ModelMap model, HttpServletRequest request) {
         if (request.getSession().getAttribute("remoteUser") == null && getPrincipal() != null) {
             User user = userService.findByUserName(getPrincipal());
-//            if(!user.getRegion().equals(request.getSession().getAttribute("region")) {
-//            	user.setRegion(request.getSession().getAttribute("region"));
-//            }
             request.getSession().setAttribute("remoteUser", user);
         }
         //TODO GET REVIEWS
@@ -86,6 +83,7 @@ public class UserController {
      */
     @RequestMapping(value = {"/registration"}, method = RequestMethod.GET)
     public String newUser(ModelMap model, HttpServletRequest request) {
+    	request.setAttribute("regions", RegionUtil.getRegions());
         User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("edit", false);
@@ -99,7 +97,7 @@ public class UserController {
     @RequestMapping(value = {"/registration"}, method = RequestMethod.POST)
     public String registerUser(@Valid User user, BindingResult result,
                                ModelMap model) {
-        Region region = Region.EUNE;
+        Region region = Region.valueOf(user.getRegion());
         //   validateSummonerRunePage(region, result, user.getUsername());
 
         //TODO: get ID from API HERE
@@ -247,7 +245,6 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(HttpServletRequest request) {
         if (isCurrentAuthenticationAnonymous()) {
-        	request.setAttribute("regions", RegionUtil.getRegions());
             return "login";
         } else {
             return "redirect:/";

@@ -26,11 +26,14 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "created_by", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<Comment>();
 
-
     @NotEmpty
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
+    @NotEmpty
+	@Column(name = "region")
+	private String region;
+    
     @NotEmpty
     @Column(name = "password", nullable = false)
     private String password;
@@ -70,6 +73,14 @@ public class User implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
+    
+	public String getRegion() {
+		return region;
+	}
+	
+	public void setRegion(String region) {
+		this.region = region;
+	}
 
     public String getPassword() {
         return password;

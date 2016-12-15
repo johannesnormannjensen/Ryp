@@ -32,21 +32,6 @@
                         <input type="password" class="form-control" id="password" name="password" value="test1234" placeholder="Enter Password" required>
                     </div>
 					<div class="input-group input-sm">
-						<label class="input-group-addon" for="password"><i class="fa fa-group"></i></label>
-						<input type="text" class="form-control" id="region" name="region" placeholder="Select region" required>
-						<div class="input-group-btn">
-							<button type="button" class="btn btn-default dropdown-toggle"
-								data-toggle="dropdown" aria-expanded="false">
-								Regions <span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu dropdown-menu-right" role="menu">
-								<c:forEach items="${regions}" var="region">
-									<li><a class="regionType" href="#">${region}</a></li>
-								</c:forEach>
-							</ul>
-						</div>
-					</div>
-					<div class="input-group input-sm">
 						<div class="checkbox">
 							<label><input type="checkbox" id="rememberme"
 								name="remember-me"> Remember Me</label>
@@ -65,9 +50,3 @@
         </div>
     </div>
 </div>
-
-<script>
-$('a.regionType').click(function() {
-	$("#region").val($(this).text());
-});
-</script>
