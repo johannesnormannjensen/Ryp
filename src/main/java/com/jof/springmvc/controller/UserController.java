@@ -5,6 +5,8 @@ import com.jof.springmvc.model.User;
 import com.jof.springmvc.service.RiotApiService;
 import com.jof.springmvc.service.RoleService;
 import com.jof.springmvc.service.UserService;
+import com.jof.springmvc.util.region.RegionUtil;
+
 import net.rithms.riot.api.RiotApiException;
 import net.rithms.riot.constant.Region;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -243,8 +245,9 @@ public class UserController {
      * If users is already logged-in and tries to goto login page again, will be redirected to list page.
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage() {
+    public String loginPage(HttpServletRequest request) {
         if (isCurrentAuthenticationAnonymous()) {
+        	request.setAttribute("regions", RegionUtil.getRegions());
             return "login";
         } else {
             return "redirect:/";

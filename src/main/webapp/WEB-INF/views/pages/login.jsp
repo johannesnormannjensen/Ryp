@@ -25,11 +25,11 @@
                     </c:if>
                     <div class="input-group input-sm">
                         <label class="input-group-addon" for="username"><i class="fa fa-user"></i></label>
-                        <input type="text" class="form-control" id="username" name="username" value="saitama" placeholder="Enter Username" required>
+                        <input type="text" class="form-control" id="username" name="username" value="FigaPl" placeholder="Enter Username" required>
                     </div>
                     <div class="input-group input-sm">
                         <label class="input-group-addon" for="password"><i class="fa fa-lock"></i></label>
-                        <input type="password" class="form-control" id="password" name="password" value="saitama" placeholder="Enter Password" required>
+                        <input type="password" class="form-control" id="password" name="password" value="test1234" placeholder="Enter Password" required>
                     </div>
 					<div class="input-group input-sm">
 						<label class="input-group-addon" for="password"><i class="fa fa-group"></i></label>
@@ -37,14 +37,12 @@
 						<div class="input-group-btn">
 							<button type="button" class="btn btn-default dropdown-toggle"
 								data-toggle="dropdown" aria-expanded="false">
-								Action <span class="caret"></span>
+								Regions <span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu dropdown-menu-right" role="menu">
-								<li><a href="#">Action</a></li>
-								<li><a href="#">Another action</a></li>
-								<li><a href="#">Something else here</a></li>
-								<li class="divider"></li>
-								<li><a href="#">Separated link</a></li>
+								<c:forEach items="${regions}" var="region">
+									<li><a class="regionType" href="#">${region}</a></li>
+								</c:forEach>
 							</ul>
 						</div>
 					</div>
@@ -67,3 +65,9 @@
         </div>
     </div>
 </div>
+
+<script>
+$('a.regionType').click(function() {
+	$("#region").val($(this).text());
+});
+</script>
