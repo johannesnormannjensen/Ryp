@@ -89,4 +89,9 @@ public class UserServiceImpl implements UserService {
 		return users;
 	}
 
+	@Override
+	public List<User> findAllUsersButMe(User disclude) {
+		return dao.findAllUsersButMe(disclude.getId());
+	}
+
 }

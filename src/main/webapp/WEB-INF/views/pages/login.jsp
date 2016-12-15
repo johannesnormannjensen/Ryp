@@ -45,7 +45,7 @@
                     </div>
                 </form>
                 <div class="form-actions">
-					<a href="<c:url value="/registration"/>" class="btn btn-block btn-success btn-default" >Register</a>
+					<a href="<c:url value="/register"/>" class="btn btn-block btn-success btn-default" >Register</a>
                 </div>
         </div>
     </div>

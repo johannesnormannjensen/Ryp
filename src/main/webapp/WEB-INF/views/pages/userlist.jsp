@@ -5,6 +5,11 @@
 
 
 <div class="generic-container">
+	<c:if test="${param.createdUser != null}">
+	    <div class="alert alert-success">
+	        <p>${request.getParameter("createdUser")}</p>
+	    </div>
+	</c:if>
     <div class="panel panel-default">
         <!-- Default panel contents -->
         <div class="panel-heading"><span class="lead">List of Users </span></div>
@@ -37,6 +42,6 @@
             </c:forEach>
             </tbody>
         </table>
-        <a class="btn btn-primary pull-right" style="margin-top:5px;" href="<c:url value="/admin/newuser"/>">Register new User</a>
+        <a class="btn btn-primary pull-right" style="margin-top:5px;" href="<c:url value="/admin/newUser"/>">Register new User</a>
     </div>
 </div>

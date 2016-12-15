@@ -62,4 +62,13 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
         delete(user);
     }
 
+	@Override
+	public List<User> findAllUsersButMe(long userId) {
+		Criteria criteria = createEntityCriteria().addOrder(Order.asc("username"));
+		criteria.add(Restrictions.ne("id", userId));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
+        List<User> users = (List<User>) criteria.list();
+        return users;
+	}
+
 }

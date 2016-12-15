@@ -47,7 +47,6 @@ public class UserControllerTest {
 
     User user;
     
-    
     MockHttpSession session;
     MockHttpServletRequest request;
 
@@ -73,23 +72,23 @@ public class UserControllerTest {
     @Test
     public void testListUsers() throws Exception {
         request.getSession().setAttribute("remoteUser", user);
-        assertEquals(userController.listUsers(model, request), "userlist");
-        assertEquals(model.get("users"), service.findAllUsers());
+        assertEquals("userlist", userController.listUsers(model, request));
+        assertEquals(service.findAllUsers(), model.get("users"));
         verify(service, atLeastOnce()).findAllUsers();
         verify(service, atLeastOnce()).findAllUsers();
     }
 
     @Test
     public void testListUsersNoRemoteData() throws Exception {
-        assertEquals(userController.listUsers(model, request), "userlist");
-        assertEquals(model.get("users"), service.findAllUsers());
+        assertEquals("userlist", userController.listUsers(model, request));
+        assertEquals(service.findAllUsers(), model.get("users"));
         verify(service, atLeastOnce()).findAllUsers();
         verify(service, atLeastOnce()).findAllUsers();
     }
 
     @Test
     public void newUser() throws Exception {
-        assertEquals("registration", userController.newUser(model, request));
+        assertEquals("register", userController.newUser(model, request));
         assertNotNull(model.get("user"));
         assertFalse((Boolean) model.get("edit"));
         assertEquals(null, ((User) model.get("user")).getId());
@@ -97,12 +96,14 @@ public class UserControllerTest {
 
     @Test
     public void registerUser() throws Exception {
-        assertEquals("registration", userController.registerUser(user, bindingResult, model));
+        assertEquals("register", userController.registerUser(user, bindingResult, model));
     }
     
     @Test
     public void registerNewUser() throws Exception {
-		assertEquals("registration", userController.newUser(model, request));
+		assertEquals("register", userController.newUser(model, request));
+		assertNotNull(model.get("user"));
+		assertNotNull(model.get("edit"));
     }
 
     @Test

@@ -15,13 +15,14 @@ public interface UserService {
     void saveUser(User user);
 
     void updateUser(User user);
+    
+    List<User> findAllUsersButMe(User disclude);
 
     void deleteUserByUsername(String username);
 
     List<User> findAllUsers();
 
-    List<User> getFriendsAsUsers(List<Friend> friends,User disclude);
-    
+    List<User> getFriendsAsUsers(List<Friend> friends, User disclude);
 
     boolean isUsernameUnique(Long id, String username);
 

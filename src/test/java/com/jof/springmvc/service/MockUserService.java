@@ -94,4 +94,11 @@ public class MockUserService implements UserService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<User> findAllUsersButMe(User disclude) {
+		List<User> userEx = users;
+		userEx.remove(disclude);
+		return users;
+	}
 }

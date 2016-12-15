@@ -76,7 +76,7 @@
 					</sec:authorize>
 					<div class="row">
 						<div class="input-group input-sm">
-							<label class="input-group-addon" for="password"><i class="fa fa-group"></i></label>
+							<label class="input-group-addon" for="region"><i class="fa fa-group"></i></label>
 							<input type="text" class="form-control" id="region" name="region" placeholder="Select region" required>
 							<div class="input-group-btn">
 								<button type="button" class="btn btn-default dropdown-toggle"

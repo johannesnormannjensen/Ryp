@@ -6,6 +6,13 @@
 
 <div class="generic-container">
     <div class="well lead">User Registration Form</div>
+    	<c:if test="${errors != null}">
+            <div class="alert alert-danger">
+            	<c:forEach items="${errors}" var="error">
+	                <p>${error} </p>
+            	</c:forEach>
+            </div>
+        </c:if>
     <form:form method="POST" modelAttribute="user" class="form-horizontal">
         <form:input type="hidden" path="id" id="id"/>
 
@@ -64,7 +71,25 @@
 	            </div>
 	        </div>
 		</sec:authorize>
-        <div class="row">
+		<div class="row">
+			<div class="input-group input-sm">
+				<label class="input-group-addon" for="region"><i
+					class="fa fa-group"></i></label> <input type="text" class="form-control"
+					id="region" name="region" placeholder="Select region" required>
+				<div class="input-group-btn">
+					<button type="button" class="btn btn-default dropdown-toggle"
+						data-toggle="dropdown" aria-expanded="false">
+						Regions <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu dropdown-menu-right" role="menu">
+						<c:forEach items="${regions}" var="region">
+							<li><a class="regionType" href="#">${region}</a></li>
+						</c:forEach>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="row">
             <div class="form-actions floatRight">
                 <c:choose>
                     <c:when test="${edit}">

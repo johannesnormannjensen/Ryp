@@ -58,22 +58,19 @@ public class UserController {
      */
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String reviews(ModelMap model, HttpServletRequest request) {
-        if (request.getSession().getAttribute("remoteUser") == null && getPrincipal() != null) {
-            User user = userService.findByUserName(getPrincipal());
-            request.getSession().setAttribute("remoteUser", user);
-        }
+    	setRemoteUser(request);
         //TODO GET REVIEWS
         List<User> users = userService.findAllUsers();
         model.addAttribute("users", users);
         return "reviewList";
     }
 
-    /**
+	/**
      * This method will list all existing users.
      */
     @RequestMapping(value = {"/admin/list"}, method = RequestMethod.GET)
     public String listUsers(ModelMap model, HttpServletRequest request) {
-        List<User> users = userService.findAllUsers();
+        List<User> users = userService.findAllUsersButMe((User)request.getSession().getAttribute("remoteUser"));
         model.addAttribute("users", users);
         return "userlist";
     }
@@ -81,20 +78,20 @@ public class UserController {
     /**
      * This method will provide the medium to add a new user.
      */
-    @RequestMapping(value = {"/registration"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/register"}, method = RequestMethod.GET)
     public String newUser(ModelMap model, HttpServletRequest request) {
     	request.setAttribute("regions", RegionUtil.getRegions());
         User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("edit", false);
-        return "registration";
+        return "register";
     }
 
     /**
      * This method will be called on form submission, handling POST request for
      * registering a new user in the database. It also validates the user input
      */
-    @RequestMapping(value = {"/registration"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/register"}, method = RequestMethod.POST)
     public String registerUser(@Valid User user, BindingResult result,
                                ModelMap model) {
     	Region region = null;
@@ -105,7 +102,7 @@ public class UserController {
         //TODO: get ID from API HERE
         user.setId(Long.valueOf(new Random().nextInt()));
         if (result.hasErrors() || region == null) {
-            return "registration";
+            return "register";
         }
 
         if (user.getRoles().isEmpty()) {
@@ -117,7 +114,7 @@ public class UserController {
         if (!userService.isUsernameUnique(user.getId(), user.getUsername())) {
             FieldError usernameError = new FieldError("user", "username", messageSource.getMessage("non.unique.username", new String[]{user.getUsername()}, Locale.getDefault()));
             result.addError(usernameError);
-            return "registration";
+            return "register";
         }
         userService.saveUser(user);
 
@@ -130,7 +127,7 @@ public class UserController {
     /**
      * This method will provide the medium for users to be registered
      */
-    @RequestMapping(value = {"/admin/newuser"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/admin/newUser"}, method = RequestMethod.GET)
     public String registerNewUser(ModelMap model, HttpServletRequest request) {
         User user = new User();
         // generate user for testing
@@ -148,15 +145,22 @@ public class UserController {
      * This method will be called on form submission, handling POST request for
      * saving user in database. It also validates the user input
      */
-    @RequestMapping(value = {"/admin/newuser"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/admin/newUser"}, method = RequestMethod.POST)
     public String saveUser(@Valid User user, BindingResult result,
                            ModelMap model) {
-        Region region = Region.EUNE;
-        validateSummonerRunePage(region, result, user.getUsername());
-        if (result.hasErrors()) {
-            return "newUser";
-        }
-
+    	Region region = null;
+    	for (Region regionType : Region.values()) {
+    		if(regionType.name().equals(user.getRegion())) region = regionType;
+    	}
+    	if (result.hasErrors()) {
+    		model.addAttribute("errors", result.getAllErrors());
+    		return "newUser";
+    	}
+    	
+//        validateSummonerRunePage(region, result, user.getUsername());
+    	
+    	//TODO: get ID from API HERE
+    	user.setId(Long.valueOf(new Random().nextInt()));
         if (user.getRoles().isEmpty()) {
             Set<Role> profiles = new HashSet<Role>();
             profiles.add(roleService.findByType("USER"));
@@ -184,7 +188,7 @@ public class UserController {
         User user = userService.findByUserName(username);
         model.addAttribute("user", user);
         model.addAttribute("edit", true);
-        return "registration";
+        return "newUser";
     }
 
     /**
@@ -196,7 +200,7 @@ public class UserController {
                              ModelMap model, @PathVariable String username) {
 
         if (result.hasErrors()) {
-            return "registration";
+            return "newUser";
         }
 
         /*//Uncomment below 'if block' if you WANT TO ALLOW UPDATING SSO_ID in UI which is a unique key to a User.
@@ -209,8 +213,7 @@ public class UserController {
 
         userService.updateUser(user);
 
-        model.addAttribute("success", "User " + user.getUsername() + " updated successfully");
-        return "registrationSuccess";
+        return "redirect:/list?createdUser=" + user.getUsername();
     }
 
 
@@ -318,5 +321,11 @@ public class UserController {
         }
     }
 
+    private void setRemoteUser(HttpServletRequest request) {
+    	if (request.getSession().getAttribute("remoteUser") == null && getPrincipal() != null) {
+            User user = userService.findByUserName(getPrincipal());
+            request.getSession().setAttribute("remoteUser", user);
+        }
+	}
 
 }
