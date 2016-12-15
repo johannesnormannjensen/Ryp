@@ -60,8 +60,8 @@ public class FriendServiceImpl implements FriendService {
 	}
 
 	@Override
-	public List<Friend> findAllOutGoingFriendRequests(User user) {
-		return dao.findAllOutGoingFriendRequests(user);
+	public List<Friend> findAllOutgoingFriendRequests(User user) {
+		return dao.findAllOutgoingFriendRequests(user);
 	}
 
 }

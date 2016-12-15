@@ -20,6 +20,6 @@ public interface FriendDao {
     List<Friend> findAllIncomingFriendRequests(User user);
     
   //returns list of friends
-    List<Friend> findAllOutGoingFriendRequests(User user);
+    List<Friend> findAllOutgoingFriendRequests(User user);
 
 }

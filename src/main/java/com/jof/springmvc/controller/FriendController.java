@@ -17,7 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 @Controller
 @RequestMapping("/user/friend")
@@ -55,7 +60,7 @@ public class FriendController {
             remoteUser = (User) request.getSession().getAttribute("remoteUser");
         }
         
-        List<User> users = userService.getFriendsAsUsers(friendService.findAllFriends(remoteUser));
+        List<User> users = userService.getFriendsAsUsers(friendService.findAllFriends(remoteUser),remoteUser);
         
         model.addAttribute("users", users);
 
@@ -67,7 +72,7 @@ public class FriendController {
      * registering a new user in the database. It also validates the user input
      */
     @RequestMapping(value = {"/deleteFriendship{omegaId}"}, method = RequestMethod.GET)
-    public String registerUser(@PathVariable String omegaId, HttpServletRequest request) {
+    public String deleteFriendship(@PathVariable String omegaId, HttpServletRequest request) {
         // DELETE FRIENDSHIP HERE
     	
     	 User remoteUser = new User();
@@ -80,5 +85,82 @@ public class FriendController {
     	
         return "redirect:/user/friend/list";
     }
+    
+    
+    @RequestMapping(value = {"/acceptFriendshipRequest{alphaId}"}, method = RequestMethod.GET)
+    public String acceptFriendRequest(@PathVariable String alphaId, HttpServletRequest request) {
+        // DELETE FRIENDSHIP HERE
+    	
+    	 User remoteUser = new User();
+
+         if (request.getSession().getAttribute("remoteUser") != null) {
+             remoteUser = (User) request.getSession().getAttribute("remoteUser");
+         }
+    	
+         User alpha = userService.findById(Long.valueOf(alphaId));
+         
+         Friend friend = friendService.findFriendshipByIds(alpha, remoteUser);
+         
+         friend.setAccepted(true);
+         
+         friendService.updateFriend(friend);
+        
+        return "redirect:/user/friend/list";
+    }
+    
+    @RequestMapping(value = {"/sendFriendshipRequest{omegaId}"}, method = RequestMethod.POST)
+    public String sendFriendRequest(@PathVariable String omegaId, HttpServletRequest request) {
+        // DELETE FRIENDSHIP HERE
+    	
+    	 User remoteUser = new User();
+
+         if (request.getSession().getAttribute("remoteUser") != null) {
+             remoteUser = (User) request.getSession().getAttribute("remoteUser");
+         }
+    	
+         Friend friend = new Friend();
+         
+         friend.setAlpha_user(remoteUser);
+         friend.setOmega_user(userService.findById(Long.valueOf(omegaId)));
+         friend.setAccepted(false);
+         friend.setActive(true);
+                  
+    	friendService.saveFriend(friend);
+    	
+        return "redirect:/user/friend/listSent";
+    }
+    
+    @RequestMapping(value = {"/listIncoming"}, method = RequestMethod.GET)
+    public String listIncomingFriendRequests(ModelMap model, HttpServletRequest request) {
+
+        User remoteUser = new User();
+
+        if (request.getSession().getAttribute("remoteUser") != null) {
+            remoteUser = (User) request.getSession().getAttribute("remoteUser");
+        }
+        
+        List<User> users = userService.getFriendsAsUsers(friendService.findAllIncomingFriendRequests(remoteUser),remoteUser);
+        
+        model.addAttribute("users", users);
+
+        return "listIncoming";
+    }
+    
+    @RequestMapping(value = {"/listSent"}, method = RequestMethod.GET)
+    public String listOutgoingFriendRequests(ModelMap model, HttpServletRequest request) {
+
+        User remoteUser = new User();
+
+        if (request.getSession().getAttribute("remoteUser") != null) {
+            remoteUser = (User) request.getSession().getAttribute("remoteUser");
+        }
+        
+        List<User> users = userService.getFriendsAsUsers(friendService.findAllOutgoingFriendRequests(remoteUser),remoteUser);
+        
+        model.addAttribute("users", users);
+
+        return "listSent";
+    }
+    
 
 }

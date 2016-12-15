@@ -20,7 +20,8 @@ public interface UserService {
 
     List<User> findAllUsers();
 
-    List<User> getFriendsAsUsers(List<Friend> friends);
+    List<User> getFriendsAsUsers(List<Friend> friends,User disclude);
+    
 
     boolean isUsernameUnique(Long id, String username);
 

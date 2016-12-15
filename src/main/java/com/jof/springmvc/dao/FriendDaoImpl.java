@@ -20,8 +20,14 @@ public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements Frien
     public Friend findFriendshipByIds(User id_alpha, User id_omega) {
 
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("alpha_user_id"));
-        criteria.add(Restrictions.eq("alpha_user_id", id_alpha));
-        criteria.add(Restrictions.eq("omega_user_id", id_omega));
+        criteria.add( Restrictions.disjunction()
+                .add( Restrictions.eq("alpha_user_id", id_alpha ) )
+                .add( Restrictions.eq("omega_user_id", id_alpha ) )
+            );  
+        criteria.add( Restrictions.disjunction()
+                .add( Restrictions.eq("alpha_user_id", id_omega ) )
+                .add( Restrictions.eq("omega_user_id", id_omega ) )
+            );  
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);// To avoid  duplicates.
 
         Friend friends = (Friend) criteria.uniqueResult();
@@ -47,7 +53,10 @@ public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements Frien
     @Override
     public List<Friend> findAllFriends(User user) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("alpha_user_id", user));
+        criteria.add( Restrictions.disjunction()
+                .add( Restrictions.eq("alpha_user_id", user ) )
+                .add( Restrictions.eq("omega_user_id", user ) )
+            );       
         criteria.add(Restrictions.eq("accepted", true));
         criteria.add(Restrictions.eq("active",true));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
@@ -73,7 +82,7 @@ public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements Frien
 	}
 
 	@Override
-	public List<Friend> findAllOutGoingFriendRequests(User user) {
+	public List<Friend> findAllOutgoingFriendRequests(User user) {
 		 Criteria criteria = createEntityCriteria();
 	        criteria.add(Restrictions.eq("alpha_user_id", user));
 	        criteria.add(Restrictions.eq("accepted", false));
