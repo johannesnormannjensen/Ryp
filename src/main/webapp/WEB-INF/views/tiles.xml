@@ -50,15 +50,21 @@
    <definition name="accessDenied" extends="base-definition">  
        <put-attribute name="title" value="Access denied" />  
        <put-attribute name="body" value="/WEB-INF/views/pages/accessDenied.jsp" />  
-   </definition>  
-   
-   <!-- Friends Page -->
-   <definition name="friendList" extends="base-definition">  
-       <put-attribute name="title" value="Friends" />  
-       <put-attribute name="body" value="/WEB-INF/views/pages/friend/friendList.jsp" />  
-   </definition>  
-   
-   <!-- Reviews Page -->
+   </definition>
+
+    <!-- Friends Page -->
+    <definition name="friendList" extends="base-definition">
+        <put-attribute name="title" value="Friends" />
+        <put-attribute name="body" value="/WEB-INF/views/pages/friend/friendList.jsp" />
+    </definition>
+
+    <!-- Match History Page -->
+    <definition name="matchHistory" extends="base-definition">
+        <put-attribute name="title" value="Friends" />
+        <put-attribute name="body" value="/WEB-INF/views/pages/matchHistory.jsp" />
+    </definition>
+
+    <!-- Reviews Page -->
    <definition name="reviewList" extends="base-definition">  
        <put-attribute name="title" value="Reviews" />  
        <put-attribute name="body" value="/WEB-INF/views/pages/review/reviewList.jsp" />  
