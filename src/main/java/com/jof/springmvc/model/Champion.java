@@ -19,17 +19,17 @@ public class Champion {
 
     @Id
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Long id;
+    private Integer id;
 
     @NotEmpty
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
