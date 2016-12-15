@@ -58,6 +58,9 @@ public class UserController {
     public String reviews(ModelMap model, HttpServletRequest request) {
         if (request.getSession().getAttribute("remoteUser") == null && getPrincipal() != null) {
             User user = userService.findByUserName(getPrincipal());
+//            if(!user.getRegion().equals(request.getSession().getAttribute("region")) {
+//            	user.setRegion(request.getSession().getAttribute("region"));
+//            }
             request.getSession().setAttribute("remoteUser", user);
         }
         //TODO GET REVIEWS
