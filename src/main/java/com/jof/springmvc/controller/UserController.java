@@ -58,6 +58,9 @@ public class UserController {
     public String reviews(ModelMap model, HttpServletRequest request) {
         if (request.getSession().getAttribute("remoteUser") == null && getPrincipal() != null) {
             User user = userService.findByUserName(getPrincipal());
+//            if(!user.getRegion().equals(request.getSession().getAttribute("region")) {
+//            	user.setRegion(request.getSession().getAttribute("region"));
+//            }
             request.getSession().setAttribute("remoteUser", user);
         }
         //TODO GET REVIEWS
@@ -262,6 +265,17 @@ public class UserController {
             request.getSession().setAttribute("remoteUser", null);
         }
         return "redirect:/login?logout";
+    }
+
+    @RequestMapping(value = "/user/matchhistory", method = RequestMethod.GET)
+    public String matchHistory(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            User remoteUser = (User) request.getSession().getAttribute("remoteUser");
+            request.setAttribute("games", riotApiService.getRecentGames(Region.EUNE, remoteUser.getId()));
+        } catch (RiotApiException e) {
+            e.printStackTrace();
+        }
+        return "matchHistory";
     }
 
     /**

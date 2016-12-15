@@ -112,7 +112,7 @@ public class Review implements Serializable {
         this.created_at = created_at;
     }
 
-    public Boolean isPositive() {
+    public boolean isPositive() {
         return positive;
     }
 

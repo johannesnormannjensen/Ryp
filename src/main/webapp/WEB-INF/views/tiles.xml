@@ -67,11 +67,16 @@
        <!-- Friends Page -->
    <definition name="listSent" extends="base-definition">  
        <put-attribute name="title" value="Friends" />  
-       <put-attribute name="body" value="/WEB-INF/views/pages/friend/listSent.jsp" />  
-   </definition> 
-   
-   
-   <!-- Reviews Page -->
+       <put-attribute name="body" value="/WEB-INF/views/pages/friend/listSent.jsp" />       
+   </definition>   
+     
+    <!-- Match History Page -->
+    <definition name="matchHistory" extends="base-definition">
+        <put-attribute name="title" value="Friends" />
+        <put-attribute name="body" value="/WEB-INF/views/pages/matchHistory.jsp" />
+    </definition>
+
+    <!-- Reviews Page -->
    <definition name="reviewList" extends="base-definition">  
        <put-attribute name="title" value="Reviews" />  
        <put-attribute name="body" value="/WEB-INF/views/pages/review/reviewList.jsp" />  
