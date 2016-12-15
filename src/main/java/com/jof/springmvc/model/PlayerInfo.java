@@ -14,8 +14,13 @@ import javax.persistence.*;
 @Table(name = "player")
 public class PlayerInfo implements Comparable<PlayerInfo> {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Long id;
+
+    @NotEmpty
+    @Column(name = "summoner_id", nullable = false)
+    private Long summonerId;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "match_id", nullable = false, foreignKey = @ForeignKey(name = "FK_PLAYER_MATCH_ID"))
@@ -36,12 +41,12 @@ public class PlayerInfo implements Comparable<PlayerInfo> {
     @Column(name = "teamId", nullable = false)
     private int teamId;
 
-    public Long getId() {
-        return id;
+    public Long getSummonerId() {
+        return summonerId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setSummonerId(Long summonerId) {
+        this.summonerId = summonerId;
     }
 
     public Match getMatch() {
@@ -85,5 +90,13 @@ public class PlayerInfo implements Comparable<PlayerInfo> {
             return 1;
         }
         return 0;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

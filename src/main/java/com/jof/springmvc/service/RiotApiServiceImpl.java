@@ -70,7 +70,10 @@ public class RiotApiServiceImpl implements RiotApiService {
                 ids.add(p.getSummonerId());
             }
         }
-        long[] longIds = ids.stream().mapToLong(l -> Long.valueOf(l.toString())).toArray();
+        long[] longIds = new long[ids.size()];
+        for (int i = 0; i < ids.size(); i++) {
+            longIds[i] = (long) ids.get(i);
+        }
 
         Map<String, String> summonerNames = new HashMap<>();
         for (int i = 0; i < longIds.length; i += 39) {
@@ -86,7 +89,7 @@ public class RiotApiServiceImpl implements RiotApiService {
 
             List<PlayerInfo> playerInfos = new ArrayList<>();
             PlayerInfo playerInfo = new PlayerInfo();
-            playerInfo.setId(recentGames.getSummonerId());
+            playerInfo.setSummonerId(recentGames.getSummonerId());
             playerInfo.setSummonerName(summonerName);
             playerInfo.setTeamId(game.getStats().getTeam());
 
@@ -99,7 +102,7 @@ public class RiotApiServiceImpl implements RiotApiService {
 
             for (Player p : game.getFellowPlayers()) { // playerinfos
                 playerInfo = new PlayerInfo();
-                playerInfo.setId(p.getSummonerId());
+                playerInfo.setSummonerId(p.getSummonerId());
                 playerInfo.setSummonerName(summonerNames.get(String.valueOf(p.getSummonerId())));
                 champion = new Champion();
                 champion.setId(p.getChampionId());

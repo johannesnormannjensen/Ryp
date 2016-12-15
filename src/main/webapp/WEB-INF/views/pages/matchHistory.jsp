@@ -33,8 +33,11 @@
                     <td colspan="3">
                         <div id="accordion${match.id}" class="collapse">
                             <c:forEach items="${match.playerInfos}" var="playerInfo">
+
                                 <div class="alert alert-${playerInfo.teamId == 100 ? "success":"danger"}">
-                                    <p>${playerInfo.summonerName}</p></div>
+                                    <p>
+                                        <a href="/user/reviews/createReview?target_user_id=${playerInfo.summonerId}&game_id=${match.id}">${playerInfo.summonerName}
+                                        </a></p></div>
                             </c:forEach>
                         </div>
                     </td>

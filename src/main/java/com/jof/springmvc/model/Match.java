@@ -67,7 +67,7 @@ public class Match implements Serializable, Comparable {
 
     public boolean didPlayerWin(Long playerId) {
         for (PlayerInfo playerInfo : playerInfos) {
-            if (playerInfo.getId().equals(playerId)) {
+            if (playerInfo.getSummonerId().equals(playerId)) {
                 return playerInfo.getTeamId() == winnerTeamId;
             }
         }
