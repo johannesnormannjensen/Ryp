@@ -17,7 +17,7 @@ public class FriendServiceImpl implements FriendService {
     private FriendDao dao;
 
     @Override
-    public Friend findFriendshipByIds(Long id_alpha, Long id_omega) {
+    public Friend findFriendshipByIds(User id_alpha, User id_omega) {
         return dao.findFriendshipByIds(id_alpha, id_omega);
     }
 
@@ -30,15 +30,22 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public void updateFriend(Friend friend) {
 
-        Friend entity = dao.findFriendshipByIds(friend.getAlpha_user_id(), friend.getOmega_user_id());
+        Friend entity = dao.findFriendshipByIds(friend.getAlpha_user(), friend.getOmega_user());
         if (entity != null) {
             entity.setAccepted(friend.getAccepted());
+            entity.setActive(friend.getActive());
         }
     }
 
     @Override
-    public void deleteByIds(Long alpha_id, Long omega_id) {
-        dao.deleteByIds(alpha_id, omega_id);
+    public void deleteByIds(User alpha_id, User omega_id) {
+    	
+    	Friend friend = findFriendshipByIds(alpha_id, omega_id);
+    	friend.setActive(false);
+    	updateFriend(friend);
+    	
+    	//we just set them as inactive
+       // dao.deleteByIds(alpha_id, omega_id);
 
     }
 
@@ -46,5 +53,15 @@ public class FriendServiceImpl implements FriendService {
     public List<Friend> findAllFriends(User user) {
         return dao.findAllFriends(user);
     }
+
+	@Override
+	public List<Friend> findAllIncomingFriendRequests(User user) {
+		return dao.findAllIncomingFriendRequests(user);
+	}
+
+	@Override
+	public List<Friend> findAllOutGoingFriendRequests(User user) {
+		return dao.findAllOutGoingFriendRequests(user);
+	}
 
 }

@@ -20,7 +20,7 @@
                 <tr>
                     <td>${user.username}</td>
                     <sec:authorize access="hasRole('USER') or hasRole('ADMIN')">
-                        <td><a href="<c:url value='/friend/deleteFriendship${user.id}' />" class="btn btn-danger">Delete friendship</a></td>
+                        <td><a href="<c:url value='/user/friend/deleteFriendship${user.id}' />" class="btn btn-danger">Delete friendship</a></td>
                     </sec:authorize>
                 </tr>
             </c:forEach>

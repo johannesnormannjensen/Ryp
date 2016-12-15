@@ -16,11 +16,11 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "created_by", nullable = false, foreignKey = @ForeignKey(name = "FK_CREATED_BY_ID"))
     private User created_by;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "review_id", nullable = false, columnDefinition = "INT(11)", foreignKey = @ForeignKey(name = "FK_REVIEW_ID"))
     private Review review_id;
 
