@@ -3,6 +3,7 @@ package com.jof.springmvc.service;
 import com.jof.springmvc.model.Friend;
 import com.jof.springmvc.model.Role;
 import com.jof.springmvc.model.User;
+import com.jof.springmvc.util.region.RegionUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +41,7 @@ public class MockUserService implements UserService {
             profile.setId(i);
             profile.setType("USER");
             user.setRoles(new HashSet<Role>(Arrays.asList(profile)));
+            user.setRegion("EUW");
             users.add(new User());
         }
     }

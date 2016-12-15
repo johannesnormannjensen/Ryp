@@ -1,9 +1,11 @@
 package com.jof.springmvc.controller;
 
+import com.jof.springmvc.configuration.AppConfig;
 import com.jof.springmvc.model.User;
 import com.jof.springmvc.service.MockUserService;
 import com.jof.springmvc.service.UserService;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,15 +19,16 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
  * Created by Ferenc_S on 12/13/2016.
- */
-@RunWith(SpringJUnit4ClassRunner.class)
+ */ 
 @ContextConfiguration
 public class UserControllerTest {
     @Spy
@@ -37,12 +40,16 @@ public class UserControllerTest {
     @Spy
     ModelMap model;
 
-    User user;
-    MockHttpSession session;
-    MockHttpServletRequest request;
-
     @Mock
     Authentication authentication;
+    @Mock
+    BindingResult bindingResult;
+
+    User user;
+    
+    
+    MockHttpSession session;
+    MockHttpServletRequest request;
 
     @Before
     public void setUp() {
@@ -51,8 +58,8 @@ public class UserControllerTest {
         SecurityContext securityContext = mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
-
-
+        
+        bindingResult = mock(BindingResult.class);
         user = new User();
         session = new MockHttpSession();
         request = new MockHttpServletRequest();
@@ -82,20 +89,20 @@ public class UserControllerTest {
 
     @Test
     public void newUser() throws Exception {
-        assertEquals(userController.newUser(model, request), "registration");
+        assertEquals("registration", userController.newUser(model, request));
         assertNotNull(model.get("user"));
         assertFalse((Boolean) model.get("edit"));
-        assertEquals(((User) model.get("user")).getId(), null);
+        assertEquals(null, ((User) model.get("user")).getId());
     }
 
     @Test
     public void registerUser() throws Exception {
-
-        assertEquals(userController.registerNewUser(model, request), "registration");
+        assertEquals("registration", userController.registerUser(user, bindingResult, model));
     }
+    
     @Test
     public void registerNewUser() throws Exception {
-
+		assertEquals("registration", userController.newUser(model, request));
     }
 
     @Test

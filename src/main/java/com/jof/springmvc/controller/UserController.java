@@ -97,12 +97,14 @@ public class UserController {
     @RequestMapping(value = {"/registration"}, method = RequestMethod.POST)
     public String registerUser(@Valid User user, BindingResult result,
                                ModelMap model) {
-        Region region = Region.valueOf(user.getRegion());
+    	Region region = null;
+    	for (Region regionType : Region.values()) if(regionType.name().equals(user.getRegion())) region = regionType;
+    	  
         //   validateSummonerRunePage(region, result, user.getUsername());
 
         //TODO: get ID from API HERE
         user.setId(Long.valueOf(new Random().nextInt()));
-        if (result.hasErrors()) {
+        if (result.hasErrors() || region == null) {
             return "registration";
         }
 
