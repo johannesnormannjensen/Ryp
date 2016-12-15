@@ -95,6 +95,9 @@ public class UserController {
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST)
     public String registerUser(@Valid User user, BindingResult result,
                                ModelMap model) {
+    	if (result.hasErrors() || user.getRegion() == null) {
+    		return "register";
+    	}
     	Region region = null;
     	for (Region regionType : Region.values()) {
     		if(regionType.name().toLowerCase().equals(user.getRegion().toLowerCase())) region = regionType;
@@ -104,9 +107,6 @@ public class UserController {
 
         //TODO: get ID from API HERE
         user.setId(Long.valueOf(new Random().nextInt()));
-        if (result.hasErrors() || region == null) {
-            return "register";
-        }
 
         if (user.getRoles().isEmpty()) {
             Set<Role> profiles = new HashSet<Role>();
