@@ -81,13 +81,15 @@ public class MockUserService implements UserService {
         return users;
     }
 
-    @Override
-    public List<User> getFriendsAsUsers(List<Friend> friends) {
-        return null;
-    }
-
+   
     @Override
     public boolean isUsernameUnique(Long id, String username) {
         return findByUserName(username) == null;
     }
+
+	@Override
+	public List<User> getFriendsAsUsers(List<Friend> friends, User disclude) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

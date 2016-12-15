@@ -58,6 +58,19 @@
        <put-attribute name="body" value="/WEB-INF/views/pages/friend/friendList.jsp" />  
    </definition>  
    
+      <!-- Friends Page -->
+   <definition name="listIncoming" extends="base-definition">  
+       <put-attribute name="title" value="Friends Incoming" />  
+       <put-attribute name="body" value="/WEB-INF/views/pages/friend/listIncoming.jsp" />  
+   </definition> 
+   
+       <!-- Friends Page -->
+   <definition name="listSent" extends="base-definition">  
+       <put-attribute name="title" value="Friends" />  
+       <put-attribute name="body" value="/WEB-INF/views/pages/friend/listSent.jsp" />  
+   </definition> 
+   
+   
    <!-- Reviews Page -->
    <definition name="reviewList" extends="base-definition">  
        <put-attribute name="title" value="Reviews" />  
