@@ -24,10 +24,25 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${games}" var="game">
+            <c:forEach items="${matches}" var="match">
+                <tr data-toggle="collapse" data-target="#accordion${match.id}" class="clickable">
+                    <td><fmt:formatDate value="${match.created_at}" pattern="dd/MM/yyyy HH:mm"/></td>
+                    <td>${match.didPlayerWin(playerId) ? "Wonnered" : "Vayned Out"}</td>
+                </tr>
                 <tr>
-                    <td>${game.createDate}</td>
-                    <td>${game.stats.win ? "Wonnered" : "Vayned Out"}</td>
+                    <td colspan="3">
+                        <div id="accordion${match.id}" class="collapse">
+                            <c:forEach items="${match.playerInfos}" var="playerInfo">
+
+                                <div class="alert alert-${playerInfo.teamId == 100 ? "success":"danger"}">
+                                    <p>
+                                        <a href="/user/reviews/createReview?target_user_id=${playerInfo.summonerId}&game_id=${match.id}">${playerInfo.summonerName}
+                                        </a></p></div>
+                            </c:forEach>
+                        </div>
+                    </td>
+                </tr>
+
                 </tr>
             </c:forEach>
             </tbody>

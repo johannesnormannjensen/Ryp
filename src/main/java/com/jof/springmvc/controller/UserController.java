@@ -1,5 +1,6 @@
 package com.jof.springmvc.controller;
 
+import com.jof.springmvc.model.Match;
 import com.jof.springmvc.model.Role;
 import com.jof.springmvc.model.User;
 import com.jof.springmvc.service.RiotApiService;
@@ -278,7 +279,10 @@ public class UserController {
     public String matchHistory(HttpServletRequest request, HttpServletResponse response) {
         try {
             User remoteUser = (User) request.getSession().getAttribute("remoteUser");
-            request.setAttribute("games", riotApiService.getRecentGames(Region.EUNE, remoteUser.getId()));
+            List<Match> matches =  riotApiService.getRecentGames(Region.EUNE, remoteUser.getId(), remoteUser.getUsername());
+
+            request.setAttribute("matches", matches);
+            request.setAttribute("playerId", remoteUser.getId());
         } catch (RiotApiException e) {
             e.printStackTrace();
         }
