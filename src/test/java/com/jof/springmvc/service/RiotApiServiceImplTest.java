@@ -1,20 +1,24 @@
 package com.jof.springmvc.service;
 
+import com.jof.springmvc.model.utils.GameComparator;
 import net.rithms.riot.api.RiotApi;
 import net.rithms.riot.constant.Region;
+import net.rithms.riot.dto.Game.Game;
+import net.rithms.riot.dto.Game.RecentGames;
 import net.rithms.riot.dto.Summoner.RunePage;
 import net.rithms.riot.dto.Summoner.RunePages;
 import net.rithms.riot.dto.Summoner.Summoner;
 import org.junit.Before;
 import org.mockito.Mock;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertEquals;
 
 /**
  * Created by Ferenc_S on 12/10/2016.
@@ -49,6 +53,12 @@ public class RiotApiServiceImplTest {
         Set<RunePage> runePages1 = getRunePages();
         when(runePages.getPages()).thenReturn(runePages1);
         when(mockRiotApi.getRunePages(region, summId)).thenReturn(runePages);
+
+        // Games mock
+        RecentGames recentGames = mock(RecentGames.class);
+        Set<Game> games = getRecentGames();
+        when(recentGames.getGames()).thenReturn(games);
+        when(mockRiotApi.getRecentGames(any(Region.class), summId)).thenReturn(recentGames);
     }
 
     @org.junit.Test
@@ -59,6 +69,13 @@ public class RiotApiServiceImplTest {
     @org.junit.Test
     public void testNoUserHasRunePageMock() throws Exception {
         assertFalse(mockRiotApiService.userHasRunePage(region, summId, "NORUNEPAGE"));
+    }
+
+    @org.junit.Test
+    public void testGetRecentGamesSorted() throws Exception {
+        List<Game> games = mockRiotApiService.getRecentGames(Region.NA, summId);
+        assertTrue(isSortedReverse(games, new GameComparator()));
+        assertEquals(4, games.size());
     }
 
     // Utils
@@ -79,6 +96,44 @@ public class RiotApiServiceImplTest {
         pages.add(page3);
 
         return pages;
+    }
+
+    Set<Game> getRecentGames() {
+        Set<Game> games = new HashSet<>();
+
+        Game game1 = mock(Game.class);
+        when(game1.getCreateDate()).thenReturn(1481796590000L);
+
+        Game game2 = mock(Game.class);
+        when(game2.getCreateDate()).thenReturn(1481796590000L - 3600 * 1000);
+
+        Game game3 = mock(Game.class);
+        when(game3.getCreateDate()).thenReturn(1481796590000L + 3600 * 1000);
+
+        Game game4 = mock(Game.class);
+        when(game4.getCreateDate()).thenReturn(1481796590000L + 3600 * 1000 * 5);
+
+        games.add(game1);
+        games.add(game2);
+        games.add(game3);
+        games.add(game4);
+        return games;
+    }
+
+    <T> boolean isSortedReverse(Iterable<T> iterable, Comparator<T> c) {
+        Iterator<T> iter = iterable.iterator();
+        if (!iter.hasNext()) {
+            return true;
+        }
+        T t = iter.next();
+        while (iter.hasNext()) {
+            T t2 = iter.next();
+            if (c.compare(t, t2) < 0) {
+                return false;
+            }
+            t = t2;
+        }
+        return true;
     }
 
 }

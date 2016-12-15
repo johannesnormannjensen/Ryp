@@ -264,6 +264,17 @@ public class UserController {
         return "redirect:/login?logout";
     }
 
+    @RequestMapping(value = "/user/matchhistory", method = RequestMethod.GET)
+    public String matchHistory(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            User remoteUser = (User) request.getSession().getAttribute("remoteUser");
+            request.setAttribute("games", riotApiService.getRecentGames(Region.EUNE, remoteUser.getId()));
+        } catch (RiotApiException e) {
+            e.printStackTrace();
+        }
+        return "matchHistory";
+    }
+
     /**
      * This method returns the principal[user-name] of logged-in user.
      */
