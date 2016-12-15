@@ -13,10 +13,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.jof.springmvc.model.Match;
 import org.junit.Before;
 import org.mockito.Mock;
-
-import com.jof.springmvc.model.utils.GameComparator;
 
 import net.rithms.riot.api.RiotApi;
 import net.rithms.riot.constant.Region;
@@ -64,7 +63,7 @@ public class RiotApiServiceImplTest {
         RecentGames recentGames = mock(RecentGames.class);
         Set<Game> games = getRecentGames();
         when(recentGames.getGames()).thenReturn(games);
-        when(mockRiotApi.getRecentGames(any(Region.class), any(Long.class))).thenReturn(recentGames);
+        when(mockRiotApi.getRecentGames(region, summId)).thenReturn(recentGames);
     }
 
     @org.junit.Test
@@ -79,9 +78,9 @@ public class RiotApiServiceImplTest {
 
     @org.junit.Test
     public void testGetRecentGamesSorted() throws Exception {
-        List<Game> games = mockRiotApiService.getRecentGames(Region.NA, summId);
-        assertTrue(isSortedReverse(games, new GameComparator()));
-        assertEquals(4, games.size());
+        List<Match> matches = mockRiotApiService.getRecentGames(region, summId, name);
+       assertEquals(matches.size(), 4);
+
     }
 
     // Utils
@@ -126,7 +125,7 @@ public class RiotApiServiceImplTest {
         return games;
     }
 
-    <T> boolean isSortedReverse(Iterable<T> iterable, Comparator<T> c) {
+    <T extends Comparable> boolean isSortedReverse(Iterable<T> iterable) {
         Iterator<T> iter = iterable.iterator();
         if (!iter.hasNext()) {
             return true;
@@ -134,7 +133,7 @@ public class RiotApiServiceImplTest {
         T t = iter.next();
         while (iter.hasNext()) {
             T t2 = iter.next();
-            if (c.compare(t, t2) < 0) {
+            if (t.compareTo(t2) < 0) {
                 return false;
             }
             t = t2;
