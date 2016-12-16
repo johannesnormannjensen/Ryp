@@ -1,18 +1,17 @@
 package com.jof.springmvc.controller;
 
-import com.jof.springmvc.configuration.AppConfig;
+import com.jof.springmvc.model.Role;
 import com.jof.springmvc.model.User;
 import com.jof.springmvc.service.MockRoleService;
 import com.jof.springmvc.service.MockUserService;
+
+import static com.jof.springmvc.service.MockUserService.*;
 import com.jof.springmvc.service.RoleService;
 import com.jof.springmvc.service.UserService;
 
-import net.rithms.riot.constant.Region;
-
+import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -23,19 +22,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 /**
  * Created by Ferenc_S on 12/13/2016.
  */ 
 @ContextConfiguration
 public class UserControllerTest {
+	
     @Spy
     UserService service = new MockUserService();
     
@@ -60,21 +61,37 @@ public class UserControllerTest {
 
     @Before
     public void setUp() {
+    	
         authentication = mock(Authentication.class);
-        when(authentication.getPrincipal()).thenReturn("Name1");
+        when(authentication.getPrincipal()).thenReturn(ADMIN_NAME);
         SecurityContext securityContext = mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
         
         bindingResult = mock(BindingResult.class);
-        user = new User();
+        user = createAdmin();
         session = new MockHttpSession();
         request = new MockHttpServletRequest();
         request.setSession(session);
         MockitoAnnotations.initMocks(this);
     }
+    
+    private User createAdmin() {
+    	Role adminRole = new Role();
+    	adminRole.setId(1);
+    	adminRole.setType("ADMIN");
+    	
+    	User adminUser = new User();
+        adminUser.setId(ID);
+        adminUser.setUsername(ADMIN_NAME);
+        adminUser.setEmail(ADMIN_EMAIL);
+        adminUser.setPassword(ADMIN_PASSWORD);
+        adminUser.setRoles(new HashSet<Role>(Arrays.asList(adminRole)));
+        adminUser.setRegion(REGION_EUW);
+        return adminUser;
+	}
 
-    /*
+	/*
      * Tests if the wiring is correct in the constructor
      */
     @Test
@@ -88,10 +105,8 @@ public class UserControllerTest {
 
     @Test
     public void testListUsersNoRemoteData() throws Exception {
-        assertEquals("userlist", userController.listUsers(model, request));
-        assertEquals(service.findAllUsers(), model.get("users"));
-        verify(service, atLeastOnce()).findAllUsers();
-        verify(service, atLeastOnce()).findAllUsers();
+        assertEquals("accessDenied", userController.listUsers(model, request));
+        assertEquals(null, model.get("users"));
     }
 
     @Test
@@ -102,19 +117,32 @@ public class UserControllerTest {
     }
     
     @Test
-    public void testregisterPost() throws Exception {
-    	user.setRegion(Region.EUW.toString());
+    public void testRegisterPost() throws Exception {
+    	user.setUsername("ThisNameIsProbablyNotTaken");
     	assertEquals("login", userController.registerUser(user, bindingResult, model));
     }
     
     @Test
-    public void testregisterPostNoRegion() throws Exception {
+    public void testRegisterPostNoRegion() throws Exception {
+    	user.setUsername("ThisNameIsProbablyNotTaken");
+    	user.setRegion(null);
     	assertEquals("register", userController.registerUser(user, bindingResult, model));
     }
     
     @Test
-    public void editUser() throws Exception {
-
+    public void testEditUserAsAdmin() throws Exception {
+    	request.getSession().setAttribute("remoteUser", user);
+    	assertEquals("newUser", userController.editUser("LeagueGuy1", model, request));
+    }
+    
+    @Test
+    public void testEditUserAsUser() throws Exception {
+    	Role userRole = new Role();
+        userRole.setId(1);
+        userRole.setType("USER");
+    	user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+    	request.getSession().setAttribute("remoteUser", user);
+    	assertEquals("accessDenied", userController.editUser("LeagueGuy1", model, request));
     }
 
     @Test

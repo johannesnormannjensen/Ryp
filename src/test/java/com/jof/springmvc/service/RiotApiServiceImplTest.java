@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import net.rithms.riot.api.RiotApi;
 import net.rithms.riot.constant.Region;
 import net.rithms.riot.dto.Game.Game;
+import net.rithms.riot.dto.Game.RawStats;
 import net.rithms.riot.dto.Game.RecentGames;
 import net.rithms.riot.dto.Summoner.RunePage;
 import net.rithms.riot.dto.Summoner.RunePages;
@@ -108,16 +109,20 @@ public class RiotApiServiceImplTest {
 
         Game game1 = mock(Game.class);
         when(game1.getCreateDate()).thenReturn(1481796590000L);
+        when(game1.getStats()).thenReturn(new RawStats());
 
         Game game2 = mock(Game.class);
         when(game2.getCreateDate()).thenReturn(1481796590000L - 3600 * 1000);
-
+        when(game2.getStats()).thenReturn(new RawStats());
+        
         Game game3 = mock(Game.class);
         when(game3.getCreateDate()).thenReturn(1481796590000L + 3600 * 1000);
-
+        when(game3.getStats()).thenReturn(new RawStats());
+        
         Game game4 = mock(Game.class);
         when(game4.getCreateDate()).thenReturn(1481796590000L + 3600 * 1000 * 5);
-
+        when(game4.getStats()).thenReturn(new RawStats());
+        
         games.add(game1);
         games.add(game2);
         games.add(game3);

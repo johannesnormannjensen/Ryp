@@ -10,40 +10,59 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import org.mockito.Spy;
+
 /**
  * Created by Ferenc_S on 12/13/2016.
  */
 public class MockUserService implements UserService {
-    List<User> users;
+	public static final Long ID = 1337L;
+	
+	public static final String ADMIN_NAME = "AdminGuy";
+	public static final String ADMIN_EMAIL = "admin@player.com";
+	public static final String ADMIN_PASSWORD = "password";
+	
+	public static final String USER_NAME = "LeagueGuy";
+	public static final String USER_EMAIL = "fantastic@player.com";
+	public static final String USER_PASSWORD = "totallysafe";
+	
+	public static final String REGION_EUW = "EUW";
+	public static final String REGION_EUNE = "EUNE";
+	
+	List<User> users = new ArrayList<User>();
 
     public MockUserService() {
-        users = new ArrayList<>();
         User user;
+        Role userRole = new Role();
+        userRole.setId(1);
+        userRole.setType("USER");
+        
+        Role adminRole = new Role();
+        userRole.setId(2);
+        userRole.setType("ADMIN");
 
-        user = new User();
-        user.setUsername("AdminName");
-        user.setEmail("admin@f23fff.sem");
-        user.setId(Long.valueOf(66));
-        user.setPassword("pwd");
-        Role profile = new Role();
-        profile.setId(66);
-        profile.setType("USER");
-        profile.setType("ADMIN");
-        user.setRoles(new HashSet<Role>(Arrays.asList(profile)));
-
-        for (int i = 0; i < 5; i++) {
+        // adding simple users.. pff!
+        for (int i = 0; i < 4; i++) {
             user = new User();
-            user.setUsername("Name " + i);
-            user.setEmail("useremail" + i + "@f23fff.sem");
-            user.setId(Long.valueOf(i));
-            user.setPassword("pwd");
-            profile = new Role();
-            profile.setId(i);
-            profile.setType("USER");
-            user.setRoles(new HashSet<Role>(Arrays.asList(profile)));
-            user.setRegion("EUW");
-            users.add(new User());
+            user.setId(Long.valueOf(i) + ID);
+            user.setUsername(USER_NAME + i);
+            user.setEmail(i + USER_EMAIL);
+            user.setPassword(USER_PASSWORD);
+            user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+            user.setRegion(REGION_EUW);
+            users.add(user);
         }
+        
+        // adding the admin
+        user = new User();
+        user.setId(ID);
+        user.setUsername(ADMIN_NAME);
+        user.setEmail(ADMIN_EMAIL);
+        user.setPassword(ADMIN_PASSWORD);
+        user.setRoles(new HashSet<Role>(Arrays.asList(adminRole)));
+        user.setRegion(REGION_EUW);
+        users.add(user);
+        
     }
 
     @Override

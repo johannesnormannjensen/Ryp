@@ -3,6 +3,8 @@ package com.jof.springmvc.model;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class User implements Serializable {
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
+    @NotNull
     @NotEmpty
 	@Column(name = "region")
 	private String region;
