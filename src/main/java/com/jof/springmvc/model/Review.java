@@ -34,27 +34,36 @@ public class Review implements Serializable {
     @JoinColumn(name = "target_user_id", nullable = false, foreignKey = @ForeignKey(name = "FK_TARGET_USER_ID"))
     private User target_user_id;
 
-
-    @NotEmpty
+        
     @Column(name = "game_id", nullable = false, columnDefinition = "BIGINT(20)")
     private Long game_id;
 
-    @NotEmpty
+    
     @Column(name = "title", nullable = false, columnDefinition = "VARCHAR(45)")
     private String title;
 
-    @NotEmpty
+    
     @Column(name = "body", nullable = false, columnDefinition = "VARCHAR(512)")
     private String body;
 
-    @NotEmpty
+    
     @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = true)
     private Date created_at;
 
-    @NotEmpty
+    
     @Column(name = "positive", nullable = false, columnDefinition = "TINYINT(4) DEFAULT '0'")
     private boolean positive;
+    
+    @Column(name = "active", columnDefinition = "TINYINT(1) DEFAULT '0'", nullable = true)
+	private boolean active;
 
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 
     public Integer getId() {
         return id;

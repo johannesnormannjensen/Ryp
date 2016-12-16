@@ -60,10 +60,9 @@ public class UserController {
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String reviews(ModelMap model, HttpServletRequest request) {
     	setRemoteUser(request);
-        //TODO GET REVIEWS
-        List<User> users = userService.findAllUsers();
-        model.addAttribute("users", users);
-        return "reviewList";
+       
+       
+        return "redirect:/user/reviews/list";
     }
 
 	/**
