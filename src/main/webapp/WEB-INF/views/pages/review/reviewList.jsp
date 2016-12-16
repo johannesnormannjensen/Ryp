@@ -5,7 +5,7 @@
 
 <div class="panel panel-default">
     <!-- Default panel contents -->
-    <div class="panel-heading"><span class="lead">SUPPOSED TO BE REVIEWS </span></div>
+    <div class="panel-heading"><span class="lead">Reviews made by you</span></div>
     <table class="table table-hover">
         <thead>
         <tr>

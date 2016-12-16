@@ -59,7 +59,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<Review> findAllReviewAboutUser(User target_user) {
+    public List<Review> findAllReviewAboutUser(Long target_user) {
         return dao.findAllReviewAboutUser(target_user);
     }
 

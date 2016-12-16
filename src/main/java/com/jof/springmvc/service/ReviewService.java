@@ -18,7 +18,7 @@ public interface ReviewService {
 
     List<Review> findAllReviewByUser(User source_user_id);
 
-    List<Review> findAllReviewAboutUser(User target_user_id);
+    List<Review> findAllReviewAboutUser(Long target_user_id);
 
     List<Review> findAllReviewForGame(int game_id);
 

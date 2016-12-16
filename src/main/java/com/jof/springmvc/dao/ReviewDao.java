@@ -15,7 +15,7 @@ public interface ReviewDao {
 
     List<Review> findAllReviewByUser(User source_user);
 
-    List<Review> findAllReviewAboutUser(User target_user);
+    List<Review> findAllReviewAboutUser(Long target_user);
 
     List<Review> findAllReviewForGame(int game_id);
 }

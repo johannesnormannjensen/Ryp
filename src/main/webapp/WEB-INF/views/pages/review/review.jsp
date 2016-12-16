@@ -8,7 +8,7 @@
 <div class="panel panel-default">
 	<!-- Default panel contents -->
 	<div class="panel-heading">
-		<span class="lead">Review ${review.id} </span>
+		<span class="lead">Review about ${review.target_user_id} </span>
 	</div>
 	<table class="table table-hover">
 		<thead>

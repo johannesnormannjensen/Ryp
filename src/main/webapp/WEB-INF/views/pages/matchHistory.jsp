@@ -15,7 +15,7 @@
 <div class="generic-container">
     <div class="panel panel-default">
         <!-- Default panel contents -->
-        <div class="panel-heading"><span class="lead">Friends </span></div>
+        <div class="panel-heading"><span class="lead">Match History </span></div>
         <table class="table table-hover">
             <thead>
             <tr>

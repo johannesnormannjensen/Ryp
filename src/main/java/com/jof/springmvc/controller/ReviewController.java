@@ -147,7 +147,8 @@ public class ReviewController {
 		review.setBody(rf.getBody());
 		review.setTitle(rf.getTitle());
 		review.setSource_user_id(userService.findById(rf.getSource_user_id()));
-		review.setTarget_user_id(userService.findById(rf.getTarget_user_id()));
+		review.setTarget_user_id(Long.valueOf(rf.getTarget_user_id()));
+		review.setActive(true);
 
 		reviewService.saveReview(review);
 

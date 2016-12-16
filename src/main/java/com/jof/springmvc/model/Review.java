@@ -29,10 +29,9 @@ public class Review implements Serializable {
     @JoinColumn(name = "source_user_id", nullable = false, foreignKey = @ForeignKey(name = "FK_SOURCE_USER_ID"))
     private User source_user_id;
 
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "target_user_id", nullable = false, foreignKey = @ForeignKey(name = "FK_TARGET_USER_ID"))
-    private User target_user_id;
+    
+    @Column(name = "target_user_id", nullable = false, columnDefinition = "BIGINT(20)")
+    private Long target_user_id;
 
         
     @Column(name = "game_id", nullable = false, columnDefinition = "BIGINT(20)")
@@ -81,11 +80,11 @@ public class Review implements Serializable {
         this.source_user_id = source_user_id;
     }
 
-    public User getTarget_user_id() {
+    public Long getTarget_user_id() {
         return target_user_id;
     }
 
-    public void setTarget_user_id(User target_user_id) {
+    public void setTarget_user_id(Long target_user_id) {
         this.target_user_id = target_user_id;
     }
 

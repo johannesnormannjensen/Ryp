@@ -108,7 +108,7 @@ public class FriendController {
         return "redirect:/user/friend/list";
     }
     
-    @RequestMapping(value = {"/sendFriendshipRequest{omegaId}"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/sendFriendshipRequest{omegaId}"}, method = RequestMethod.GET)
     public String sendFriendRequest(@PathVariable String omegaId, HttpServletRequest request) {
         // DELETE FRIENDSHIP HERE
     	

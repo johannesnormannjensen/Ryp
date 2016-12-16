@@ -48,7 +48,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, Review> implements Revie
     }
 
     @SuppressWarnings("unchecked")
-    public List<Review> findAllReviewAboutUser(User target_user_id) {
+    public List<Review> findAllReviewAboutUser(Long target_user_id) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("target_user_id", target_user_id));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
