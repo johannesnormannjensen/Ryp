@@ -1,6 +1,5 @@
 package com.jof.springmvc.controller;
 
-import com.jof.springmvc.configuration.AppConfig;
 import com.jof.springmvc.model.Role;
 import com.jof.springmvc.model.User;
 import com.jof.springmvc.service.MockRoleService;
@@ -10,12 +9,9 @@ import static com.jof.springmvc.service.MockUserService.*;
 import com.jof.springmvc.service.RoleService;
 import com.jof.springmvc.service.UserService;
 
-import net.rithms.riot.constant.Region;
-
+import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -26,8 +22,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 
@@ -67,8 +61,9 @@ public class UserControllerTest {
 
     @Before
     public void setUp() {
+    	
         authentication = mock(Authentication.class);
-        when(authentication.getPrincipal()).thenReturn("Name1");
+        when(authentication.getPrincipal()).thenReturn(ADMIN_NAME);
         SecurityContext securityContext = mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
@@ -80,7 +75,7 @@ public class UserControllerTest {
         request.setSession(session);
         MockitoAnnotations.initMocks(this);
     }
-
+    
     private User createAdmin() {
     	Role adminRole = new Role();
     	adminRole.setId(1);
@@ -110,10 +105,8 @@ public class UserControllerTest {
 
     @Test
     public void testListUsersNoRemoteData() throws Exception {
-        assertEquals("userlist", userController.listUsers(model, request));
-        assertEquals(service.findAllUsers(), model.get("users"));
-        verify(service, atLeastOnce()).findAllUsers();
-        verify(service, atLeastOnce()).findAllUsers();
+        assertEquals("accessDenied", userController.listUsers(model, request));
+        assertEquals(null, model.get("users"));
     }
 
     @Test

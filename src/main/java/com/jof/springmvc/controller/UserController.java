@@ -71,6 +71,7 @@ public class UserController {
      */
     @RequestMapping(value = {"/admin/list"}, method = RequestMethod.GET)
     public String listUsers(ModelMap model, HttpServletRequest request) {
+    	if(!isRemoteUserAdmin(request)) return "accessDenied";
         List<User> users = userService.findAllUsersButMe((User)request.getSession().getAttribute("remoteUser"));
         model.addAttribute("users", users);
         return "userlist";
@@ -188,11 +189,7 @@ public class UserController {
      */
     @RequestMapping(value = {"/admin/edit-user-{username}"}, method = RequestMethod.GET)
     public String editUser(@PathVariable String username, ModelMap model, HttpServletRequest request) {
-    	boolean isAdmin = false;
-    	for(Role role : getRemoteUser(request).getRoles()) {
-    		if(role.getType().equals("ADMIN")) isAdmin = true;
-    	}
-    	if (!isAdmin) return "accessDenied";
+    	if(!isRemoteUserAdmin(request)) return "accessDenied";
         User user = userService.findByUserName(username);
         model.addAttribute("user", user);
         model.addAttribute("edit", true);
@@ -342,5 +339,15 @@ public class UserController {
     private User getRemoteUser(HttpServletRequest request) {
     	return (User) request.getSession().getAttribute("remoteUser");
 	}
+    
+    private boolean isRemoteUserAdmin(HttpServletRequest request) {
+    	if(getRemoteUser(request) != null) {
+	    	boolean isAdmin = false;
+	    	for(Role role : getRemoteUser(request).getRoles()) {
+	    		if(role.getType().equals("ADMIN")) isAdmin = true;
+	    	}
+	    	return isAdmin;
+	    } return false;
+    }
 
 }
