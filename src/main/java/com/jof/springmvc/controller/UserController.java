@@ -187,7 +187,12 @@ public class UserController {
      * This method will provide the medium to update an existing user.
      */
     @RequestMapping(value = {"/admin/edit-user-{username}"}, method = RequestMethod.GET)
-    public String editUser(@PathVariable String username, ModelMap model) {
+    public String editUser(@PathVariable String username, ModelMap model, HttpServletRequest request) {
+    	boolean isAdmin = false;
+    	for(Role role : getRemoteUser(request).getRoles()) {
+    		if(role.getType().equals("ADMIN")) isAdmin = true;
+    	}
+    	if (!isAdmin) return "accessDenied";
         User user = userService.findByUserName(username);
         model.addAttribute("user", user);
         model.addAttribute("edit", true);
@@ -328,10 +333,14 @@ public class UserController {
     }
 
     private void setRemoteUser(HttpServletRequest request) {
-    	if (request.getSession().getAttribute("remoteUser") == null && getPrincipal() != null) {
+    	if (getRemoteUser(request) == null && getPrincipal() != null) {
             User user = userService.findByUserName(getPrincipal());
             request.getSession().setAttribute("remoteUser", user);
         }
+	}
+    
+    private User getRemoteUser(HttpServletRequest request) {
+    	return (User) request.getSession().getAttribute("remoteUser");
 	}
 
 }
