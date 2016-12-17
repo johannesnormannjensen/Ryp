@@ -34,6 +34,8 @@ public class FriendServiceImpl implements FriendService {
         if (entity != null) {
             entity.setAccepted(friend.getAccepted());
             entity.setActive(friend.getActive());
+            entity.setAlpha_user(friend.getAlpha_user());
+            entity.setOmega_user(friend.getOmega_user());            
         }
     }
 
@@ -45,7 +47,7 @@ public class FriendServiceImpl implements FriendService {
     	updateFriend(friend);
     	
     	//we just set them as inactive
-       // dao.deleteByIds(alpha_id, omega_id);
+//        dao.deleteByIds(alpha_id, omega_id);
 
     }
 

@@ -19,14 +19,14 @@ public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements Frien
     @Override
     public Friend findFriendshipByIds(User id_alpha, User id_omega) {
 
-        Criteria criteria = createEntityCriteria().addOrder(Order.asc("alpha_user_id"));
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("id.alpha_user"));
         criteria.add( Restrictions.disjunction()
-                .add( Restrictions.eq("alpha_user_id", id_alpha ) )
-                .add( Restrictions.eq("omega_user_id", id_alpha ) )
+                .add( Restrictions.eq("id.alpha_user", id_alpha ) )
+                .add( Restrictions.eq("id.omega_user", id_alpha ) )
             );  
         criteria.add( Restrictions.disjunction()
-                .add( Restrictions.eq("alpha_user_id", id_omega ) )
-                .add( Restrictions.eq("omega_user_id", id_omega ) )
+                .add( Restrictions.eq("id.alpha_user", id_omega ) )
+                .add( Restrictions.eq("id.omega_user", id_omega ) )
             );  
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);// To avoid  duplicates.
 
@@ -43,8 +43,8 @@ public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements Frien
     
     public void deleteByIds(User alpha_user, User omega_user) {
         Criteria crit = createEntityCriteria();
-        crit.add(Restrictions.eq("alpha_user_id", alpha_user));
-        crit.add(Restrictions.eq("omega_user_id", omega_user));
+        crit.add(Restrictions.eq("id.alpha_user", alpha_user));
+        crit.add(Restrictions.eq("id.omega_user", omega_user));
         Friend friend = (Friend) crit.uniqueResult();
         delete(friend);
     }
@@ -54,8 +54,8 @@ public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements Frien
     public List<Friend> findAllFriends(User user) {
         Criteria criteria = createEntityCriteria();
         criteria.add( Restrictions.disjunction()
-                .add( Restrictions.eq("alpha_user_id", user ) )
-                .add( Restrictions.eq("omega_user_id", user ) )
+                .add( Restrictions.eq("id.alpha_user", user ) )
+                .add( Restrictions.eq("id.omega_user", user ) )
             );       
         criteria.add(Restrictions.eq("accepted", true));
         criteria.add(Restrictions.eq("active",true));
@@ -70,7 +70,7 @@ public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements Frien
 	@Override
 	public List<Friend> findAllIncomingFriendRequests(User user) {
 		 Criteria criteria = createEntityCriteria();
-	        criteria.add(Restrictions.eq("omega_user_id", user));
+	        criteria.add(Restrictions.eq("id.omega_user", user));
 	        criteria.add(Restrictions.eq("accepted", false));
 	        criteria.add(Restrictions.eq("active",true));
 	        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
@@ -84,7 +84,7 @@ public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements Frien
 	@Override
 	public List<Friend> findAllOutgoingFriendRequests(User user) {
 		 Criteria criteria = createEntityCriteria();
-	        criteria.add(Restrictions.eq("alpha_user_id", user));
+	        criteria.add(Restrictions.eq("id.alpha_user", user));
 	        criteria.add(Restrictions.eq("accepted", false));
 	        criteria.add(Restrictions.eq("active",true));
 	        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.

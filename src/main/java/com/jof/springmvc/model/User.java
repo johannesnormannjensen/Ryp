@@ -1,5 +1,7 @@
 package com.jof.springmvc.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -18,16 +20,25 @@ public class User implements Serializable {
 
 
     @Id
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @Column(name = "id", nullable = false, columnDefinition = "BIGINT(20)")
     private Long id;
+    /*
+    @OneToMany(mappedBy = "omega_user_id", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Friend> omega_user_id = new ArrayList<Friend>();
+    
+    
+    @OneToMany(mappedBy = "alpha_user_id", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Friend> alpha_user_id = new ArrayList<Friend>();   
+    
+    
 
-
-    @OneToMany(mappedBy = "source_user_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "source_user_id", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<Review>();
 
-    @OneToMany(mappedBy = "created_by", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "created_by", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<Comment>();
-
+*/
     @NotEmpty
     @Column(name = "username", unique = true, nullable = false)
     private String username;
@@ -133,12 +144,8 @@ public class User implements Serializable {
         this.removed = removed;
     }
 
-
-    public List<Review> getStudents() {
-        return reviews;
-    }
-
-    public void setStudents(List<Review> review) {
+   /*
+    public void setReviews(List<Review> review) {
         this.reviews = review;
     }
 
@@ -156,7 +163,45 @@ public class User implements Serializable {
         review.setSource_user_id(null);
         this.reviews.remove(review);
     }
+    
+    public void setAlphaUsers(List<Friend> review) {
+        this.alpha_user_id = review;
+    }
 
+
+    public List<Friend> getAlphaUsers() {
+        return alpha_user_id;
+    }
+
+    public void addAlphaUsers(Friend friend) {
+    	friend.setAlpha_user(this);
+    	alpha_user_id.add(friend);
+    }
+
+    public void removeAlphaUsers(Friend friend) {
+    	friend.setAlpha_user(null);
+        this.alpha_user_id.remove(friend);
+    }
+
+    
+    public void setOmegaUsers(List<Friend> friends) {
+        this.omega_user_id = friends;
+    }
+
+
+    public List<Friend> getOmegaUsers() {
+        return omega_user_id;
+    }
+
+    public void addOmegaUsers(Friend friend) {
+    	friend.setOmega_user(this);
+    	omega_user_id.add(friend);
+    }
+
+    public void removeOmegaUsers(Friend friend) {
+    	friend.setOmega_user(null);
+        this.omega_user_id.remove(friend);
+    }
 
     public List<Comment> getComments() {
         return comments;
@@ -171,7 +216,7 @@ public class User implements Serializable {
         comment.setCreated_by(null);
         this.comments.remove(comment);
     }
-
+*/
 
     @Override
     public int hashCode() {

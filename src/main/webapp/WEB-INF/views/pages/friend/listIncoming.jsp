@@ -19,9 +19,9 @@
             <c:forEach items="${users}" var="user">
                 <tr>
                     <td>${user.username}</td>
-                    <sec:authorize access="hasRole('USER') or hasRole('ADMIN')">
-                        <td><a href="<c:url value='/user/friend/deleteFriendship${user.id}' />" class="btn btn-danger">Decline friendship</a></td>
+                    <sec:authorize access="hasRole('USER') or hasRole('ADMIN')">                       
                         <td><a href="<c:url value='/user/friend/acceptFriendshipRequest${user.id}' />" class="btn btn-success">Accept friendship</a></td>
+                         <td><a href="<c:url value='/user/friend/deleteFriendship${user.id}' />" class="btn btn-danger">Decline friendship</a></td>
                     </sec:authorize>
                 </tr>
             </c:forEach>

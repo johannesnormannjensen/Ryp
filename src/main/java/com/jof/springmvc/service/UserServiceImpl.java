@@ -70,13 +70,13 @@ public class UserServiceImpl implements UserService {
 		List<User> users = new ArrayList<User>();
 
 		for (int i = 0; i < friends.size(); i++) {
-			User user = findById(friends.get(i).getAlpha_user_id());
+			User user = findById(friends.get(i).getAlpha_user().getId());
 
 			if (!user.getId().equals(disclude.getId())) {
 				users.add(user);
 			}
 			
-			user = findById(friends.get(i).getOmega_user_id());
+			user = findById(friends.get(i).getOmega_user().getId());
 			Long  a = user.getId();
 			Long b = disclude.getId();
 			

@@ -101,10 +101,29 @@ public class ReviewController {
 		
 		List<CommentForm> commentForms =commentService.findAllCommentFormsForReview(review);
 
+		CommentForm cf = new CommentForm();
+		
+		
 		model.addAttribute("review", review);
 		model.addAttribute("commentForms",commentForms);
+		model.addAttribute("commentForm", cf);
 
 		return "review";
+	}
+	
+	@RequestMapping(value = { "/review{reviewId}" }, method = RequestMethod.POST)
+	public String createComment(@PathVariable String reviewId, CommentForm ncf , HttpServletRequest request, ModelMap model) {
+
+		Comment comment = new Comment();
+		
+		comment.setActive(true);
+		comment.setBody(ncf.getBody());
+		comment.setCreated_by((User)request.getSession().getAttribute("remoteUser"));
+		comment.setReview_id(reviewService.findById(Integer.valueOf(reviewId)));
+		
+		commentService.saveComment(comment);
+
+		return "redirect:/user/reviews/review"+reviewId;
 	}
 
 	/**
@@ -113,7 +132,6 @@ public class ReviewController {
 	 */
 	@RequestMapping(value = { "/deleteReview{reviewId}" }, method = RequestMethod.GET)
 	public String deleteReviewById(@PathVariable String reviewId, HttpServletRequest request) {
-		// DELETE FRIENDSHIP HERE
 
 		User remoteUser = new User();
 
@@ -176,5 +194,4 @@ public class ReviewController {
 
 		return "createReview";
 	}
-
 }

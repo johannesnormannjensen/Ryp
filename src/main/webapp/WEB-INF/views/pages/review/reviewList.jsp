@@ -15,8 +15,8 @@
         </thead>
         <tbody>
         <c:forEach items="${reviews}" var="review">
-            <tr>
-                <td>${review.title}</td>
+            <tr class="alert alert-${review.positive ? "success":"danger"}">
+                <td >${review.title}</td>
                 <sec:authorize access="hasRole('USER') or hasRole('ADMIN')">
                		<td><a href="<c:url value='/user/reviews/review${review.id}' />" class="btn btn-success">See Details</a></td>
                     <td><a href="<c:url value='/user/reviews/deleteReview${review.id}' />" class="btn btn-danger">Delete Review</a></td>

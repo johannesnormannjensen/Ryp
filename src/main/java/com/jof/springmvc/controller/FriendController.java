@@ -1,11 +1,9 @@
 package com.jof.springmvc.controller;
 
-import com.jof.springmvc.model.Friend;
-import com.jof.springmvc.model.User;
-import com.jof.springmvc.service.FriendService;
-import com.jof.springmvc.service.RiotApiService;
-import com.jof.springmvc.service.RoleService;
-import com.jof.springmvc.service.UserService;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
@@ -16,13 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import com.jof.springmvc.model.Friend;
+import com.jof.springmvc.model.User;
+import com.jof.springmvc.service.FriendService;
+import com.jof.springmvc.service.RiotApiService;
+import com.jof.springmvc.service.RoleService;
+import com.jof.springmvc.service.UserService;
 
 @Controller
 @RequestMapping("/user/friend")
@@ -110,22 +107,55 @@ public class FriendController {
     
     @RequestMapping(value = {"/sendFriendshipRequest{omegaId}"}, method = RequestMethod.GET)
     public String sendFriendRequest(@PathVariable String omegaId, HttpServletRequest request) {
-        // DELETE FRIENDSHIP HERE
     	
     	 User remoteUser = new User();
 
          if (request.getSession().getAttribute("remoteUser") != null) {
              remoteUser = (User) request.getSession().getAttribute("remoteUser");
          }
-    	
-         Friend friend = new Friend();
          
-         friend.setAlpha_user(remoteUser);
-         friend.setOmega_user(userService.findById(Long.valueOf(omegaId)));
-         friend.setAccepted(false);
-         friend.setActive(true);
-                  
-    	friendService.saveFriend(friend);
+         Friend friend = friendService.findFriendshipByIds(remoteUser, userService.findById(Long.valueOf(omegaId)));         
+         
+         if(friend != null)
+         {        	 
+        	 if(friend.getActive() && friend.getAccepted())// || friend.getActive() && !friend.getAccepted())
+        	 {
+        		 return "redirect:/user/friend/list";
+        	 }
+        	 
+        	 if(friend.getActive() && !friend.getAccepted())
+        	 {
+        		 if(friend.getAlpha_user().getId().equals(remoteUser.getId()))
+        		 {
+        			 return "redirect:/user/friend/listSent";
+        		 }
+        		 else
+        		 {
+        			 return "redirect:/user/friend/listIncoming";
+        		 }        		
+        	 }
+        	 
+        	 if(!friend.getActive())
+        	 {
+        		 friend.setActive(true);
+            	 friend.setAccepted(false);
+            	 friend.setAlpha_user(remoteUser);
+            	 friend.setOmega_user(userService.findById(Long.valueOf(omegaId)));
+            	 
+            	 friendService.updateFriend(friend);
+        	 }
+        	 
+         }
+         else
+         {
+        	 friend = new Friend();
+        	 friend.setAlpha_user(remoteUser);
+             friend.setOmega_user(userService.findById(Long.valueOf(omegaId)));
+             friend.setAccepted(false);
+             friend.setActive(true);
+             
+             friendService.saveFriend(friend);
+         }              
     	
         return "redirect:/user/friend/listSent";
     }
@@ -155,7 +185,9 @@ public class FriendController {
             remoteUser = (User) request.getSession().getAttribute("remoteUser");
         }
         
-        List<User> users = userService.getFriendsAsUsers(friendService.findAllOutgoingFriendRequests(remoteUser),remoteUser);
+        
+        List<Friend> friends = friendService.findAllOutgoingFriendRequests(remoteUser);
+        List<User> users = userService.getFriendsAsUsers(friends,remoteUser);
         
         model.addAttribute("users", users);
 
