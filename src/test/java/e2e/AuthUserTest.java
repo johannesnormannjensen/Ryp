@@ -30,7 +30,7 @@ public class AuthUserTest {
         final HtmlForm form = loginPage.getForms().get(0);
         final HtmlTextInput username = form.getInputByName("username");
         final HtmlPasswordInput pwd = form.getInputByName("password");
-        final HtmlSubmitInput button = form.getInputByValue("Log In");
+        final HtmlSubmitInput button = form.getInputByValue("Log in");
 
         username.setValueAttribute("FigaPl");
         pwd.setValueAttribute("test1234");
