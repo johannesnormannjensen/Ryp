@@ -28,6 +28,7 @@ import net.rithms.riot.dto.Summoner.Summoner;
 
 /**
  * Created by Ferenc_S on 12/10/2016.
+ * Edited by Johannes
  */
 
 public class RiotApiServiceImplTest {

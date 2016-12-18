@@ -1,17 +1,21 @@
 package com.jof.springmvc.controller;
 
-import com.jof.springmvc.model.Match;
-import com.jof.springmvc.model.Role;
-import com.jof.springmvc.model.User;
-import com.jof.springmvc.service.RiotApiService;
-import com.jof.springmvc.service.RoleService;
-import com.jof.springmvc.service.UserService;
-import com.jof.springmvc.util.region.RegionUtil;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+import java.util.Set;
 
-import net.rithms.riot.api.RiotApiException;
-import net.rithms.riot.constant.Region;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,19 +26,31 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.util.*;
+import com.jof.springmvc.model.Match;
+import com.jof.springmvc.model.Role;
+import com.jof.springmvc.model.User;
+import com.jof.springmvc.service.RiotApiService;
+import com.jof.springmvc.service.RoleService;
+import com.jof.springmvc.service.UserService;
+import com.jof.springmvc.util.region.RegionUtil;
+
+import net.rithms.riot.api.RiotApiException;
+import net.rithms.riot.constant.Region;
 
 
 @Controller
 @RequestMapping("/")
 @SessionAttributes("roles")
-public class UserController {
+public class UserController extends RypController {
 
+	static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	
     @Autowired
     UserService userService;
 
@@ -60,17 +76,17 @@ public class UserController {
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String reviews(ModelMap model, HttpServletRequest request) {
     	setRemoteUser(request);
-       
-       
         return "redirect:/user/reviews/list";
     }
 
 	/**
      * This method will list all existing users.
+	 * @throws IOException 
+	 * @throws AccessDeniedException 
      */
     @RequestMapping(value = {"/admin/list"}, method = RequestMethod.GET)
-    public String listUsers(ModelMap model, HttpServletRequest request) {
-    	if(!isRemoteUserAdmin(request)) return "accessDenied";
+    public String listUsers(ModelMap model, HttpServletRequest request) throws IOException {
+    	isRemoteAdmin(request); 
         List<User> users = userService.findAllUsersButMe((User)request.getSession().getAttribute("remoteUser"));
         model.addAttribute("users", users);
         return "userlist";
@@ -129,9 +145,11 @@ public class UserController {
 
     /**
      * This method will provide the medium for users to be registered
+     * @throws AccessDeniedException 
      */
     @RequestMapping(value = {"/admin/newUser"}, method = RequestMethod.GET)
     public String editNewUser(ModelMap model, HttpServletRequest request) {
+    	isRemoteAdmin(request); 
         User user = new User();
         // generate user for testing
 //        String s = UUID.randomUUID().toString();
@@ -147,10 +165,12 @@ public class UserController {
     /**
      * This method will be called on form submission, handling POST request for
      * saving user in database. It also validates the user input
+     * @throws AccessDeniedException 
      */
     @RequestMapping(value = {"/admin/newUser"}, method = RequestMethod.POST)
     public String createNewUser(@Valid User user, BindingResult result,
-                           ModelMap model) {
+                           ModelMap model, HttpServletRequest request) {
+    	isRemoteAdmin(request); 
     	Region region = null;
     	for (Region regionType : Region.values()) {
     		if(regionType.name().equals(user.getRegion())) region = regionType;
@@ -185,10 +205,11 @@ public class UserController {
 
     /**
      * This method will provide the medium to update an existing user.
+     * @throws AccessDeniedException 
      */
     @RequestMapping(value = {"/admin/edit-user-{username}"}, method = RequestMethod.GET)
     public String editUser(@PathVariable String username, ModelMap model, HttpServletRequest request) {
-    	if(!isRemoteUserAdmin(request)) return "accessDenied";
+    	isRemoteAdmin(request); 
         User user = userService.findByUserName(username);
         model.addAttribute("user", user);
         model.addAttribute("edit", true);
@@ -198,11 +219,12 @@ public class UserController {
     /**
      * This method will be called on form submission, handling POST request for
      * updating user in database. It also validates the user input
+     * @throws AccessDeniedException 
      */
     @RequestMapping(value = {"/admin/edit-user-{username}"}, method = RequestMethod.POST)
     public String updateUser(@Valid User user, BindingResult result,
-                             ModelMap model, @PathVariable String username) {
-
+                             ModelMap model, @PathVariable String username, HttpServletRequest request) {
+    	isRemoteAdmin(request); 
         if (result.hasErrors()) {
             return "newUser";
         }
@@ -223,9 +245,11 @@ public class UserController {
 
     /**
      * This method will delete an user by it's username value.
+     * @throws AccessDeniedException 
      */
     @RequestMapping(value = {"/admin/delete-user-{username}"}, method = RequestMethod.GET)
-    public String deleteUser(@PathVariable String username) {
+    public String deleteUser(@PathVariable String username, HttpServletRequest request) {
+    	isRemoteAdmin(request); 
         userService.deleteUserByUsername(username);
         return "redirect:/list";
     }
@@ -335,18 +359,4 @@ public class UserController {
         }
 	}
     
-    private User getRemoteUser(HttpServletRequest request) {
-    	return (User) request.getSession().getAttribute("remoteUser");
-	}
-    
-    private boolean isRemoteUserAdmin(HttpServletRequest request) {
-    	if(getRemoteUser(request) != null) {
-	    	boolean isAdmin = false;
-	    	for(Role role : getRemoteUser(request).getRoles()) {
-	    		if(role.getType().equals("ADMIN")) isAdmin = true;
-	    	}
-	    	return isAdmin;
-	    } return false;
-    }
-
 }
