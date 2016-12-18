@@ -73,37 +73,34 @@ public class UserControllerTest {
 
     @Before
     public void setUp() {
-    	
         authentication = mock(Authentication.class);
         when(authentication.getPrincipal()).thenReturn(ADMIN_NAME);
         SecurityContext securityContext = mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
-        
         bindingResult = mock(BindingResult.class);
         user = createAdmin();
         session = new MockHttpSession();
         request = new MockHttpServletRequest();
         request.setSession(session);
         MockitoAnnotations.initMocks(this);
-        
-        
-        final ExceptionHandlerExceptionResolver exceptionHandlerExceptionResolver = new ExceptionHandlerExceptionResolver();
-
+        setExceptionHandlers();
+    }
+    
+    private void setExceptionHandlers() {
+    	final ExceptionHandlerExceptionResolver exceptionHandlerExceptionResolver = new ExceptionHandlerExceptionResolver();
         //here we need to setup a dummy application context that only registers the GlobalControllerExceptionHandler
         final StaticApplicationContext applicationContext = new StaticApplicationContext();
         applicationContext.registerBeanDefinition("advice", new RootBeanDefinition(RypController.class, null, null));
-
         //set the application context of the resolver to the dummy application context we just created
         exceptionHandlerExceptionResolver.setApplicationContext(applicationContext);
-
         //needed in order to force the exception resolver to update it's internal caches
         exceptionHandlerExceptionResolver.afterPropertiesSet();
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).setHandlerExceptionResolvers(exceptionHandlerExceptionResolver).build();
-    }
-    
-    private User createAdmin() {
+	}
+
+	private User createAdmin() {
     	Role adminRole = new Role();
     	adminRole.setId(1);
     	adminRole.setType("ADMIN");
