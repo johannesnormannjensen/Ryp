@@ -22,9 +22,11 @@ import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -59,51 +61,39 @@ public class UserControllerTest {
     @Spy
     ModelMap model;
     
-    MockMvc mockMvc;
-
     @Mock
     Authentication authentication;
     @Mock
     BindingResult bindingResult;
 
     User user;
-    
+    SecurityContext securityContext;
     MockHttpSession session;
     MockHttpServletRequest request;
 
     @Before
     public void setUp() {
-        authentication = mock(Authentication.class);
-        when(authentication.getPrincipal()).thenReturn(ADMIN_NAME);
-        SecurityContext securityContext = mock(SecurityContext.class);
+    	authentication = mock(Authentication.class);
+        when(authentication.getPrincipal()).thenReturn("Anonymous");
+        securityContext = mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
+        
         bindingResult = mock(BindingResult.class);
         user = createAdmin();
         session = new MockHttpSession();
         request = new MockHttpServletRequest();
         request.setSession(session);
         MockitoAnnotations.initMocks(this);
-        setExceptionHandlers();
     }
     
-    private void setExceptionHandlers() {
-    	final ExceptionHandlerExceptionResolver exceptionHandlerExceptionResolver = new ExceptionHandlerExceptionResolver();
-        //here we need to setup a dummy application context that only registers the GlobalControllerExceptionHandler
-        final StaticApplicationContext applicationContext = new StaticApplicationContext();
-        applicationContext.registerBeanDefinition("advice", new RootBeanDefinition(RypController.class, null, null));
-        //set the application context of the resolver to the dummy application context we just created
-        exceptionHandlerExceptionResolver.setApplicationContext(applicationContext);
-        //needed in order to force the exception resolver to update it's internal caches
-        exceptionHandlerExceptionResolver.afterPropertiesSet();
-
-        mockMvc = MockMvcBuilders.standaloneSetup(userController).setHandlerExceptionResolvers(exceptionHandlerExceptionResolver).build();
-	}
-
+    /*
+     * Creates an admin
+     */
 	private User createAdmin() {
     	Role adminRole = new Role();
     	adminRole.setId(1);
-    	adminRole.setType("ADMIN");
+    	adminRole.setType(ROLE_ADMIN);
     	
     	User adminUser = new User();
         adminUser.setId(ID);
@@ -112,116 +102,181 @@ public class UserControllerTest {
         adminUser.setPassword(ADMIN_PASSWORD);
         adminUser.setRoles(new HashSet<Role>(Arrays.asList(adminRole)));
         adminUser.setRegion(REGION_EUW);
+        
         return adminUser;
 	}
     
-    private void asUser() {
+	 /*
+     * Creates a regular user.
+     */
+    private User createUser() {
     	Role userRole = new Role();
         userRole.setId(1);
-        userRole.setType("USER");
-    	user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        userRole.setType(ROLE_USER);
+        
+        User userUser = new User();
+        userUser.setId(ID+1);
+        userUser.setUsername(USER_NAME);
+        userUser.setEmail(USER_EMAIL);
+        userUser.setPassword(USER_PASSWORD);
+        userUser.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        
+        return userUser;
     }
-
-	/*
-     * Controller to XML Mapping and access security tests
-     */
     
-    // List Users
-    @Test
-    public void testListUsers() throws Exception {
-        request.getSession().setAttribute("remoteUser", user);
-        assertEquals("userlist", userController.listUsers(model, request));
-        assertEquals(service.findAllUsers(), model.get("users"));
-        verify(service, atLeastOnce()).findAllUsers();
-        verify(service, atLeastOnce()).findAllUsers();
+    /*
+     * Sets correct user type to user field and as session attribute.
+     */
+    private void asRole(String roleType) {
+		switch (roleType) {
+		case ROLE_ADMIN:
+			user = createAdmin();
+			break;
+		case ROLE_USER:
+			user = createUser();
+			break;
+		default:
+			break;
+		}
+		request.getSession().setAttribute("remoteUser", user);
     }
 
-    public void testListUsersNoRemoteData() throws Exception {
-        assertEquals("accessDenied", userController.listUsers(model, request));
-        assertEquals(null, model.get("users"));
-    }
+/*
+ * Controller to XML Mapping and access security tests
+ */
+    
+    
+    /*
+     * Test access level for anonymous and assert correct return values
+     */
 
-    // Register User 
     @Test
-    public void testRegisterGet() throws Exception {
+    public void testAnonymousGetLogin() throws Exception {
+    	AuthenticationTrustResolverImpl authenticationTrustResolver = mock(AuthenticationTrustResolverImpl.class);
+    	when(authenticationTrustResolver.isAnonymous(authentication)).thenReturn(true);
+    	userController.authenticationTrustResolver = authenticationTrustResolver;
+    	when(userController.isCurrentAuthenticationAnonymous()).thenReturn(true);
+    	assertEquals("login", userController.loginPage(request));
+    }
+    
+    @Test
+    public void testAnonymousGetRegister() throws Exception {
     	assertEquals("register", userController.registerUser(model, request));
     	assertNotNull(model.get("user"));
     	assertEquals(null, ((User) model.get("user")).getId());
     }
     
     @Test
-    public void testRegisterPost() throws Exception {
-    	user.setUsername(UUID.randomUUID().toString()); // something that's not taken
-    	assertEquals("login", userController.registerUser(user, bindingResult, model));
+    public void testAnonymousPostRegister() throws Exception {
+    	User newUser = new User();
+    	newUser.setId(13337L);
+    	newUser.setUsername(UUID.randomUUID().toString()); // something that's not taken
+    	newUser.setRegion(REGION_EUW);
+    	assertEquals("login", userController.registerUser(newUser, bindingResult, model));
     }
     
     @Test
-    public void testRegisterPostNoRegion() throws Exception {
-    	user.setUsername("ThisNameIsProbablyNotTaken");
-    	user.setRegion(null);
-    	assertEquals("register", userController.registerUser(user, bindingResult, model));
+    public void testAnonymousPostRegisterNoRegion() throws Exception {
+    	User newUser = new User();
+    	newUser.setUsername("ThisNameIsProbablyNotTaken");
+    	newUser.setRegion(null);
+    	assertEquals("register", userController.registerUser(newUser, bindingResult, model));
     }
     
     
-    // Edit User
+    /*
+     * Test access level for USER role and assert correct return values
+     */
+    
     @Test
-    public void testEditUserGetAsAdmin() throws Exception {
-    	request.getSession().setAttribute("remoteUser", user);
-    	assertEquals("newUser", userController.editUser("LeagueGuy1", model, request));
+    public void testGetUserLoggedInLogin() throws Exception {
+    	asRole(ROLE_USER);
+    	AuthenticationTrustResolverImpl authenticationTrustResolver = mock(AuthenticationTrustResolverImpl.class);
+    	when(authenticationTrustResolver.isAnonymous(authentication)).thenReturn(true);
+    	userController.authenticationTrustResolver = authenticationTrustResolver;
+    	assertEquals("redirect:/", userController.loginPage(request));
     }
     
-    public void testEditUserGetAsUser() throws Exception {
-    	asUser();
-    	request.getSession().setAttribute("remoteUser", user);
+    @Test
+    public void testUserGetLogout() throws Exception {
+    	asRole(ROLE_USER);
+    	userController.persistentTokenBasedRememberMeServices = mock(PersistentTokenBasedRememberMeServices.class);
+    	assertEquals("redirect:/login?logout", userController.logoutPage(request, null));
+    }
+    
+    @Test (expected=AccessDeniedException.class)
+    public void testUserGetListUsers() throws Exception {
+    	asRole(ROLE_USER);
+    	assertEquals("accessDenied", userController.listUsers(model, request));
+    }
+    
+    @Test (expected=AccessDeniedException.class)
+    public void testUserGetEditUser() throws Exception {
+    	asRole(ROLE_USER);
     	assertEquals("accessDenied", userController.editUser("LeagueGuy1", model, request));
     }
-
-    // Update
-    @Test
-    public void testUpdateUserPostAsAdmin() throws Exception {
-    	request.getSession().setAttribute("remoteUser", user);
-    	User userUser = new User();
-    	userUser.setId(1338L);
-    	userUser.setUsername("LeagueGuy1");
-    	assertEquals("redirect:/list?createdUser=LeagueGuy1", userController.updateUser(userUser, bindingResult, model, "LeagueGuy1", request));
-    }
     
-    public void testUpdateUserPostAsUser() throws Exception {
-    	asUser();
-    	request.getSession().setAttribute("remoteUser", user);
+    @Test (expected=AccessDeniedException.class)
+    public void testUserPostUpdateUser() throws Exception {
+    	asRole(ROLE_USER);
     	User userUser = new User();
     	userUser.setId(1338L);
     	userUser.setUsername("LeagueGuy1");
     	assertEquals("accessDenied", userController.updateUser(userUser, bindingResult, model, "LeagueGuy1", request));
     }
     
+    @Test (expected=AccessDeniedException.class)
+    public void testUserGetDeleteUser() throws Exception {
+    	asRole(ROLE_USER);
+    	User userUser = new User();
+    	userUser.setId(1338L);
+    	userUser.setUsername("LeagueGuy1");
+    	assertEquals("accessDenied", userController.deleteUser("LeagueGuy1", request));
+    }
+
+    
+    /*
+     * Test access level for ADMIN role and assert correct return values
+     */
     @Test
-    public void updateUser() throws Exception {
-    	
+    public void testAdminGetListUsers() throws Exception {
+    	asRole(ROLE_ADMIN);
+    	assertEquals("userlist", userController.listUsers(model, request));
+        assertEquals(service.findAllUsers(), model.get("users"));
+        verify(service, atLeastOnce()).findAllUsers();
+        verify(service, atLeastOnce()).findAllUsers();
     }
 
     @Test
-    public void deleteUser() throws Exception {
+    public void testAdminGetEditUser() throws Exception {
+    	asRole(ROLE_ADMIN);
+    	assertEquals("newUser", userController.editUser("LeagueGuy1", model, request));
     }
-
+    
     @Test
-    public void initializeProfiles() throws Exception {
-
+    public void testAdminPostUpdateUser() throws Exception {
+    	asRole(ROLE_ADMIN);
+    	User userUser = new User();
+    	userUser.setId(1338L);
+    	userUser.setUsername("LeagueGuy1");
+    	assertEquals("redirect:/list?createdUser=LeagueGuy1", userController.updateUser(userUser, bindingResult, model, "LeagueGuy1", request));
     }
-
+    
     @Test
-    public void accessDeniedPage() throws Exception {
-
+    public void testAdminGetDeleteUser() throws Exception {
+    	asRole(ROLE_ADMIN);
+    	User userUser = new User();
+    	userUser.setId(1338L);
+    	userUser.setUsername("LeagueGuy1");
+    	assertEquals("redirect:/list", userController.deleteUser("LeagueGuy1", request));
     }
-
+    
     @Test
-    public void loginPage() throws Exception {
-
+    public void testAdminGetLogout() throws Exception {
+    	asRole(ROLE_ADMIN);
+    	userController.persistentTokenBasedRememberMeServices = mock(PersistentTokenBasedRememberMeServices.class);
+    	assertEquals("redirect:/login?logout", userController.logoutPage(request, null));
     }
-
-    @Test
-    public void logoutPage() throws Exception {
-
-    }
+    
 
 }

@@ -86,7 +86,7 @@ public class UserController extends RypController {
      */
     @RequestMapping(value = {"/admin/list"}, method = RequestMethod.GET)
     public String listUsers(ModelMap model, HttpServletRequest request) throws IOException {
-    	isRemoteAdmin(request); 
+    	validateRemoteAdmin(request); 
         List<User> users = userService.findAllUsersButMe((User)request.getSession().getAttribute("remoteUser"));
         model.addAttribute("users", users);
         return "userlist";
@@ -149,7 +149,7 @@ public class UserController extends RypController {
      */
     @RequestMapping(value = {"/admin/newUser"}, method = RequestMethod.GET)
     public String editNewUser(ModelMap model, HttpServletRequest request) {
-    	isRemoteAdmin(request); 
+    	validateRemoteAdmin(request); 
         User user = new User();
         // generate user for testing
 //        String s = UUID.randomUUID().toString();
@@ -170,7 +170,7 @@ public class UserController extends RypController {
     @RequestMapping(value = {"/admin/newUser"}, method = RequestMethod.POST)
     public String createNewUser(@Valid User user, BindingResult result,
                            ModelMap model, HttpServletRequest request) {
-    	isRemoteAdmin(request); 
+    	validateRemoteAdmin(request); 
     	Region region = null;
     	for (Region regionType : Region.values()) {
     		if(regionType.name().equals(user.getRegion())) region = regionType;
@@ -209,7 +209,7 @@ public class UserController extends RypController {
      */
     @RequestMapping(value = {"/admin/edit-user-{username}"}, method = RequestMethod.GET)
     public String editUser(@PathVariable String username, ModelMap model, HttpServletRequest request) {
-    	isRemoteAdmin(request); 
+    	validateRemoteAdmin(request); 
         User user = userService.findByUserName(username);
         model.addAttribute("user", user);
         model.addAttribute("edit", true);
@@ -224,7 +224,7 @@ public class UserController extends RypController {
     @RequestMapping(value = {"/admin/edit-user-{username}"}, method = RequestMethod.POST)
     public String updateUser(@Valid User user, BindingResult result,
                              ModelMap model, @PathVariable String username, HttpServletRequest request) {
-    	isRemoteAdmin(request); 
+    	validateRemoteAdmin(request); 
         if (result.hasErrors()) {
             return "newUser";
         }
@@ -249,18 +249,9 @@ public class UserController extends RypController {
      */
     @RequestMapping(value = {"/admin/delete-user-{username}"}, method = RequestMethod.GET)
     public String deleteUser(@PathVariable String username, HttpServletRequest request) {
-    	isRemoteAdmin(request); 
+    	validateRemoteAdmin(request); 
         userService.deleteUserByUsername(username);
         return "redirect:/list";
-    }
-
-
-    /**
-     * This method will provide Role list to views
-     */
-    @ModelAttribute("roles")
-    public List<Role> initializeProfiles() {
-        return roleService.findAll();
     }
 
     /**
@@ -332,7 +323,7 @@ public class UserController extends RypController {
     /**
      * This method returns true if users is already authenticated [logged-in], else false.
      */
-    private boolean isCurrentAuthenticationAnonymous() {
+    protected boolean isCurrentAuthenticationAnonymous() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authenticationTrustResolver.isAnonymous(authentication);
     }
@@ -340,7 +331,6 @@ public class UserController extends RypController {
     /**
      * This methods checks if the summoner has a runepage called "RYP"
      */
-
     private void validateSummonerRunePage(Region region, BindingResult result, String username) {
         try {
             long l = riotApiService.getSummonerIdByName(Region.EUNE, username);
@@ -359,4 +349,11 @@ public class UserController extends RypController {
         }
 	}
     
+    /**
+     * This method will provide Role list to views
+     */
+    @ModelAttribute("roles")
+    public List<Role> initializeProfiles() {
+        return roleService.findAll();
+    }
 }

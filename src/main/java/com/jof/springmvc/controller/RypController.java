@@ -26,7 +26,7 @@ public class RypController {
 		return (User) request.getSession().getAttribute("remoteUser");
 	}
 
-	public static void isRemoteAdmin(HttpServletRequest request) {
+	public static void validateRemoteAdmin(HttpServletRequest request) {
 		boolean isAdmin = false;
 		String message = null;
 		if (getRemoteUser(request) != null) {

@@ -8,6 +8,7 @@ import com.jof.springmvc.util.region.RegionUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import org.mockito.Spy;
@@ -17,6 +18,9 @@ import org.mockito.Spy;
  */
 public class MockUserService implements UserService {
 	public static final Long ID = 1337L;
+	
+	public static final String ROLE_USER = "USER";
+	public static final String ROLE_ADMIN = "ADMIN";
 	
 	public static final String ADMIN_NAME = "AdminGuy";
 	public static final String ADMIN_EMAIL = "admin@player.com";
@@ -42,9 +46,9 @@ public class MockUserService implements UserService {
         userRole.setType("ADMIN");
 
         // adding simple users.. pff!
-        for (int i = 0; i < 4; i++) {
+        for (int i = 1; i < 5; i++) {
             user = new User();
-            user.setId(Long.valueOf(i) + ID);
+            user.setId(ID + Long.valueOf(i));
             user.setUsername(USER_NAME + i);
             user.setEmail(i + USER_EMAIL);
             user.setPassword(USER_PASSWORD);
@@ -91,10 +95,13 @@ public class MockUserService implements UserService {
 
     @Override
     public void deleteUserByUsername(String username) {
-        for (User user : users) {
-            if (user.getUsername() != null && user.getUsername().equals(username))
-                users.remove(user);
-        }
+    	Iterator<User> iter = users.iterator();
+    	while (iter.hasNext()) {
+    	    User user = iter.next();
+    	    if (user.getUsername() != null && user.getUsername().equals(username)) {
+    	    	iter.remove();
+    	    }
+    	}
     }
 
     @Override
