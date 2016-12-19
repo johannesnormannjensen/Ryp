@@ -6,3 +6,5 @@ RateYourPeers.iml
 .settings/
 .project
 .tern-project
+src/main/resources/applicationprod.properties
+src/main/resources/applicationtest.properties

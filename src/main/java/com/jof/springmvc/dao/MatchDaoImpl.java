@@ -5,12 +5,14 @@ import com.jof.springmvc.model.Match;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by Ferenc_S on 12/15/2016.
  */
+@Repository("matchDao")
 public class MatchDaoImpl extends AbstractDao<Long, Match> implements MatchDao {
 
     @Override

@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Ferenc_S on 12/15/2016.
  */
 @Entity
-@Table(name = "game")
+@Table(name = "game") // MySQL is not exceptionally happy when one tries to name a table a keyword
 public class Match implements Serializable, Comparable {
     @Id
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -31,7 +31,7 @@ public class Match implements Serializable, Comparable {
 
     @NotEmpty
     @Column(name = "winner_team_id", nullable = false)
-    private int winnerTeamId;
+    private Integer winnerTeamId;
 
     public Long getId() {
         return id;

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.jof.springmvc.service.MatchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,6 @@ import com.jof.springmvc.model.User;
 import com.jof.springmvc.service.RiotApiService;
 import com.jof.springmvc.service.RoleService;
 import com.jof.springmvc.service.UserService;
-import com.jof.springmvc.util.PropertiesConfig;
 import com.jof.springmvc.util.region.RegionUtil;
 
 import net.rithms.riot.api.RiotApiException;
@@ -58,6 +58,9 @@ public class UserController extends RypController {
 
     @Autowired
     RiotApiService riotApiService;
+
+    @Autowired
+    MatchService matchService;
 
     @Autowired
     RoleService roleService;
@@ -290,7 +293,7 @@ public class UserController extends RypController {
         try {
             User remoteUser = (User) request.getSession().getAttribute("remoteUser");
             List<Match> matches =  riotApiService.getRecentGames(remoteUser.getId(), remoteUser.getUsername());
-
+            matchService.saveAll(matches);
             request.setAttribute("matches", matches);
             request.setAttribute("playerId", remoteUser.getId());
         } catch (RiotApiException e) {

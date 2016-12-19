@@ -18,7 +18,6 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan({"com.jof.springmvc.configuration"})
-@PropertySource(value = {"classpath:application.properties"})
 public class HibernateConfiguration {
 
     @Autowired

@@ -14,19 +14,13 @@ import java.util.List;
  * Created by Ferenc_S on 12/10/2016.
  */
 @Service("riotApiService")
-@Profile("!prod")
+@Profile("test")
 public class RiotApiServiceImplTest implements RiotApiService {
     public RiotApiServiceImplTest() {
-        int a = 2;
-        int b = 2 - a;
-        int c = b - a;
     }
+
     @PostConstruct
     private void init() {
-
-        int a = 2;
-        int b = 2 - a;
-        int c = b - a;
     }
 
     @Override
