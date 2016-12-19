@@ -1,9 +1,8 @@
 package com.jof.springmvc.service;
 
-import com.jof.springmvc.model.Friend;
+import com.jof.springmvc.model.Friendship;
 import com.jof.springmvc.model.Role;
 import com.jof.springmvc.model.User;
-import com.jof.springmvc.util.region.RegionUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +10,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import org.mockito.Spy;
 
 /**
  * Created by Ferenc_S on 12/13/2016.
@@ -117,7 +115,7 @@ public class MockUserService implements UserService {
     }
 
 	@Override
-	public List<User> getFriendsAsUsers(List<Friend> friends, User disclude) {
+	public List<User> getFriendsAsUsers(List<Friendship> friends, User disclude) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,7 +1,7 @@
 package com.jof.springmvc.dao;
 
-import com.jof.springmvc.model.Comment;
-import com.jof.springmvc.model.Review;
+import java.sql.Date;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
-import java.util.List;
+import com.jof.springmvc.model.Comment;
+import com.jof.springmvc.model.Review;
 
 
 @Repository("commentDao")
@@ -46,6 +46,7 @@ public class CommentDaoImpl extends AbstractDao<Integer, Comment> implements Com
         delete(comment);
     }
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Comment> findCommentsForReviewFromTo(int review_id, Date from, Date to) {
 		 Criteria criteria = createEntityCriteria().addOrder(Order.asc("created_at"));

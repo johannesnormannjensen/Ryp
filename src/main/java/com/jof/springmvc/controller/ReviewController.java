@@ -2,13 +2,11 @@ package com.jof.springmvc.controller;
 
 import com.jof.springmvc.form.CommentForm;
 import com.jof.springmvc.form.ReviewForm;
-import com.jof.springmvc.model.Friend;
 import com.jof.springmvc.model.Review;
 import com.jof.springmvc.model.Role;
 import com.jof.springmvc.model.Comment;
 import com.jof.springmvc.model.User;
 import com.jof.springmvc.service.CommentService;
-import com.jof.springmvc.service.FriendService;
 import com.jof.springmvc.service.ReviewService;
 import com.jof.springmvc.service.RiotApiService;
 import com.jof.springmvc.service.RoleService;
@@ -75,6 +73,8 @@ public class ReviewController {
 
 		List<Review> reviews = reviewService.findAllReviewByUser(remoteUser);
 
+		userService.callStoredProcedureTest();
+		
 		model.addAttribute("reviews", reviews);
 
 		return "reviewList";

@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.jof.springmvc.model.Friend;
+import com.jof.springmvc.model.Friendship;
 import com.jof.springmvc.model.User;
-import com.jof.springmvc.service.FriendService;
+import com.jof.springmvc.service.FriendshipService;
 import com.jof.springmvc.service.RiotApiService;
 import com.jof.springmvc.service.RoleService;
 import com.jof.springmvc.service.UserService;
@@ -29,7 +29,7 @@ public class FriendController {
     UserService userService;
 
     @Autowired
-    FriendService friendService;
+    FriendshipService friendService;
 
     @Autowired
     RoleService roleService;
@@ -96,7 +96,7 @@ public class FriendController {
     	
          User alpha = userService.findById(Long.valueOf(alphaId));
          
-         Friend friend = friendService.findFriendshipByIds(alpha, remoteUser);
+         Friendship friend = friendService.findFriendshipByIds(alpha, remoteUser);
          
          friend.setAccepted(true);
          
@@ -114,7 +114,7 @@ public class FriendController {
              remoteUser = (User) request.getSession().getAttribute("remoteUser");
          }
          
-         Friend friend = friendService.findFriendshipByIds(remoteUser, userService.findById(Long.valueOf(omegaId)));         
+         Friendship friend = friendService.findFriendshipByIds(remoteUser, userService.findById(Long.valueOf(omegaId)));         
          
          if(friend != null)
          {        	 
@@ -148,7 +148,7 @@ public class FriendController {
          }
          else
          {
-        	 friend = new Friend();
+        	 friend = new Friendship();
         	 friend.setAlpha_user(remoteUser);
              friend.setOmega_user(userService.findById(Long.valueOf(omegaId)));
              friend.setAccepted(false);
@@ -186,7 +186,7 @@ public class FriendController {
         }
         
         
-        List<Friend> friends = friendService.findAllOutgoingFriendRequests(remoteUser);
+        List<Friendship> friends = friendService.findAllOutgoingFriendRequests(remoteUser);
         List<User> users = userService.getFriendsAsUsers(friends,remoteUser);
         
         model.addAttribute("users", users);

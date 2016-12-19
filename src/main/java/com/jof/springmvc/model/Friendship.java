@@ -2,13 +2,17 @@ package com.jof.springmvc.model;
 
 
 
-import javax.persistence.*;
 import java.sql.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "friend")
-public class Friend {
+@Table(name = "friendship")
+public class Friendship {
 	
 	 @Id
 	private EmbeddableFriendPK id= new EmbeddableFriendPK();
@@ -75,7 +79,7 @@ public class Friend {
             return false;
         if (!(obj instanceof User))
             return false;
-        Friend other = (Friend) obj;
+        Friendship other = (Friendship) obj;
        /* if (alpha_user_id == null) {
             if (other.omega_user_id != null)
                 return false;

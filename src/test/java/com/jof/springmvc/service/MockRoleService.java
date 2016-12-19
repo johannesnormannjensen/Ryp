@@ -1,13 +1,8 @@
 package com.jof.springmvc.service;
 
-import com.jof.springmvc.model.Friend;
 import com.jof.springmvc.model.Role;
-import com.jof.springmvc.model.User;
-import com.jof.springmvc.util.region.RegionUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 /**

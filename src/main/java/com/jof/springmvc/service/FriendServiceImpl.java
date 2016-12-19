@@ -1,7 +1,7 @@
 package com.jof.springmvc.service;
 
-import com.jof.springmvc.dao.FriendDao;
-import com.jof.springmvc.model.Friend;
+import com.jof.springmvc.dao.FriendshipDao;
+import com.jof.springmvc.model.Friendship;
 import com.jof.springmvc.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,26 +11,26 @@ import java.util.List;
 
 @Service("friendService")
 @Transactional
-public class FriendServiceImpl implements FriendService {
+public class FriendServiceImpl implements FriendshipService {
 
     @Autowired
-    private FriendDao dao;
+    private FriendshipDao dao;
 
     @Override
-    public Friend findFriendshipByIds(User id_alpha, User id_omega) {
+    public Friendship findFriendshipByIds(User id_alpha, User id_omega) {
         return dao.findFriendshipByIds(id_alpha, id_omega);
     }
 
     @Override
-    public void saveFriend(Friend friend) {
+    public void saveFriend(Friendship friend) {
         dao.save(friend);
 
     }
 
     @Override
-    public void updateFriend(Friend friend) {
+    public void updateFriend(Friendship friend) {
 
-        Friend entity = dao.findFriendshipByIds(friend.getAlpha_user(), friend.getOmega_user());
+    	Friendship entity = dao.findFriendshipByIds(friend.getAlpha_user(), friend.getOmega_user());
         if (entity != null) {
             entity.setAccepted(friend.getAccepted());
             entity.setActive(friend.getActive());
@@ -42,7 +42,7 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public void deleteByIds(User alpha_id, User omega_id) {
     	
-    	Friend friend = findFriendshipByIds(alpha_id, omega_id);
+    	Friendship friend = findFriendshipByIds(alpha_id, omega_id);
     	friend.setActive(false);
     	updateFriend(friend);
     	
@@ -52,17 +52,17 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public List<Friend> findAllFriends(User user) {
+    public List<Friendship> findAllFriends(User user) {
         return dao.findAllFriends(user);
     }
 
 	@Override
-	public List<Friend> findAllIncomingFriendRequests(User user) {
+	public List<Friendship> findAllIncomingFriendRequests(User user) {
 		return dao.findAllIncomingFriendRequests(user);
 	}
 
 	@Override
-	public List<Friend> findAllOutgoingFriendRequests(User user) {
+	public List<Friendship> findAllOutgoingFriendRequests(User user) {
 		return dao.findAllOutgoingFriendRequests(user);
 	}
 

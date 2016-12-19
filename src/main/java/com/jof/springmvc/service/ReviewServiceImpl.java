@@ -1,7 +1,6 @@
 package com.jof.springmvc.service;
 
 import com.jof.springmvc.dao.ReviewDao;
-import com.jof.springmvc.model.Friend;
 import com.jof.springmvc.model.Review;
 import com.jof.springmvc.model.User;
 
