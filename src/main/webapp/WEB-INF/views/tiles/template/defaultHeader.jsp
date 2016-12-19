@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <nav class="navbar navbar-default navbar-fixed-top">
 		<div class="navbar-header">
 			<a class="navbar-brand" href="<c:url value="/"/>">Rate Your Peers</a>
@@ -18,7 +19,7 @@
 	<div class="container">
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">
-				<li>Reviewing on ${sessionScope.remoteUser.region}</li>
+				<li><spring:message code="header.rating.on" arguments="${sessionScope.region}" /></li>
 			</ul>
 		</div>
 	</div>

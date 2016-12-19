@@ -13,6 +13,11 @@ import static org.junit.Assert.*;
 /**
  * Created by Ferenc_S on 12/18/2016.
  */
+
+/*
+ * These tests are only to be run alongside the server when it's running. Hence the @Ignore
+ */
+
 @Ignore
 public class AnonUserTest {
     @BeforeClass

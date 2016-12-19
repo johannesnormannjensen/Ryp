@@ -53,7 +53,6 @@ public class MockUserService implements UserService {
             user.setEmail(i + USER_EMAIL);
             user.setPassword(USER_PASSWORD);
             user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
-            user.setRegion(REGION_EUW);
             users.add(user);
         }
         
@@ -64,7 +63,6 @@ public class MockUserService implements UserService {
         user.setEmail(ADMIN_EMAIL);
         user.setPassword(ADMIN_PASSWORD);
         user.setRoles(new HashSet<Role>(Arrays.asList(adminRole)));
-        user.setRegion(REGION_EUW);
         users.add(user);
         
     }

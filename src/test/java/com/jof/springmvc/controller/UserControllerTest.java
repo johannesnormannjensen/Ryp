@@ -96,7 +96,6 @@ public class UserControllerTest {
         adminUser.setEmail(ADMIN_EMAIL);
         adminUser.setPassword(ADMIN_PASSWORD);
         adminUser.setRoles(new HashSet<Role>(Arrays.asList(adminRole)));
-        adminUser.setRegion(REGION_EUW);
         
         return adminUser;
 	}
@@ -166,16 +165,7 @@ public class UserControllerTest {
     	User newUser = new User();
     	newUser.setId(13337L);
     	newUser.setUsername(UUID.randomUUID().toString()); // something that's not taken
-    	newUser.setRegion(REGION_EUW);
     	assertEquals("login", userController.registerUser(newUser, bindingResult, model));
-    }
-    
-    @Test
-    public void testAnonymousPostRegisterNoRegion() throws Exception {
-    	User newUser = new User();
-    	newUser.setUsername("ThisNameIsProbablyNotTaken");
-    	newUser.setRegion(null);
-    	assertEquals("register", userController.registerUser(newUser, bindingResult, model));
     }
     
     

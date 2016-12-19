@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.core.env.Environment;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
@@ -38,6 +39,7 @@ import com.jof.springmvc.model.User;
 import com.jof.springmvc.service.RiotApiService;
 import com.jof.springmvc.service.RoleService;
 import com.jof.springmvc.service.UserService;
+import com.jof.springmvc.util.PropertiesConfig;
 import com.jof.springmvc.util.region.RegionUtil;
 
 import net.rithms.riot.api.RiotApiException;
@@ -62,6 +64,9 @@ public class UserController extends RypController {
 
     @Autowired
     MessageSource messageSource;
+    
+    @Autowired
+    private Environment environment;
 
     @Autowired
     PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
@@ -76,6 +81,7 @@ public class UserController extends RypController {
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String reviews(ModelMap model, HttpServletRequest request) {
     	setRemoteUser(request);
+    	request.getSession().setAttribute("region", environment.getProperty("riot.api.region"));
         return "redirect:/user/reviews/list";
     }
 
@@ -111,12 +117,8 @@ public class UserController extends RypController {
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST)
     public String registerUser(@Valid User user, BindingResult result,
                                ModelMap model) {
-    	if (result.hasErrors() || user.getRegion() == null) {
+    	if (result.hasErrors()) {
     		return "register";
-    	}
-    	Region region = null;
-    	for (Region regionType : Region.values()) {
-    		if(regionType.name().toLowerCase().equals(user.getRegion().toLowerCase())) region = regionType;
     	}
     	  
         //   validateSummonerRunePage(region, result, user.getUsername());
@@ -171,10 +173,6 @@ public class UserController extends RypController {
     public String createNewUser(@Valid User user, BindingResult result,
                            ModelMap model, HttpServletRequest request) {
     	validateRemoteAdmin(request); 
-    	Region region = null;
-    	for (Region regionType : Region.values()) {
-    		if(regionType.name().equals(user.getRegion())) region = regionType;
-    	}
     	if (result.hasErrors()) {
     		model.addAttribute("errors", result.getAllErrors());
     		return "newUser";

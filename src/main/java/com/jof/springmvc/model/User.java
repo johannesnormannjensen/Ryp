@@ -23,31 +23,11 @@ public class User implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Column(name = "id", nullable = false, columnDefinition = "BIGINT(20)")
     private Long id;
-    /*
-    @OneToMany(mappedBy = "omega_user_id", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Friend> omega_user_id = new ArrayList<Friend>();
-    
-    
-    @OneToMany(mappedBy = "alpha_user_id", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Friend> alpha_user_id = new ArrayList<Friend>();   
-    
-    
 
-    @OneToMany(mappedBy = "source_user_id", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Review> reviews = new ArrayList<Review>();
-
-    @OneToMany(mappedBy = "created_by", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<Comment>();
-*/
     @NotEmpty
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
-    @NotNull
-    @NotEmpty
-	@Column(name = "region")
-	private String region;
-    
     @NotEmpty
     @Column(name = "password", nullable = false)
     private String password;
@@ -87,14 +67,6 @@ public class User implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
-    
-	public String getRegion() {
-		return region;
-	}
-	
-	public void setRegion(String region) {
-		this.region = region;
-	}
 
     public String getPassword() {
         return password;
@@ -143,80 +115,6 @@ public class User implements Serializable {
     public void setRemoved(boolean removed) {
         this.removed = removed;
     }
-
-   /*
-    public void setReviews(List<Review> review) {
-        this.reviews = review;
-    }
-
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void addReviews(Review review) {
-        reviews.add(review);
-        review.setSource_user_id(this);
-    }
-
-    public void removeReviews(Review review) {
-        review.setSource_user_id(null);
-        this.reviews.remove(review);
-    }
-    
-    public void setAlphaUsers(List<Friend> review) {
-        this.alpha_user_id = review;
-    }
-
-
-    public List<Friend> getAlphaUsers() {
-        return alpha_user_id;
-    }
-
-    public void addAlphaUsers(Friend friend) {
-    	friend.setAlpha_user(this);
-    	alpha_user_id.add(friend);
-    }
-
-    public void removeAlphaUsers(Friend friend) {
-    	friend.setAlpha_user(null);
-        this.alpha_user_id.remove(friend);
-    }
-
-    
-    public void setOmegaUsers(List<Friend> friends) {
-        this.omega_user_id = friends;
-    }
-
-
-    public List<Friend> getOmegaUsers() {
-        return omega_user_id;
-    }
-
-    public void addOmegaUsers(Friend friend) {
-    	friend.setOmega_user(this);
-    	omega_user_id.add(friend);
-    }
-
-    public void removeOmegaUsers(Friend friend) {
-    	friend.setOmega_user(null);
-        this.omega_user_id.remove(friend);
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void addComments(Comment comment) {
-        comments.add(comment);
-        comment.setCreated_by(this);
-    }
-
-    public void removeComments(Comment comment) {
-        comment.setCreated_by(null);
-        this.comments.remove(comment);
-    }
-*/
 
     @Override
     public int hashCode() {
