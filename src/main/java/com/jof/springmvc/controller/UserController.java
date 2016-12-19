@@ -300,21 +300,6 @@ public class UserController extends RypController {
     }
 
     /**
-     * This method returns the principal[user-name] of logged-in user.
-     */
-    private String getPrincipal() {
-        String userName = null;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal instanceof UserDetails) {
-            userName = ((UserDetails) principal).getUsername();
-        } else {
-            userName = principal.toString();
-        }
-        return userName;
-    }
-
-    /**
      * This method returns true if users is already authenticated [logged-in], else false.
      */
     protected boolean isCurrentAuthenticationAnonymous() {

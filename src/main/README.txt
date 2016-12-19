@@ -14,7 +14,11 @@ Installation of Apache Tomcat 8.5.X installed on your system (preferably 8.5.8).
 	The project is by default packaged in a war file for ease of deployment.
 	
 2. Running
-	Just run mvn tomcat7:run. This works in debug mode too. Just add the project as a source.
+	Add project as runtime for Apache Tomcat 8.5.8 server. 
+	
+	If running in test mode add following argument to jvm: spring.profiles.active=test
+	
+	Run server run.
 	
 3. Deploying
 	Environments:

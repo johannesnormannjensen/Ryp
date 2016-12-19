@@ -5,6 +5,10 @@
 	version="3.1">
 	<display-name>RateYourPeers</display-name>
 
+	<context-param>
+		<param-name>spring.profiles.active</param-name>
+		<param-value>prod</param-value>
+	</context-param>
 
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
