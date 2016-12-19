@@ -45,4 +45,23 @@ public class AuthUserTest {
         final HtmlPage welcomePage = getCurPage(webClient);
         assertTrue(welcomePage.asText().contains("Welcome back FigaPl"));
     }
+
+    @Test
+    public void loginFailTest() throws Exception {
+        final HtmlPage loginPage = webClient.getPage(LOCALHOST_8080_LOGIN);
+        webClient.getCookieManager().setCookiesEnabled(true);
+
+        final HtmlForm form = loginPage.getForms().get(0);
+        final HtmlTextInput username = form.getInputByName("username");
+        final HtmlPasswordInput pwd = form.getInputByName("password");
+        final HtmlSubmitInput button = form.getInputByValue("Log in");
+
+        username.setValueAttribute("FigaPl");
+        pwd.setValueAttribute("WRONGPASSWORD");
+
+        button.click();
+
+        final HtmlPage welcomePage = getCurPage(webClient);
+        assertTrue(welcomePage.asText().contains("Invalid"));
+    }
 }
