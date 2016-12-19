@@ -13,13 +13,13 @@
 		
 		<div class="navbar-header">
 			<a class="navbar-brand" style="padding-left: 100px;">Welcome back
-				${sessionScope.remoteUser.username}</a>
+				${remoteUser.username}</a>
 		</div>
 		</div>
 	<div class="container">
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">
-				<li><spring:message code="header.rating.on" arguments="${sessionScope.region}" /></li>
+				<li><spring:message code="header.rating.on" arguments="${region}" /></li>
 			</ul>
 		</div>
 	</div>

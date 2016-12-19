@@ -66,9 +66,6 @@ public class UserController extends RypController {
     MessageSource messageSource;
     
     @Autowired
-    private Environment environment;
-
-    @Autowired
     PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
 
     @Autowired
@@ -81,7 +78,6 @@ public class UserController extends RypController {
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String reviews(ModelMap model, HttpServletRequest request) {
     	setRemoteUser(request);
-    	request.getSession().setAttribute("region", environment.getProperty("riot.api.region"));
         return "redirect:/user/reviews/list";
     }
 
