@@ -19,5 +19,5 @@ public interface MatchDao {
 
     List<Match> findAllMatches();
 
-
+    List<Match> getLatestNGames(Long id, int cache_size);
 }

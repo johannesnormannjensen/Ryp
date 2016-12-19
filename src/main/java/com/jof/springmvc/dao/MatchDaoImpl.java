@@ -41,8 +41,13 @@ public class MatchDaoImpl extends AbstractDao<Long, Match> implements MatchDao {
     @Override
     public List<Match> findAllMatches() {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("Matchname"));
-        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY); //To avoid duplicates.
         List<Match> matches = (List<Match>) criteria.list();
         return matches;
+    }
+
+    @Override
+    public List<Match> getLatestNGames(Long id, int n) {
+        return getSession().createSQLQuery("CALL getGamesForSummoner(" + id + ")").addEntity(Match.class).list();
     }
 }

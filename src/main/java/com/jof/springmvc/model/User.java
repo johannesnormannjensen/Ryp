@@ -5,13 +5,9 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -46,6 +42,9 @@ public class User implements Serializable {
 
     @Column(name = "removed", nullable = false, columnDefinition = "TINYINT(1) DEFAULT '0'")
     private boolean removed;
+
+    @Column(name = "last_updated", nullable = true)
+    private Date lastUpdated;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {
@@ -114,6 +113,20 @@ public class User implements Serializable {
 
     public void setRemoved(boolean removed) {
         this.removed = removed;
+    }
+
+    public Date getLastUpdated() {
+
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public boolean readyToUpdate() {
+        long HALF_AN_HOUR = 30 * 60 * 1000;
+        return lastUpdated == null || lastUpdated.getTime() < System.currentTimeMillis() - HALF_AN_HOUR;
     }
 
     @Override

@@ -1,3 +1,14 @@
+-- STORED PROCEDURES
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getGamesForSummoner`(IN sum_id BIGINT(20))
+BEGIN
+	SELECT * FROM game
+	LEFT JOIN player ON game.id = player.match_id
+	WHERE player.summoner_id = sum_id
+	LIMIT 100;
+END;
+
+--  DATA
+
 INSERT INTO `role` (`id`, `type`) VALUES ('1', 'ADMIN');
 INSERT INTO `role` (`id`, `type`) VALUES ('2', 'USER');
 INSERT INTO `user` (`id`, `active`, `created_at`, `email`, `password`, `removed`, `username`) VALUES ('24670397', '1', '2016-12-15 12:22:05', 'ff@20.gg', '$2a$10$GOqit2ZkhaV/NW.8KpK7xOBwapeHK1YkIqUpzG4YJiisVdxfo69G6', '0', 'oliwer94');

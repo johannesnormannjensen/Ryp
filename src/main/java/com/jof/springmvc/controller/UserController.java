@@ -1,46 +1,35 @@
 package com.jof.springmvc.controller;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
-import com.jof.springmvc.service.*;
+import com.jof.springmvc.model.Match;
+import com.jof.springmvc.model.Role;
+import com.jof.springmvc.model.User;
+import com.jof.springmvc.service.MatchService;
+import com.jof.springmvc.service.RiotApiService;
+import com.jof.springmvc.service.RoleService;
+import com.jof.springmvc.service.UserService;
+import com.jof.springmvc.util.region.RegionUtil;
+import net.rithms.riot.api.RiotApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.core.env.Environment;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
-import com.jof.springmvc.model.Match;
-import com.jof.springmvc.model.Role;
-import com.jof.springmvc.model.User;
-import com.jof.springmvc.util.region.RegionUtil;
-
-import net.rithms.riot.api.RiotApiException;
-import net.rithms.riot.constant.Region;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.*;
 
 
 @Controller
@@ -48,8 +37,8 @@ import net.rithms.riot.constant.Region;
 @SessionAttributes("roles")
 public class UserController extends RypController {
 
-	static final Logger logger = LoggerFactory.getLogger(UserController.class);
-	
+    static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     UserService userService;
 
@@ -64,7 +53,7 @@ public class UserController extends RypController {
 
     @Autowired
     MessageSource messageSource;
-    
+
     @Autowired
     PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
 
@@ -77,19 +66,20 @@ public class UserController extends RypController {
      */
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String reviews(ModelMap model, HttpServletRequest request) {
-    	setRemoteUser(request);
+        setRemoteUser(request);
         return "redirect:/user/reviews/list";
     }
 
-	/**
+    /**
      * This method will list all existing users.
-	 * @throws IOException 
-	 * @throws AccessDeniedException 
+     *
+     * @throws IOException
+     * @throws AccessDeniedException
      */
     @RequestMapping(value = {"/admin/list"}, method = RequestMethod.GET)
     public String listUsers(ModelMap model, HttpServletRequest request) throws IOException {
-    	validateRemoteAdmin(request); 
-        List<User> users = userService.findAllUsersButMe((User)request.getSession().getAttribute("remoteUser"));
+        validateRemoteAdmin(request);
+        List<User> users = userService.findAllUsersButMe((User) request.getSession().getAttribute("remoteUser"));
         model.addAttribute("users", users);
         return "userlist";
     }
@@ -99,7 +89,7 @@ public class UserController extends RypController {
      */
     @RequestMapping(value = {"/register"}, method = RequestMethod.GET)
     public String registerUser(ModelMap model, HttpServletRequest request) {
-    	request.setAttribute("regions", RegionUtil.getRegions());
+        request.setAttribute("regions", RegionUtil.getRegions());
         User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("edit", false);
@@ -113,10 +103,10 @@ public class UserController extends RypController {
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST)
     public String registerUser(@Valid User user, BindingResult result,
                                ModelMap model) {
-    	if (result.hasErrors()) {
-    		return "register";
-    	}
-    	  
+        if (result.hasErrors()) {
+            return "register";
+        }
+
         //   validateSummonerRunePage(region, result, user.getUsername());
 
         //TODO: get ID from API HERE
@@ -143,11 +133,12 @@ public class UserController extends RypController {
 
     /**
      * This method will provide the medium for users to be registered
-     * @throws AccessDeniedException 
+     *
+     * @throws AccessDeniedException
      */
     @RequestMapping(value = {"/admin/newUser"}, method = RequestMethod.GET)
     public String editNewUser(ModelMap model, HttpServletRequest request) {
-    	validateRemoteAdmin(request); 
+        validateRemoteAdmin(request);
         User user = new User();
         // generate user for testing
 //        String s = UUID.randomUUID().toString();
@@ -163,21 +154,22 @@ public class UserController extends RypController {
     /**
      * This method will be called on form submission, handling POST request for
      * saving user in database. It also validates the user input
-     * @throws AccessDeniedException 
+     *
+     * @throws AccessDeniedException
      */
     @RequestMapping(value = {"/admin/newUser"}, method = RequestMethod.POST)
     public String createNewUser(@Valid User user, BindingResult result,
-                           ModelMap model, HttpServletRequest request) {
-    	validateRemoteAdmin(request); 
-    	if (result.hasErrors()) {
-    		model.addAttribute("errors", result.getAllErrors());
-    		return "newUser";
-    	}
-    	
+                                ModelMap model, HttpServletRequest request) {
+        validateRemoteAdmin(request);
+        if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
+            return "newUser";
+        }
+
 //        validateSummonerRunePage(region, result, user.getUsername());
-    	
-    	//TODO: get ID from API HERE
-    	user.setId(Long.valueOf(new Random().nextInt()));
+
+        //TODO: get ID from API HERE
+        user.setId(Long.valueOf(new Random().nextInt()));
         if (user.getRoles().isEmpty()) {
             Set<Role> profiles = new HashSet<Role>();
             profiles.add(roleService.findByType("USER"));
@@ -199,11 +191,12 @@ public class UserController extends RypController {
 
     /**
      * This method will provide the medium to update an existing user.
-     * @throws AccessDeniedException 
+     *
+     * @throws AccessDeniedException
      */
     @RequestMapping(value = {"/admin/edit-user-{username}"}, method = RequestMethod.GET)
     public String editUser(@PathVariable String username, ModelMap model, HttpServletRequest request) {
-    	validateRemoteAdmin(request); 
+        validateRemoteAdmin(request);
         User user = userService.findByUserName(username);
         model.addAttribute("user", user);
         model.addAttribute("edit", true);
@@ -213,12 +206,13 @@ public class UserController extends RypController {
     /**
      * This method will be called on form submission, handling POST request for
      * updating user in database. It also validates the user input
-     * @throws AccessDeniedException 
+     *
+     * @throws AccessDeniedException
      */
     @RequestMapping(value = {"/admin/edit-user-{username}"}, method = RequestMethod.POST)
     public String updateUser(@Valid User user, BindingResult result,
                              ModelMap model, @PathVariable String username, HttpServletRequest request) {
-    	validateRemoteAdmin(request); 
+        validateRemoteAdmin(request);
         if (result.hasErrors()) {
             return "newUser";
         }
@@ -239,11 +233,12 @@ public class UserController extends RypController {
 
     /**
      * This method will delete an user by it's username value.
-     * @throws AccessDeniedException 
+     *
+     * @throws AccessDeniedException
      */
     @RequestMapping(value = {"/admin/delete-user-{username}"}, method = RequestMethod.GET)
     public String deleteUser(@PathVariable String username, HttpServletRequest request) {
-    	validateRemoteAdmin(request); 
+        validateRemoteAdmin(request);
         userService.deleteUserByUsername(username);
         return "redirect:/list";
     }
@@ -289,7 +284,13 @@ public class UserController extends RypController {
     public String matchHistory(HttpServletRequest request, HttpServletResponse response) {
         try {
             User remoteUser = (User) request.getSession().getAttribute("remoteUser");
-            List<Match> matches =  riotApiService.getRecentGames(remoteUser.getId(), remoteUser.getUsername());
+            List<Match> matches;
+            if (remoteUser.readyToUpdate()) {
+                matches = riotApiService.getRecentGames(remoteUser.getId(), remoteUser.getUsername());
+                remoteUser.setLastUpdated(new Date());
+            } else {
+                matches = matchService.getRecentCachedGames(remoteUser.getId());
+            }
             matchService.saveAll(matches);
             request.setAttribute("matches", matches);
             request.setAttribute("playerId", remoteUser.getId());
@@ -322,12 +323,12 @@ public class UserController extends RypController {
     }
 
     private void setRemoteUser(HttpServletRequest request) {
-    	if (getRemoteUser(request) == null && getPrincipal() != null) {
+        if (getRemoteUser(request) == null && getPrincipal() != null) {
             User user = userService.findByUserName(getPrincipal());
             request.getSession().setAttribute("remoteUser", user);
         }
-	}
-    
+    }
+
     /**
      * This method will provide Role list to views
      */
