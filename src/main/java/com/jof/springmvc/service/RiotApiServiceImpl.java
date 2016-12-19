@@ -96,7 +96,7 @@ public class RiotApiServiceImpl implements RiotApiService {
                 matches.add(match);
                 continue;
             }
-
+            match = new Match();
             match.setId(game.getGameId());
             match.setCreated_at(new Date(game.getCreateDate()));
 
