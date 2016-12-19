@@ -1,24 +1,24 @@
 package com.jof.springmvc.controller;
 
-import com.jof.springmvc.model.Role;
-import com.jof.springmvc.model.User;
-import com.jof.springmvc.service.MockRoleService;
-import com.jof.springmvc.service.MockUserService;
-
 import static com.jof.springmvc.service.MockUserService.*;
-import com.jof.springmvc.service.RoleService;
-import com.jof.springmvc.service.UserService;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import org.junit.After;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.UUID;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.springframework.beans.factory.support.RootBeanDefinition;
-import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.access.AccessDeniedException;
@@ -28,19 +28,15 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.UUID;
+import com.jof.springmvc.model.Role;
+import com.jof.springmvc.model.User;
+import com.jof.springmvc.service.MockRoleService;
+import com.jof.springmvc.service.MockUserService;
+import com.jof.springmvc.service.RoleService;
+import com.jof.springmvc.service.UserService;
 
 /**
  * Created by Ferenc_S on 12/13/2016.
@@ -80,7 +76,6 @@ public class UserControllerTest {
         SecurityContextHolder.setContext(securityContext);
         
         bindingResult = mock(BindingResult.class);
-        user = createAdmin();
         session = new MockHttpSession();
         request = new MockHttpServletRequest();
         request.setSession(session);
@@ -207,13 +202,13 @@ public class UserControllerTest {
     @Test (expected=AccessDeniedException.class)
     public void testUserGetListUsers() throws Exception {
     	asRole(ROLE_USER);
-    	assertEquals("accessDenied", userController.listUsers(model, request));
+    	userController.listUsers(model, request);
     }
     
     @Test (expected=AccessDeniedException.class)
     public void testUserGetEditUser() throws Exception {
     	asRole(ROLE_USER);
-    	assertEquals("accessDenied", userController.editUser("LeagueGuy1", model, request));
+    	userController.editUser("LeagueGuy1", model, request);
     }
     
     @Test (expected=AccessDeniedException.class)
@@ -222,7 +217,7 @@ public class UserControllerTest {
     	User userUser = new User();
     	userUser.setId(1338L);
     	userUser.setUsername("LeagueGuy1");
-    	assertEquals("accessDenied", userController.updateUser(userUser, bindingResult, model, "LeagueGuy1", request));
+    	userController.updateUser(userUser, bindingResult, model, "LeagueGuy1", request);
     }
     
     @Test (expected=AccessDeniedException.class)
@@ -231,7 +226,7 @@ public class UserControllerTest {
     	User userUser = new User();
     	userUser.setId(1338L);
     	userUser.setUsername("LeagueGuy1");
-    	assertEquals("accessDenied", userController.deleteUser("LeagueGuy1", request));
+    	userController.deleteUser("LeagueGuy1", request);
     }
 
     
