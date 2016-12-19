@@ -12,6 +12,7 @@ import net.rithms.riot.dto.Game.Player;
 import net.rithms.riot.dto.Game.RecentGames;
 import net.rithms.riot.dto.Summoner.RunePage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import java.util.*;
  * Created by Ferenc_S on 12/10/2016.
  */
 @Service("riotApiService")
+@Profile("prod")
 public class RiotApiServiceImpl implements RiotApiService {
 
     private final Environment environment;
@@ -37,24 +39,14 @@ public class RiotApiServiceImpl implements RiotApiService {
 
     public RiotApiServiceImpl(Environment environment, RiotApi riotApi) {
         this.environment = environment;
-        switch (environment.getRequiredProperty("riot.api.region")) {
-            case "EUNE":
-                this.region = Region.EUNE;
-                break;
-            case "EUW":
-                this.region = Region.EUW;
-                break;
-            default:
-                throw new InvalidRegionException("No such region implemented yet!");
-        }
         this.riotApi = riotApi;
+        initRegion();
     }
 
     @PostConstruct
     private void init() {
         this.riotApi = new RiotApi(environment.getRequiredProperty("riot.api.key"));
-
-
+        initRegion();
     }
 
     @Override
@@ -135,5 +127,18 @@ public class RiotApiServiceImpl implements RiotApiService {
 
     private int theOppositeTeam(int team_id) {
         return team_id == BLUE_TEAM_ID ? RED_TEAM_ID : BLUE_TEAM_ID;
+    }
+
+    private void initRegion() {
+        switch (environment.getRequiredProperty("riot.api.region")) {
+            case "EUNE":
+                this.region = Region.EUNE;
+                break;
+            case "EUW":
+                this.region = Region.EUW;
+                break;
+            default:
+                throw new InvalidRegionException("No such region implemented yet!");
+        }
     }
 }
