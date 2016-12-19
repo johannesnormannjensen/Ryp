@@ -15,8 +15,8 @@ import java.util.List;
  */
 @Service("riotApiService")
 @Profile("test")
-public class RiotApiServiceImplTest implements RiotApiService {
-    public RiotApiServiceImplTest() {
+public class RiotApiServiceImplMock implements RiotApiService {
+    public RiotApiServiceImplMock() {
     }
 
     @PostConstruct

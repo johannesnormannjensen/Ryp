@@ -2,7 +2,6 @@ package com.jof.springmvc.model;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,16 +19,14 @@ public class Match implements Serializable, Comparable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Long id;
 
-    @NotEmpty
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = true)
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false)
     private Date created_at;
 
 
     // So that we don't violate the first normal form by stashing 10 player Ids in a single column
-    @OneToMany(mappedBy = "match", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "match", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<PlayerInfo> playerInfos = new ArrayList<PlayerInfo>();
 
-    @NotEmpty
     @Column(name = "winner_team_id", nullable = false)
     private Integer winnerTeamId;
 
@@ -76,7 +73,9 @@ public class Match implements Serializable, Comparable {
 
     @Override
     public int compareTo(Object o) {
-        if (!(o instanceof Match)) {return 0;}
+        if (!(o instanceof Match)) {
+            return 0;
+        }
         Match match = (Match) o;
         if (this.created_at.compareTo(match.created_at) < 0) {
             return -1;

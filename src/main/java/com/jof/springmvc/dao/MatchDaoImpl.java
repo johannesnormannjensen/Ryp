@@ -1,7 +1,6 @@
 package com.jof.springmvc.dao;
 
 import com.jof.springmvc.model.Match;
-import com.jof.springmvc.model.Match;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -18,6 +17,11 @@ public class MatchDaoImpl extends AbstractDao<Long, Match> implements MatchDao {
     @Override
     public Match findById(Long id) {
         return getByKey(id);
+    }
+
+    @Override
+    public void createOrUpdateMatch(Match match) {
+        if (findById(match.getId()) == null) saveMatch(match);
     }
 
     @Override

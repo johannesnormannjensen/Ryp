@@ -9,4 +9,6 @@ public interface MatchService {
     void save(Match match);
 
     void saveAll(Iterable<Match> iterable);
+
+    Match findById(Long id);
 }

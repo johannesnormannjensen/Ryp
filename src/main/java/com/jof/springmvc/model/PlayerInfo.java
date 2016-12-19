@@ -18,7 +18,6 @@ public class PlayerInfo implements Comparable<PlayerInfo> {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Long id;
 
-    @NotEmpty
     @Column(name = "summoner_id", nullable = false)
     private Long summonerId;
 
@@ -37,7 +36,6 @@ public class PlayerInfo implements Comparable<PlayerInfo> {
      *
      * instead of isWinner, we store team ID and game stores winnerTeamId
      */
-    @NotEmpty
     @Column(name = "teamId", nullable = false)
     private int teamId;
 

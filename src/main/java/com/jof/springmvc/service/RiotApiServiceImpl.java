@@ -29,6 +29,9 @@ public class RiotApiServiceImpl implements RiotApiService {
 
     private final Environment environment;
 
+    @Autowired
+    MatchService matchService;
+
     RiotApi riotApi;
     Region region;
 
@@ -88,12 +91,18 @@ public class RiotApiServiceImpl implements RiotApiService {
             summonerNames.putAll(temp);
         }
         for (Game game : games) {
-            Match match = new Match();
+            Match match = matchService.findById(game.getGameId());
+            if (match != null) {
+                matches.add(match);
+                continue;
+            }
+
             match.setId(game.getGameId());
             match.setCreated_at(new Date(game.getCreateDate()));
 
             List<PlayerInfo> playerInfos = new ArrayList<>();
             PlayerInfo playerInfo = new PlayerInfo();
+            playerInfo.setMatch(match);
             playerInfo.setSummonerId(recentGames.getSummonerId());
             playerInfo.setSummonerName(summonerName);
             playerInfo.setTeamId(game.getStats().getTeam());
@@ -107,6 +116,7 @@ public class RiotApiServiceImpl implements RiotApiService {
 
             for (Player p : game.getFellowPlayers()) { // playerinfos
                 playerInfo = new PlayerInfo();
+                playerInfo.setMatch(match);
                 playerInfo.setSummonerId(p.getSummonerId());
                 playerInfo.setSummonerName(summonerNames.get(String.valueOf(p.getSummonerId())));
                 champion = new Champion();
