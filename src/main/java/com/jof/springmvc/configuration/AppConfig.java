@@ -16,10 +16,9 @@ import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 @Configuration
 @EnableWebMvc
-@PropertySource("classpath:/application${spring.profiles.active}.properties")
+@PropertySource("classpath:/application.properties")
 @ComponentScan(basePackages = "com.jof.springmvc")
 public class AppConfig extends WebMvcConfigurerAdapter {
-
 
     @Autowired
     DbRoleToRoleConverter dbRoleToRoleConverter;
@@ -69,7 +68,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Bean
     public MessageSource messageSource() {
     	ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("/WEB-INF/classes/message");
+        messageSource.setBasenames("/WEB-INF/classes/message", "/WEB-INF/classes/application");
         return messageSource;
     }
 

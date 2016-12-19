@@ -19,7 +19,8 @@
 	<div class="container">
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">
-				<li><spring:message code="header.rating.on" arguments="${region}" /></li>
+			
+				<li><spring:message code="header.rating.on"/> <spring:message code='riot.api.region'/></li>
 			</ul>
 		</div>
 	</div>

@@ -7,7 +7,7 @@
 
 	<context-param>
 		<param-name>spring.profiles.active</param-name>
-		<param-value>prod</param-value>
+		<param-value>${spring.profile}</param-value>
 	</context-param>
 
 	<welcome-file-list>

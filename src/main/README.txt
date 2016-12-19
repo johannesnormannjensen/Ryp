@@ -10,13 +10,24 @@ Installation of Apache Tomcat 8.5.X installed on your system (preferably 8.5.8).
 
 
 1. Building
-	To make a clean build with maven run: mvn clean install.
+	To make a clean build with maven run: 
+		mvn compile war:war
+		(specify test or prod for profile)
+		
 	The project is by default packaged in a war file for ease of deployment.
 	
 2. Running
 	Add project as runtime for Apache Tomcat 8.5.8 server. 
-	
-	If running in test mode add following argument to jvm: spring.profiles.active=test
+		
+		Running in test mode (mock services etc..):
+			Add following arguments to jvm: 
+				spring.profiles.active=test
+				db.relative.url="-test"
+				
+		Running in prod mode (USING THE REAL RIOT API):
+			Add following arguments to jvm: 
+				spring.profiles.active=prod
+				db.relative.url=""
 	
 	Run server run.
 	
