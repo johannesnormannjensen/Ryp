@@ -289,7 +289,7 @@ public class UserController extends RypController {
     public String matchHistory(HttpServletRequest request, HttpServletResponse response) {
         try {
             User remoteUser = (User) request.getSession().getAttribute("remoteUser");
-            List<Match> matches =  riotApiService.getRecentGames(Region.EUNE, remoteUser.getId(), remoteUser.getUsername());
+            List<Match> matches =  riotApiService.getRecentGames(remoteUser.getId(), remoteUser.getUsername());
 
             request.setAttribute("matches", matches);
             request.setAttribute("playerId", remoteUser.getId());
@@ -325,10 +325,10 @@ public class UserController extends RypController {
     /**
      * This methods checks if the summoner has a runepage called "RYP"
      */
-    private void validateSummonerRunePage(Region region, BindingResult result, String username) {
+    private void validateSummonerRunePage(BindingResult result, String username) {
         try {
-            long l = riotApiService.getSummonerIdByName(Region.EUNE, username);
-            if (riotApiService.userHasRunePage(Region.EUNE, l, "RYP") == false) {
+            long l = riotApiService.getSummonerIdByName(username);
+            if (riotApiService.userHasRunePage(l, "RYP") == false) {
                 result.addError(new ObjectError("User", "user.validation.noMatchingRunePage"));
             }
         } catch (RiotApiException e) {

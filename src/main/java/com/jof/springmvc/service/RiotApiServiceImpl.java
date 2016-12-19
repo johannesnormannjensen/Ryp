@@ -3,6 +3,7 @@ package com.jof.springmvc.service;
 import com.jof.springmvc.model.Champion;
 import com.jof.springmvc.model.Match;
 import com.jof.springmvc.model.PlayerInfo;
+import com.jof.springmvc.util.region.InvalidRegionException;
 import net.rithms.riot.api.RiotApi;
 import net.rithms.riot.api.RiotApiException;
 import net.rithms.riot.constant.Region;
@@ -27,6 +28,7 @@ public class RiotApiServiceImpl implements RiotApiService {
     private final Environment environment;
 
     RiotApi riotApi;
+    Region region;
 
     @Autowired
     public RiotApiServiceImpl(Environment environment) {
@@ -35,6 +37,16 @@ public class RiotApiServiceImpl implements RiotApiService {
 
     public RiotApiServiceImpl(Environment environment, RiotApi riotApi) {
         this.environment = environment;
+        switch (environment.getRequiredProperty("riot.api.region")) {
+            case "EUNE":
+                this.region = Region.EUNE;
+                break;
+            case "EUW":
+                this.region = Region.EUW;
+                break;
+            default:
+                throw new InvalidRegionException("No such region implemented yet!");
+        }
         this.riotApi = riotApi;
     }
 
@@ -42,15 +54,16 @@ public class RiotApiServiceImpl implements RiotApiService {
     private void init() {
         this.riotApi = new RiotApi(environment.getRequiredProperty("riot.api.key"));
 
+
     }
 
     @Override
-    public long getSummonerIdByName(Region region, String summonerName) throws RiotApiException {
+    public long getSummonerIdByName(String summonerName) throws RiotApiException {
         return riotApi.getSummonerByName(region, summonerName).getId();
     }
 
     @Override
-    public boolean userHasRunePage(Region region, long id, String runePageName) throws RiotApiException {
+    public boolean userHasRunePage(long id, String runePageName) throws RiotApiException {
         Set<RunePage> pages = riotApi.getRunePages(region, id).getPages();
         for (RunePage page : pages) {
             if (page.getName().equals(runePageName)) return true;
@@ -59,7 +72,7 @@ public class RiotApiServiceImpl implements RiotApiService {
     }
 
     @Override
-    public List<Match> getRecentGames(Region region, Long id, String summonerName) throws RiotApiException {
+    public List<Match> getRecentGames(Long id, String summonerName) throws RiotApiException {
         RecentGames recentGames = riotApi.getRecentGames(region, id);
         Set<Game> games = recentGames.getGames();
         List<Match> matches = new ArrayList<>();

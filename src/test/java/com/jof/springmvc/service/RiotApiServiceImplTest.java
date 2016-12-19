@@ -1,22 +1,6 @@
 package com.jof.springmvc.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import com.jof.springmvc.model.Match;
-import org.junit.Before;
-import org.mockito.Mock;
-
 import net.rithms.riot.api.RiotApi;
 import net.rithms.riot.constant.Region;
 import net.rithms.riot.dto.Game.Game;
@@ -25,6 +9,17 @@ import net.rithms.riot.dto.Game.RecentGames;
 import net.rithms.riot.dto.Summoner.RunePage;
 import net.rithms.riot.dto.Summoner.RunePages;
 import net.rithms.riot.dto.Summoner.Summoner;
+import org.junit.Before;
+import org.mockito.Mock;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by Ferenc_S on 12/10/2016.
@@ -35,6 +30,17 @@ public class RiotApiServiceImplTest {
     @Mock
     RiotApi mockRiotApi;
     RiotApiService mockRiotApiService;
+
+    MockEnvironment environment = new MockEnvironment() {
+        @Override
+        public String getRequiredProperty(String s) throws IllegalStateException {
+            switch (s) {
+                case "riot.api.region":
+                    return "EUNE";
+            }
+            return null;
+        }
+    };
 
 
     // Summoner mock
@@ -49,7 +55,7 @@ public class RiotApiServiceImplTest {
     @Before
     public void setUp() throws Exception {
         mockRiotApi = mock(RiotApi.class);
-        mockRiotApiService = new RiotApiServiceImpl(null, mockRiotApi);
+        mockRiotApiService = new RiotApiServiceImpl(environment, mockRiotApi);
 
         // Summoner mock
         summoner = mock(Summoner.class);
@@ -70,18 +76,18 @@ public class RiotApiServiceImplTest {
 
     @org.junit.Test
     public void testUserHasRunePageMock() throws Exception {
-        assertTrue(mockRiotApiService.userHasRunePage(region, summId, trueRunePageName));
+        assertTrue(mockRiotApiService.userHasRunePage(summId, trueRunePageName));
     }
 
     @org.junit.Test
     public void testNoUserHasRunePageMock() throws Exception {
-        assertFalse(mockRiotApiService.userHasRunePage(region, summId, "NORUNEPAGE"));
+        assertFalse(mockRiotApiService.userHasRunePage(summId, "NORUNEPAGE"));
     }
 
     @org.junit.Test
     public void testGetRecentGamesSorted() throws Exception {
-        List<Match> matches = mockRiotApiService.getRecentGames(region, summId, name);
-       assertEquals(matches.size(), 4);
+        List<Match> matches = mockRiotApiService.getRecentGames(summId, name);
+        assertEquals(matches.size(), 4);
 
     }
 
@@ -115,15 +121,15 @@ public class RiotApiServiceImplTest {
         Game game2 = mock(Game.class);
         when(game2.getCreateDate()).thenReturn(1481796590000L - 3600 * 1000);
         when(game2.getStats()).thenReturn(new RawStats());
-        
+
         Game game3 = mock(Game.class);
         when(game3.getCreateDate()).thenReturn(1481796590000L + 3600 * 1000);
         when(game3.getStats()).thenReturn(new RawStats());
-        
+
         Game game4 = mock(Game.class);
         when(game4.getCreateDate()).thenReturn(1481796590000L + 3600 * 1000 * 5);
         when(game4.getStats()).thenReturn(new RawStats());
-        
+
         games.add(game1);
         games.add(game2);
         games.add(game3);

@@ -13,9 +13,9 @@ public interface RiotApiService {
     public final int BLUE_TEAM_ID = 100;
     public final int RED_TEAM_ID = 200;
 
-    long getSummonerIdByName(Region region, String summonerName) throws RiotApiException;
+    long getSummonerIdByName(String summonerName) throws RiotApiException;
 
-    boolean userHasRunePage(Region region, long id, String runePageName) throws RiotApiException;
+    boolean userHasRunePage(long id, String runePageName) throws RiotApiException;
 
-    List<Match> getRecentGames(Region region, Long id, String summonerName) throws RiotApiException;
+    List<Match> getRecentGames(Long id, String summonerName) throws RiotApiException;
 }
