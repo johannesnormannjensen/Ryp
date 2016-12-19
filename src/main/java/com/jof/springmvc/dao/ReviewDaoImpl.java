@@ -2,7 +2,6 @@ package com.jof.springmvc.dao;
 
 import com.jof.springmvc.model.Review;
 import com.jof.springmvc.model.User;
-
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;

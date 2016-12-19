@@ -15,7 +15,7 @@ public interface CommentDao {
     void deleteById(int id);
 
     List<Comment> findAllCommentsForReview(Review review_id);
-    
-    List<Comment> findCommentsForReviewFromTo(int review_id,Date from, Date to);
+
+    List<Comment> findCommentsForReviewFromTo(int review_id, Date from, Date to);
 
 }

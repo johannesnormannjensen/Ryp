@@ -1,24 +1,13 @@
 package com.jof.springmvc.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "review")
@@ -39,40 +28,40 @@ public class Review implements Serializable {
     @JoinColumn(name = "source_user_id", nullable = false, foreignKey = @ForeignKey(name = "FK_SOURCE_USER_ID"))
     private User source_user_id;
 
-    
+
     @Column(name = "target_user_id", nullable = false, columnDefinition = "BIGINT(20)")
     private Long target_user_id;
 
-        
+
     @Column(name = "game_id", nullable = false, columnDefinition = "BIGINT(20)")
     private Long game_id;
 
-    
+
     @Column(name = "title", nullable = false, columnDefinition = "VARCHAR(45)")
     private String title;
 
-    
+
     @Column(name = "body", nullable = false, columnDefinition = "VARCHAR(512)")
     private String body;
 
-    
+
     @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = true)
     private Date created_at;
 
-    
+
     @Column(name = "positive", nullable = false, columnDefinition = "TINYINT(4) DEFAULT '0'")
     private boolean positive;
-    
+
     @Column(name = "active", columnDefinition = "TINYINT(1) DEFAULT '0'", nullable = true)
-	private boolean active;
+    private boolean active;
 
-	public boolean isActive() {
-		return active;
-	}
+    public boolean isActive() {
+        return active;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public Integer getId() {
         return id;

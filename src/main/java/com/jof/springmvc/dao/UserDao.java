@@ -14,7 +14,7 @@ public interface UserDao {
     void save(User user);
 
     void deleteByUsername(String username);
-    
+
     List<User> findAllUsersButMe(long userId);
 
     List<User> findAllUsers();

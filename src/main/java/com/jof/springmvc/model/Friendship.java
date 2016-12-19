@@ -1,43 +1,41 @@
 package com.jof.springmvc.model;
 
 
-
-import java.sql.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Date;
 
 
 @Entity
 @Table(name = "friendship")
 public class Friendship {
-	
-	 @Id
-	private EmbeddableFriendPK id= new EmbeddableFriendPK();
+
+    @Id
+    private EmbeddableFriendPK id = new EmbeddableFriendPK();
 
     @Column(name = "accepted", nullable = false, columnDefinition = "TINYINT(1) DEFAULT '0'")
     private Boolean accepted;
 
-    
+
     @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false)
     private Date created_at;
-    
-    
+
+
     @Column(name = "active", columnDefinition = "TINYINT(1) DEFAULT '1'", nullable = false)
     private boolean active;
 
 
     public boolean getActive() {
-		return active;
-	}
+        return active;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
-	public Boolean getAccepted() {
+    public Boolean getAccepted() {
         return accepted;
     }
 
@@ -61,7 +59,7 @@ public class Friendship {
     public void setOmega_user(User omega_user) {
         this.id.setOmega_user(omega_user);
     }
-  
+
 
     public Date getCreated_at() {
         return created_at;
@@ -99,6 +97,6 @@ public class Friendship {
 
     @Override
     public String toString() {
-        return "Friend{" + "omega=" + id.getOmega_user() + ", alpha='" + id.getAlpha_user() + ',' + ", created_at='" + created_at + ',' +  '}';
+        return "Friend{" + "omega=" + id.getOmega_user() + ", alpha='" + id.getAlpha_user() + ',' + ", created_at='" + created_at + ',' + '}';
     }
 }

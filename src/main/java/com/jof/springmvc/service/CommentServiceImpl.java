@@ -4,7 +4,6 @@ import com.jof.springmvc.dao.CommentDao;
 import com.jof.springmvc.form.CommentForm;
 import com.jof.springmvc.model.Comment;
 import com.jof.springmvc.model.Review;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,23 +50,22 @@ public class CommentServiceImpl implements CommentService {
         return dao.findAllCommentsForReview(review_id);
     }
 
-	@Override
-	public List<Comment> findCommentsForReviewFromTo(int review_id, Date from, Date to) {
-		return dao.findCommentsForReviewFromTo(review_id, from, to);
-	}
+    @Override
+    public List<Comment> findCommentsForReviewFromTo(int review_id, Date from, Date to) {
+        return dao.findCommentsForReviewFromTo(review_id, from, to);
+    }
 
-	@Override
-	public List<CommentForm> findAllCommentFormsForReview(Review review) {
-		List<Comment> comments = findAllCommentsForReview(review);
-		List<CommentForm> forms = new ArrayList<CommentForm>();
-		for(int i= 0;i < comments.size();i++)
-		{
-			CommentForm form = new CommentForm();
-			form.setBody(comments.get(i).getBody());
-			form.setCreated_at(comments.get(i).getCreated_at());
-			form.setUsername(comments.get(i).getCreated_by().getUsername());
-			forms.add(form);
-		}
-		return forms;
-	}
+    @Override
+    public List<CommentForm> findAllCommentFormsForReview(Review review) {
+        List<Comment> comments = findAllCommentsForReview(review);
+        List<CommentForm> forms = new ArrayList<CommentForm>();
+        for (int i = 0; i < comments.size(); i++) {
+            CommentForm form = new CommentForm();
+            form.setBody(comments.get(i).getBody());
+            form.setCreated_at(comments.get(i).getCreated_at());
+            form.setUsername(comments.get(i).getCreated_by().getUsername());
+            forms.add(form);
+        }
+        return forms;
+    }
 }

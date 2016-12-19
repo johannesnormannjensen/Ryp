@@ -1,7 +1,6 @@
 package com.jof.springmvc.service;
 
 import com.jof.springmvc.model.Match;
-import net.rithms.riot.api.RiotApi;
 import net.rithms.riot.api.RiotApiException;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;

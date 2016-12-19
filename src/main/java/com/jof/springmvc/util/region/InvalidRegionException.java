@@ -4,8 +4,8 @@ import org.springframework.security.core.AuthenticationException;
 
 public class InvalidRegionException extends AuthenticationException {
 
-	public InvalidRegionException(String msg) {
-		super("Region :" + msg + " is not a valid region.");
-	}
+    public InvalidRegionException(String msg) {
+        super("Region :" + msg + " is not a valid region.");
+    }
 
 }

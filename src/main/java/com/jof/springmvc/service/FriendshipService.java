@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface FriendshipService {
 
-	Friendship findFriendshipByIds(User id_alpha, User id_omega);
+    Friendship findFriendshipByIds(User id_alpha, User id_omega);
 
     void saveFriend(Friendship friend);
 
@@ -17,11 +17,11 @@ public interface FriendshipService {
 
     // returns omega ids
     List<Friendship> findAllFriends(User user);
-    
-  //returns list of friends
+
+    //returns list of friends
     List<Friendship> findAllIncomingFriendRequests(User user);
-    
-  //returns list of friends
+
+    //returns list of friends
     List<Friendship> findAllOutgoingFriendRequests(User user);
 
 }

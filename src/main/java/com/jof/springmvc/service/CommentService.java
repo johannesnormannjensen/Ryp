@@ -18,10 +18,10 @@ public interface CommentService {
 
     void deleteCommentById(int id);
 
-    List<Comment> findAllCommentsForReview(Review  review);
-    
-    List<Comment> findCommentsForReviewFromTo(int review_id,Date from, Date to);
+    List<Comment> findAllCommentsForReview(Review review);
 
-	List<CommentForm> findAllCommentFormsForReview(Review review);
+    List<Comment> findCommentsForReviewFromTo(int review_id, Date from, Date to);
+
+    List<CommentForm> findAllCommentFormsForReview(Review review);
 
 }

@@ -1,8 +1,7 @@
 package com.jof.springmvc.dao;
 
-import java.sql.Date;
-import java.util.List;
-
+import com.jof.springmvc.model.Comment;
+import com.jof.springmvc.model.Review;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -10,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.jof.springmvc.model.Comment;
-import com.jof.springmvc.model.Review;
+import java.sql.Date;
+import java.util.List;
 
 
 @Repository("commentDao")
@@ -46,16 +45,16 @@ public class CommentDaoImpl extends AbstractDao<Integer, Comment> implements Com
         delete(comment);
     }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Comment> findCommentsForReviewFromTo(int review_id, Date from, Date to) {
-		 Criteria criteria = createEntityCriteria().addOrder(Order.asc("created_at"));
-	        criteria.add(Restrictions.eq("review_id", review_id));
-	        criteria.add(Restrictions.between("created_at", from, to));
-	        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
-	        List<Comment> comments = (List<Comment>) criteria.list();
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Comment> findCommentsForReviewFromTo(int review_id, Date from, Date to) {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("created_at"));
+        criteria.add(Restrictions.eq("review_id", review_id));
+        criteria.add(Restrictions.between("created_at", from, to));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
+        List<Comment> comments = (List<Comment>) criteria.list();
 
-	        return comments;
-	}
+        return comments;
+    }
 
 }

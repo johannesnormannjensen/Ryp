@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface FriendshipDao {
 
-	Friendship findFriendshipByIds(User id_alpha, User id_omega);
+    Friendship findFriendshipByIds(User id_alpha, User id_omega);
 
     void save(Friendship friend);
 
@@ -15,11 +15,11 @@ public interface FriendshipDao {
 
     //returns list of friends
     List<Friendship> findAllFriends(User user);
-    
-  //returns list of friends
+
+    //returns list of friends
     List<Friendship> findAllIncomingFriendRequests(User user);
-    
-  //returns list of friends
+
+    //returns list of friends
     List<Friendship> findAllOutgoingFriendRequests(User user);
 
 }

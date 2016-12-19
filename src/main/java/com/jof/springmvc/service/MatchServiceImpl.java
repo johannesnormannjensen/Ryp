@@ -3,7 +3,6 @@ package com.jof.springmvc.service;
 import com.jof.springmvc.dao.MatchDao;
 import com.jof.springmvc.model.Match;
 import net.rithms.riot.api.RiotApiException;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -2,7 +2,6 @@ package com.jof.springmvc.service;
 
 import com.jof.springmvc.model.Match;
 import net.rithms.riot.api.RiotApiException;
-import net.rithms.riot.constant.Region;
 
 import java.util.List;
 
