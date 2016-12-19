@@ -242,9 +242,10 @@ public class UserControllerTest {
     public void testAdminGetListUsers() throws Exception {
     	asRole(ROLE_ADMIN);
     	assertEquals("userlist", userController.listUsers(model, request));
-        assertEquals(service.findAllUsers(), model.get("users"));
-        verify(service, atLeastOnce()).findAllUsers();
-        verify(service, atLeastOnce()).findAllUsers();
+    	assertEquals(4, service.findAllUsersButMe(user).size());
+        assertEquals(model.get("users"), service.findAllUsersButMe(user));
+        verify(service, atLeastOnce()).findAllUsersButMe(user);
+        verify(service, atLeastOnce()).findAllUsersButMe(user);
     }
 
     @Test
@@ -269,6 +270,7 @@ public class UserControllerTest {
     	userUser.setId(1338L);
     	userUser.setUsername("LeagueGuy1");
     	assertEquals("redirect:/list", userController.deleteUser("LeagueGuy1", request));
+    	assertTrue(service.findByUserName(userUser.getUsername()) == null);
     }
     
     @Test

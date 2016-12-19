@@ -76,11 +76,14 @@ public class MockUserService implements UserService {
 
     @Override
     public User findByUserName(final String username) {
-        for (User user : users) {
-            if (user.getUsername() != null && user.getUsername().equals(username))
-                return user;
-        }
-        return null;
+    	Iterator<User> iter = users.iterator();
+    	while (iter.hasNext()) {
+    	    User user = iter.next();
+    	    if (user.getUsername() != null && user.getUsername().equals(username)) {
+    	    	return user;
+    	    }
+    	}
+    	return null;
     }
 
     @Override
