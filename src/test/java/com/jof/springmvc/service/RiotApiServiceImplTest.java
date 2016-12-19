@@ -2,7 +2,6 @@ package com.jof.springmvc.service;
 
 import com.jof.springmvc.model.Match;
 import net.rithms.riot.api.RiotApi;
-import net.rithms.riot.constant.Region;
 import net.rithms.riot.dto.Game.Game;
 import net.rithms.riot.dto.Game.RawStats;
 import net.rithms.riot.dto.Game.RecentGames;
@@ -42,20 +41,20 @@ public class RiotApiServiceImplTest {
         }
     };
 
+    MockMatchService mockMatchService = new MockMatchService();
 
     // Summoner mock
     @Mock
     Summoner summoner;
     long summId = 1;
     String name = "Summ_name";
-    Region region = Region.EUNE;
 
     private String trueRunePageName;
 
     @Before
     public void setUp() throws Exception {
         mockRiotApi = mock(RiotApi.class);
-        mockRiotApiService = new RiotApiServiceImpl(environment, mockRiotApi);
+        mockRiotApiService = new RiotApiServiceImpl(environment, mockRiotApi, mockMatchService);
 
         // Summoner mock
         summoner = mock(Summoner.class);
@@ -65,13 +64,13 @@ public class RiotApiServiceImplTest {
         RunePages runePages = mock(RunePages.class);
         Set<RunePage> runePages1 = getRunePages();
         when(runePages.getPages()).thenReturn(runePages1);
-        when(mockRiotApi.getRunePages(region, summId)).thenReturn(runePages);
+        when(mockRiotApi.getRunePages(summId)).thenReturn(runePages);
 
         // Games mock
         RecentGames recentGames = mock(RecentGames.class);
         Set<Game> games = getRecentGames();
         when(recentGames.getGames()).thenReturn(games);
-        when(mockRiotApi.getRecentGames(region, summId)).thenReturn(recentGames);
+        when(mockRiotApi.getRecentGames(summId)).thenReturn(recentGames);
     }
 
     @org.junit.Test

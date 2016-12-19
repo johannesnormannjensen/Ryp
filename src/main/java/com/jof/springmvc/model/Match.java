@@ -5,7 +5,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +13,13 @@ import java.util.List;
  * Created by Ferenc_S on 12/15/2016.
  */
 @Entity
-@Table(name = "game") // MySQL is not exceptionally happy when one tries to name a table a keyword
+@Table(name = "game") // Not match; MySQL is not exceptionally happy when one tries to name a table a keyword
 public class Match implements Serializable, Comparable {
     @Id
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Long id;
 
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false)
+    @Column(name = "created_at", nullable = false)
     private Date created_at;
 
 

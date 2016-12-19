@@ -28,38 +28,35 @@ import java.util.*;
 public class RiotApiServiceImpl implements RiotApiService {
 
     private final Environment environment;
-
-    @Autowired
+    RiotApi riotApi;
     MatchService matchService;
 
-    RiotApi riotApi;
-    Region region;
-
     @Autowired
-    public RiotApiServiceImpl(Environment environment) {
+    public RiotApiServiceImpl(Environment environment, MatchService matchService) {
         this.environment = environment;
+        this.matchService = matchService;
     }
 
-    public RiotApiServiceImpl(Environment environment, RiotApi riotApi) {
+    public RiotApiServiceImpl(Environment environment, RiotApi riotApi, MatchService matchService) {
         this.environment = environment;
         this.riotApi = riotApi;
-        initRegion();
+        this.matchService = matchService;
     }
 
     @PostConstruct
     private void init() {
         this.riotApi = new RiotApi(environment.getRequiredProperty("riot.api.key"));
-        initRegion();
+        this.riotApi.setRegion(getRegion());
     }
 
     @Override
     public long getSummonerIdByName(String summonerName) throws RiotApiException {
-        return riotApi.getSummonerByName(region, summonerName).getId();
+        return riotApi.getSummonerByName(summonerName).getId();
     }
 
     @Override
     public boolean userHasRunePage(long id, String runePageName) throws RiotApiException {
-        Set<RunePage> pages = riotApi.getRunePages(region, id).getPages();
+        Set<RunePage> pages = riotApi.getRunePages(id).getPages();
         for (RunePage page : pages) {
             if (page.getName().equals(runePageName)) return true;
         }
@@ -68,7 +65,7 @@ public class RiotApiServiceImpl implements RiotApiService {
 
     @Override
     public List<Match> getRecentGames(Long id, String summonerName) throws RiotApiException {
-        RecentGames recentGames = riotApi.getRecentGames(region, id);
+        RecentGames recentGames = riotApi.getRecentGames(id);
         Set<Game> games = recentGames.getGames();
         List<Match> matches = new ArrayList<>();
 
@@ -87,7 +84,7 @@ public class RiotApiServiceImpl implements RiotApiService {
         for (int i = 0; i < longIds.length; i += 39) {
             int to = i + Math.min(longIds.length - i, 39);
             long[] summonerIds = Arrays.copyOfRange(longIds, i, to);
-            Map<String, String> temp = riotApi.getSummonerNames(region, summonerIds);
+            Map<String, String> temp = riotApi.getSummonerNames(summonerIds);
             summonerNames.putAll(temp);
         }
         for (Game game : games) {
@@ -139,14 +136,12 @@ public class RiotApiServiceImpl implements RiotApiService {
         return team_id == BLUE_TEAM_ID ? RED_TEAM_ID : BLUE_TEAM_ID;
     }
 
-    private void initRegion() {
+    private Region getRegion() {
         switch (environment.getRequiredProperty("riot.api.region")) {
             case "EUNE":
-                this.region = Region.EUNE;
-                break;
+                return Region.EUNE;
             case "EUW":
-                this.region = Region.EUW;
-                break;
+                return Region.EUW;
             default:
                 throw new InvalidRegionException("No such region implemented yet!");
         }
