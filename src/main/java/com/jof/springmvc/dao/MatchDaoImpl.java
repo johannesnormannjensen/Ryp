@@ -1,12 +1,12 @@
 package com.jof.springmvc.dao;
 
-import com.jof.springmvc.model.Match;
-import com.jof.springmvc.model.Match;
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-import java.util.List;
+import com.jof.springmvc.model.Match;
 
 /**
  * Created by Ferenc_S on 12/15/2016.
@@ -32,7 +32,8 @@ public class MatchDaoImpl extends AbstractDao<Long, Match> implements MatchDao {
 
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<Match> findAllMatches() {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("Matchname"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.

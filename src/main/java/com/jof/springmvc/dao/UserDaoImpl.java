@@ -1,15 +1,17 @@
 package com.jof.springmvc.dao;
 
-import com.jof.springmvc.model.User;
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.jof.springmvc.model.User;
 
 
 @Repository("userDao")
@@ -35,7 +37,7 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
         }
         return user;
     }
-
+    
     @SuppressWarnings("unchecked")
     public List<User> findAllUsers() {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("username"));
@@ -62,6 +64,7 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
         delete(user);
     }
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> findAllUsersButMe(long userId) {
 		Criteria criteria = createEntityCriteria().addOrder(Order.asc("username"));

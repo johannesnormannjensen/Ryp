@@ -57,14 +57,14 @@
                 <form:form  method="POST" modelAttribute="commentForm" class="form-horizontal">
                     <div class="input-group input-sm">
                         <label class="input-group-addon" for="body"><i class="fa fa-lock"></i></label>
-                        <form:input type="text" class="form-control" id="body" name="body" path="body" value="Your bs comes here"  />
+                        <form:input type="text" class="form-control" id="body" name="body" path="body" placeholder="Enter your comment here..."  />
                     </div>					
                   	
 					<input type="hidden" name="${_csrf.parameterName}"  value="${_csrf.token}" />   
 					    
 					
 					 <div class="form-actions">
-					<input type="submit" value="THIS IS A MESS" class="btn btn-block btn-success btn-default"/>
+					<input type="submit" value="Add comment" class="btn btn-block btn-success btn-default"/>
                 </div>             
                 </form:form>
         </div>

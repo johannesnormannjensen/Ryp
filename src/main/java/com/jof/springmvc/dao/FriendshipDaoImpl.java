@@ -1,6 +1,6 @@
 package com.jof.springmvc.dao;
 
-import com.jof.springmvc.model.Friend;
+import com.jof.springmvc.model.Friendship;
 import com.jof.springmvc.model.User;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
@@ -12,12 +12,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository("friendDao")
-public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements FriendDao {
+public class FriendshipDaoImpl extends AbstractDao<Integer, Friendship> implements FriendshipDao {
 
-    static final Logger logger = LoggerFactory.getLogger(FriendDaoImpl.class);
+    static final Logger logger = LoggerFactory.getLogger(FriendshipDaoImpl.class);
 
     @Override
-    public Friend findFriendshipByIds(User id_alpha, User id_omega) {
+    public Friendship findFriendshipByIds(User id_alpha, User id_omega) {
 
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("id.alpha_user"));
         criteria.add( Restrictions.disjunction()
@@ -30,13 +30,13 @@ public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements Frien
             );  
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);// To avoid  duplicates.
 
-        Friend friends = (Friend) criteria.uniqueResult();
+        Friendship friends = (Friendship) criteria.uniqueResult();
 
         return friends;
     }
 
     @Override
-    public void save(Friend friend) {
+    public void save(Friendship friend) {
         persist(friend);
     }
 
@@ -45,13 +45,13 @@ public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements Frien
         Criteria crit = createEntityCriteria();
         crit.add(Restrictions.eq("id.alpha_user", alpha_user));
         crit.add(Restrictions.eq("id.omega_user", omega_user));
-        Friend friend = (Friend) crit.uniqueResult();
+        Friendship friend = (Friendship) crit.uniqueResult();
         delete(friend);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Friend> findAllFriends(User user) {
+    public List<Friendship> findAllFriends(User user) {
         Criteria criteria = createEntityCriteria();
         criteria.add( Restrictions.disjunction()
                 .add( Restrictions.eq("id.alpha_user", user ) )
@@ -62,13 +62,13 @@ public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements Frien
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
         criteria.addOrder(Order.asc("created_at"));
 
-        List<Friend> friends = (List<Friend>) criteria.list();
+        List<Friendship> friends = (List<Friendship>) criteria.list();
 
         return friends;
     }
 
 	@Override
-	public List<Friend> findAllIncomingFriendRequests(User user) {
+	public List<Friendship> findAllIncomingFriendRequests(User user) {
 		 Criteria criteria = createEntityCriteria();
 	        criteria.add(Restrictions.eq("id.omega_user", user));
 	        criteria.add(Restrictions.eq("accepted", false));
@@ -76,13 +76,14 @@ public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements Frien
 	        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
 	        criteria.addOrder(Order.asc("created_at"));
 
-	        List<Friend> friends = (List<Friend>) criteria.list();
+	        @SuppressWarnings("unchecked")
+			List<Friendship> friends = (List<Friendship>) criteria.list();
 
 	        return friends;
 	}
 
 	@Override
-	public List<Friend> findAllOutgoingFriendRequests(User user) {
+	public List<Friendship> findAllOutgoingFriendRequests(User user) {
 		 Criteria criteria = createEntityCriteria();
 	        criteria.add(Restrictions.eq("id.alpha_user", user));
 	        criteria.add(Restrictions.eq("accepted", false));
@@ -90,7 +91,8 @@ public class FriendDaoImpl extends AbstractDao<Integer, Friend> implements Frien
 	        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
 	        criteria.addOrder(Order.asc("created_at"));
 
-	        List<Friend> friends = (List<Friend>) criteria.list();
+	        @SuppressWarnings("unchecked")
+			List<Friendship> friends = (List<Friendship>) criteria.list();
 
 	        return friends;
 	}

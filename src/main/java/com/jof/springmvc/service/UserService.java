@@ -1,6 +1,6 @@
 package com.jof.springmvc.service;
 
-import com.jof.springmvc.model.Friend;
+import com.jof.springmvc.model.Friendship;
 import com.jof.springmvc.model.User;
 
 import java.util.List;
@@ -22,8 +22,7 @@ public interface UserService {
 
     List<User> findAllUsers();
 
-    List<User> getFriendsAsUsers(List<Friend> friends, User disclude);
+    List<User> getFriendsAsUsers(List<Friendship> friends, User disclude);
 
     boolean isUsernameUnique(Long id, String username);
-
 }
