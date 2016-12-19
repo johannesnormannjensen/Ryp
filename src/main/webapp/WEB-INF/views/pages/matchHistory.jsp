@@ -27,7 +27,7 @@
             <c:forEach items="${matches}" var="match">
                 <tr data-toggle="collapse" data-target="#accordion${match.id}" class="clickable">
                     <td><fmt:formatDate value="${match.created_at}" pattern="dd/MM/yyyy HH:mm"/></td>
-                    <td>${match.didPlayerWin(playerId) ? "Wonnered" : "Vayned Out"}</td>
+                    <td>${match.didPlayerWin(playerId) ? "Win" : "Loss"}</td>
                 </tr>
                 <tr>
                     <td colspan="3">
