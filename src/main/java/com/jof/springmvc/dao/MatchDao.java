@@ -11,7 +11,7 @@ public interface MatchDao {
 
     Match findById(Long id);
 
-    void createOrUpdateMatch(Match match);
+    void saveOrUpdate(Match match);
 
     void saveMatch(Match match);
 

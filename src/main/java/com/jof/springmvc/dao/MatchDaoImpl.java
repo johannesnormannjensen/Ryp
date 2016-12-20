@@ -20,8 +20,8 @@ public class MatchDaoImpl extends AbstractDao<Long, Match> implements MatchDao {
     }
 
     @Override
-    public void createOrUpdateMatch(Match match) {
-        if (findById(match.getId()) == null) saveMatch(match);
+    public void saveOrUpdate(Match match){
+        getSession().saveOrUpdate(match);
     }
 
     @Override

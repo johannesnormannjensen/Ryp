@@ -28,7 +28,7 @@ public class MatchServiceImpl implements MatchService {
     @Override
     public void saveAll(Iterable<Match> matches) {
         for (Match m : matches) {
-            matchDao.createOrUpdateMatch(m);
+            matchDao.saveOrUpdate(m);
         }
     }
 
