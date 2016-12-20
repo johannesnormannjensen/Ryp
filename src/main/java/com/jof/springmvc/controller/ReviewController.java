@@ -64,8 +64,6 @@ public class ReviewController {
 
         List<Review> reviews = reviewService.findAllReviewByUser(remoteUser);
 
-        userService.callStoredProcedureTest();
-
         model.addAttribute("reviews", reviews);
 
         return "reviewList";
