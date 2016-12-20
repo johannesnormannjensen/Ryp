@@ -1,12 +1,3 @@
--- STORED PROCEDURES
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getGamesForSummoner`(IN sum_id BIGINT(20))
-BEGIN
-	SELECT * FROM game
-	LEFT JOIN player ON game.id = player.match_id
-	WHERE player.summoner_id = sum_id
-	LIMIT 100;
-END;
-
 --  DATA
 
 INSERT INTO `role` (`id`, `type`) VALUES ('1', 'ADMIN');
@@ -33,7 +24,7 @@ INSERT INTO `champion` (`id`, `name`) VALUES ('201', 'Braum');
 INSERT INTO `champion` (`id`, `name`) VALUES ('51', 'Caitlyn');
 INSERT INTO `champion` (`id`, `name`) VALUES ('164', 'Camille');
 INSERT INTO `champion` (`id`, `name`) VALUES ('69', 'Cassiopeia');
-INSERT INTO `champion` (`id`, `name`) VALUES ('31', 'Cho\'Gath');
+INSERT INTO `champion` (`id`, `name`) VALUES ('31', 'Cho''Gath');
 INSERT INTO `champion` (`id`, `name`) VALUES ('42', 'Corki');
 INSERT INTO `champion` (`id`, `name`) VALUES ('122', 'Darius');
 INSERT INTO `champion` (`id`, `name`) VALUES ('131', 'Diana');
@@ -70,10 +61,10 @@ INSERT INTO `champion` (`id`, `name`) VALUES ('38', 'Kassadin');
 INSERT INTO `champion` (`id`, `name`) VALUES ('55', 'Katarina');
 INSERT INTO `champion` (`id`, `name`) VALUES ('10', 'Kayle');
 INSERT INTO `champion` (`id`, `name`) VALUES ('85', 'Kennen');
-INSERT INTO `champion` (`id`, `name`) VALUES ('121', 'Kha\'Zix');
+INSERT INTO `champion` (`id`, `name`) VALUES ('121', 'Kha''Zix');
 INSERT INTO `champion` (`id`, `name`) VALUES ('203', 'Kindred');
 INSERT INTO `champion` (`id`, `name`) VALUES ('240', 'Kled');
-INSERT INTO `champion` (`id`, `name`) VALUES ('96', 'Kog\'Maw');
+INSERT INTO `champion` (`id`, `name`) VALUES ('96', 'Kog''Maw');
 INSERT INTO `champion` (`id`, `name`) VALUES ('7', 'LeBlanc');
 INSERT INTO `champion` (`id`, `name`) VALUES ('64', 'Lee Sin');
 INSERT INTO `champion` (`id`, `name`) VALUES ('89', 'Leona');
@@ -100,7 +91,7 @@ INSERT INTO `champion` (`id`, `name`) VALUES ('80', 'Pantheon');
 INSERT INTO `champion` (`id`, `name`) VALUES ('78', 'Poppy');
 INSERT INTO `champion` (`id`, `name`) VALUES ('133', 'Quinn');
 INSERT INTO `champion` (`id`, `name`) VALUES ('33', 'Rammus');
-INSERT INTO `champion` (`id`, `name`) VALUES ('421', 'Rek\'Sai');
+INSERT INTO `champion` (`id`, `name`) VALUES ('421', 'Rek''Sai');
 INSERT INTO `champion` (`id`, `name`) VALUES ('58', 'Renekton');
 INSERT INTO `champion` (`id`, `name`) VALUES ('107', 'Rengar');
 INSERT INTO `champion` (`id`, `name`) VALUES ('92', 'Riven');
@@ -134,7 +125,7 @@ INSERT INTO `champion` (`id`, `name`) VALUES ('6', 'Urgot');
 INSERT INTO `champion` (`id`, `name`) VALUES ('110', 'Varus');
 INSERT INTO `champion` (`id`, `name`) VALUES ('67', 'Vayne');
 INSERT INTO `champion` (`id`, `name`) VALUES ('45', 'Veigar');
-INSERT INTO `champion` (`id`, `name`) VALUES ('161', 'Vel\'Koz');
+INSERT INTO `champion` (`id`, `name`) VALUES ('161', 'Vel''Koz');
 INSERT INTO `champion` (`id`, `name`) VALUES ('254', 'Vi');
 INSERT INTO `champion` (`id`, `name`) VALUES ('112', 'Viktor');
 INSERT INTO `champion` (`id`, `name`) VALUES ('8', 'Vladimir');
@@ -151,3 +142,6 @@ INSERT INTO `champion` (`id`, `name`) VALUES ('115', 'Ziggs');
 INSERT INTO `champion` (`id`, `name`) VALUES ('26', 'Zilean');
 INSERT INTO `champion` (`id`, `name`) VALUES ('143', 'Zyra');
 
+-- STORED PROCEDURES
+
+CREATE PROCEDURE getGamesForSummoner (IN sum_id BIGINT(20)) BEGIN SELECT * FROM game LEFT JOIN player ON game.id = player.match_id WHERE player.summoner_id = sum_id LIMIT 100; END
