@@ -12,7 +12,7 @@
 	    <link href="<c:url value='/static/css/bootstrap.css' />" rel="stylesheet"></link>
 	    <link href="<c:url value='/static/css/app.css' />" rel="stylesheet"></link>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-		<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="<c:url value='/static/js/bootstrap.min.js' />"></script>
 	</head>
 	  
 	<body>
