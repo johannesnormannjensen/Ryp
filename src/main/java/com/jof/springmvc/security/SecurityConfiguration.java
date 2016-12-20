@@ -36,13 +36,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/login", "/register", "/static/**").permitAll()
-                .antMatchers("/**").access("hasRole('ADMIN') or hasRole('USER')").anyRequest().authenticated()
-                .antMatchers("/admin/**", "/list").access("hasRole('ADMIN')").anyRequest().authenticated()
-                .and().formLogin().loginPage("/login").loginProcessingUrl("/login").usernameParameter("username").passwordParameter("password")
-                .and().rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository).tokenValiditySeconds(86400).and().csrf()
-                .and().exceptionHandling().accessDeniedPage("/Access_Denied");
+        http
+        	.formLogin()
+        		.loginPage("/login").permitAll().loginProcessingUrl("/login").usernameParameter("username").passwordParameter("password")
+        		.and()
+        			.rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository).tokenValiditySeconds(86400)
+        		.and()
+        			.csrf()
+    			.and()
+    				.logout()
+    					.permitAll()
+    			.and()
+    				.authorizeRequests()
+	    				.antMatchers("/static/**").permitAll()
+    					.antMatchers("/").access("hasRole('ADMIN') or hasRole('USER')")
+    					.antMatchers("/admin/**").access("hasRole('ADMIN')")
+				.and().exceptionHandling().accessDeniedPage("/Access_Denied");
     }
 
     @Bean
