@@ -75,23 +75,6 @@
 						</div>
 					</sec:authorize>
 					<div class="row">
-						<div class="input-group input-sm">
-							<label class="input-group-addon" for="region"><i class="fa fa-group"></i></label>
-							<input type="text" class="form-control" id="region" name="region" placeholder="Select region" required>
-							<div class="input-group-btn">
-								<button type="button" class="btn btn-default dropdown-toggle"
-									data-toggle="dropdown" aria-expanded="false">
-									Regions <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu dropdown-menu-right" role="menu">
-									<c:forEach items="${regions}" var="region">
-										<li><a class="regionType" href="#">${region}</a></li>
-									</c:forEach>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<div class="row">
 						<div class="form-actions floatRight">
 							<c:choose>
 								<c:when test="${edit}">
@@ -106,6 +89,12 @@
 								</c:otherwise>
 							</c:choose>
 						</div>
+					</div>
+
+
+					<div class="alert alert-warning" style="margin: 5px">
+						<p>Don't forget, that without having a League of Legends account with the same summoner name as your username here our system won't be able to register you.</p>
+						<p>Also, please rename one of your runepages to "ryp.gg" (without quotes).</p>
 					</div>
 				</form:form>
 			</div>

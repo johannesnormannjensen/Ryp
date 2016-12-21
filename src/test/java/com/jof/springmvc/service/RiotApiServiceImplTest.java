@@ -26,6 +26,7 @@ import static org.mockito.Mockito.when;
  */
 
 public class RiotApiServiceImplTest {
+
     @Mock
     RiotApi mockRiotApi;
     RiotApiService mockRiotApiService;
@@ -49,7 +50,7 @@ public class RiotApiServiceImplTest {
     long summId = 1;
     String name = "Summ_name";
 
-    private String trueRunePageName;
+    private String trueRunePageName="TheOne";
 
     @Before
     public void setUp() throws Exception {
