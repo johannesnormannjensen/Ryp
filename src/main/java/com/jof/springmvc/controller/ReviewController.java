@@ -25,7 +25,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/user/reviews")
-public class ReviewController {
+public class ReviewController extends RypController {
 
     @Autowired
     UserService userService;
@@ -51,7 +51,7 @@ public class ReviewController {
     AuthenticationTrustResolver authenticationTrustResolver;
 
     /**
-     * This method will list all existing users.
+     * This method will show all reviews available for viewing by the remote user
      */
     @RequestMapping(value = {"/list"}, method = RequestMethod.GET)
     public String listUsers(ModelMap model, HttpServletRequest request) {
@@ -70,28 +70,18 @@ public class ReviewController {
     }
 
     /**
-     * This method will be called on form submission, handling POST request for
-     * registering a new user in the database. It also validates the user input
+     * Will show a review based on id
      */
     @RequestMapping(value = {"/review{reviewId}"}, method = RequestMethod.GET)
     public String getReviewById(@PathVariable String reviewId, HttpServletRequest request, ModelMap model) {
 
-        User remoteUser = new User();
-
-        if (request.getSession().getAttribute("remoteUser") != null) {
-            remoteUser = (User) request.getSession().getAttribute("remoteUser");
-        }
-
+        User remoteUser = getRemoteUser(request);
         Review review = reviewService.findById(Integer.valueOf(reviewId));
-
         if (!review.getSource_user_id().getId().equals(remoteUser.getId())) {
             return "redirect:/user/reviews/list";
         }
-
         List<CommentForm> commentForms = commentService.findAllCommentFormsForReview(review);
-
         CommentForm cf = new CommentForm();
-
 
         model.addAttribute("review", review);
         model.addAttribute("commentForms", commentForms);
@@ -100,6 +90,9 @@ public class ReviewController {
         return "review";
     }
 
+    /**
+     * Will will create a comment on a review
+     */
     @RequestMapping(value = {"/review{reviewId}"}, method = RequestMethod.POST)
     public String createComment(@PathVariable String reviewId, CommentForm ncf, HttpServletRequest request, ModelMap model) {
 
@@ -116,17 +109,12 @@ public class ReviewController {
     }
 
     /**
-     * This method will be called on form submission, handling POST request for
-     * registering a new user in the database. It also validates the user input
+     * Will delete a review by id
      */
     @RequestMapping(value = {"/deleteReview{reviewId}"}, method = RequestMethod.GET)
     public String deleteReviewById(@PathVariable String reviewId, HttpServletRequest request) {
 
-        User remoteUser = new User();
-
-        if (request.getSession().getAttribute("remoteUser") != null) {
-            remoteUser = (User) request.getSession().getAttribute("remoteUser");
-        }
+        User remoteUser = getRemoteUser(request);
 
         // TODO: CHECK IF USER IS THE AUTHOR OF THE REVIEW
 
@@ -142,8 +130,7 @@ public class ReviewController {
     }
 
     /**
-     * This method will be called on form submission, handling POST request for
-     * saving user in database. It also validates the user input
+     * Will create a review
      */
     @RequestMapping(value = {"/createReview"}, method = RequestMethod.POST)
     public String saveReview(@Valid ReviewForm rf, BindingResult result) {
@@ -162,14 +149,13 @@ public class ReviewController {
         return "redirect:/user/reviews/list";
     }
 
+    /**
+     * Will prepare the creation of a review
+     */
     @RequestMapping(value = {"/createReview"}, method = RequestMethod.GET)
     public String listIncomingFriendRequests(ModelMap model, HttpServletRequest request, @RequestParam Map<String, String> requestParams) {
 
-        User remoteUser = new User();
-
-        if (request.getSession().getAttribute("remoteUser") != null) {
-            remoteUser = (User) request.getSession().getAttribute("remoteUser");
-        }
+        User remoteUser = getRemoteUser(request);
 
         ReviewForm reviewForm = new ReviewForm();
 
