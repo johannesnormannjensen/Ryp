@@ -35,7 +35,7 @@
                      <sec:authorize access="hasRole('ADMIN')">
                         <td><a href="<c:url value='/user/friend/sendFriendshipRequest${user.id}' />" class="btn btn-warning custom-width">Add</a></td>
                     </sec:authorize>
-                    <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+                    <sec:authorize access="hasRole('ADMIN')">
                         <td><a href="<c:url value='/admin/edit-user-${user.username}' />" class="btn btn-success custom-width">edit</a></td>
                     </sec:authorize>
                     <sec:authorize access="hasRole('ADMIN')">

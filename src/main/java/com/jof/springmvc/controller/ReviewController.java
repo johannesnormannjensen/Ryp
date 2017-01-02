@@ -56,12 +56,7 @@ public class ReviewController extends RypController {
     @RequestMapping(value = {"/list"}, method = RequestMethod.GET)
     public String listUsers(ModelMap model, HttpServletRequest request) {
 
-        User remoteUser = new User();
-
-        if (request.getSession().getAttribute("remoteUser") != null) {
-            remoteUser = (User) request.getSession().getAttribute("remoteUser");
-        }
-
+        User remoteUser = getRemoteUser(request);
         List<Review> reviews = reviewService.findAllReviewByUser(remoteUser);
 
         model.addAttribute("reviews", reviews);
