@@ -9,8 +9,8 @@
     <table class="table table-hover">
         <thead>
         <tr>
+        	<th>Summoner name</th>
             <th>Title</th>
-            <th>Options</th>
         </tr>
         </thead>
         <tbody>

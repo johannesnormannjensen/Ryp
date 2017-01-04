@@ -2,6 +2,7 @@ package com.jof.springmvc.service;
 
 import com.jof.springmvc.dao.UserDao;
 import com.jof.springmvc.model.Friendship;
+import com.jof.springmvc.model.Match;
 import com.jof.springmvc.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -93,5 +94,10 @@ public class UserServiceImpl implements UserService {
     public List<User> findAllUsersButMe(User disclude) {
         return dao.findAllUsersButMe(disclude.getId());
     }
+
+	@Override
+	public void negateActivationByUsername(String username) {
+		dao.negateActivationByUsername(username);
+	}
 
 }

@@ -245,7 +245,7 @@ public class UserControllerTest {
     	User userUser = new User();
     	userUser.setId(1338L);
     	userUser.setUsername("LeagueGuy1");
-    	assertEquals("redirect:/list?createdUser=LeagueGuy1", userController.updateUser(userUser, bindingResult, model, "LeagueGuy1", request));
+    	assertEquals("redirect:/admin/list?createdUser=LeagueGuy1", userController.updateUser(userUser, bindingResult, model, "LeagueGuy1", request));
     }
     
     @Test
@@ -254,7 +254,7 @@ public class UserControllerTest {
     	User userUser = new User();
     	userUser.setId(1338L);
     	userUser.setUsername("LeagueGuy1");
-    	assertEquals("redirect:/list", userController.deleteUser("LeagueGuy1", request));
+    	assertEquals("redirect:/admin/list", userController.deleteUser("LeagueGuy1", request));
     	assertTrue(service.findByUserName(userUser.getUsername()) == null);
     }
     

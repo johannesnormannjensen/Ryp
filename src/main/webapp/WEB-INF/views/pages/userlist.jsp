@@ -16,7 +16,9 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>Email</th>
+            	<sec:authorize access="hasRole('ADMIN')">
+                	<th>Email</th>
+                </sec:authorize>
                 <th>Username</th>
                 <sec:authorize access="hasRole('ADMIN')">
                     <th width="100"></th>
@@ -24,24 +26,40 @@
                 <sec:authorize access="hasRole('ADMIN')">
                     <th width="100"></th>
                 </sec:authorize>
-
             </tr>
             </thead>
             <tbody>
             <c:forEach items="${users}" var="user">
-                <tr>
-                    <td>${user.email}</td>
-                    <td>${user.username}</td>
-                     <sec:authorize access="hasRole('ADMIN')">
-                        <td><a href="<c:url value='/user/friend/sendFriendshipRequest${user.id}' />" class="btn btn-warning custom-width">Add</a></td>
-                    </sec:authorize>
-                    <sec:authorize access="hasRole('ADMIN')">
+            	<sec:authorize access="hasRole('ADMIN')">
+	            	<c:choose>
+	            		<c:when test="${user.active}">
+			                <tr class="success">
+	            		</c:when>
+	            		<c:otherwise>
+	            			<tr class="danger">
+	            		</c:otherwise>
+	            	</c:choose>
+	                    <td>${user.email}</td>
+	                    <td>${user.username}</td>
+	                    <td><a href="<c:url value='/user/friend/sendFriendshipRequest${user.id}' />" class="btn btn-warning custom-width">Add</a></td>
                         <td><a href="<c:url value='/admin/edit-user-${user.username}' />" class="btn btn-success custom-width">edit</a></td>
-                    </sec:authorize>
-                    <sec:authorize access="hasRole('ADMIN')">
                         <td><a href="<c:url value='/admin/delete-user-${user.username}' />" class="btn btn-danger custom-width">delete</a></td>
-                    </sec:authorize>
-                </tr>
+	                    <c:choose>
+		            		<c:when test="${user.active}">
+	                        	<td><a href="<c:url value='/admin/user-activation-${user.username}' />" class="btn btn-danger custom-width">Deactivate</a></td>
+		            		</c:when>
+		            		<c:otherwise>
+		            			<td><a href="<c:url value='/admin/user-activation-${user.username}' />" class="btn btn-success custom-width">Activate</a></td>
+		            		</c:otherwise>
+		            	</c:choose>
+	                </tr>
+            	</sec:authorize>
+            	<sec:authorize access="hasRole('USER')">
+	            	<tr>
+	                    <td>${user.username}</td>
+	                    <td><a href="<c:url value='/user/friend/sendFriendshipRequest${user.id}' />" class="btn btn-info custom-width">Add friend</a></td>
+	                </tr>
+            	</sec:authorize>
             </c:forEach>
             </tbody>
         </table>

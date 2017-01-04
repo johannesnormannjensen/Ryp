@@ -14,9 +14,13 @@ public interface UserDao {
     void save(User user);
 
     void deleteByUsername(String username);
+    
+    void deactivateUserByUserName(String username);
 
     List<User> findAllUsersButMe(long userId);
 
     List<User> findAllUsers();
+
+	void negateActivationByUsername(String username);
 
 }

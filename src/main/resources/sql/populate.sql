@@ -145,3 +145,4 @@ INSERT INTO `champion` (`id`, `name`) VALUES ('143', 'Zyra');
 -- STORED PROCEDURES
 
 CREATE PROCEDURE getGamesForSummoner (IN sum_id BIGINT(20)) BEGIN SELECT * FROM game LEFT JOIN player ON game.id = player.match_id WHERE player.summoner_id = sum_id LIMIT 100; END
+CREATE PROCEDURE negateActiveUser (IN sum_name VARCHAR(255)) BEGIN UPDATE user SET active = NOT active WHERE username = `sum_name`; END

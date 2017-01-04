@@ -227,10 +227,22 @@ public class UserController extends RypController {
 
         userService.updateUser(user);
 
-        return "redirect:/list?createdUser=" + user.getUsername();
+        return "redirect:/admin/list?createdUser=" + user.getUsername();
     }
 
 
+    /**
+     * This method will delete an user by it's username value.
+     *
+     * @throws AccessDeniedException
+     */
+    @RequestMapping(value = {"/admin/user-activation-{username}"}, method = RequestMethod.GET)
+    public String userActivation(@PathVariable String username, HttpServletRequest request) {
+        validateRemoteAdmin(request);
+        userService.negateActivationByUsername(username);
+        return "redirect:/admin/list";
+    }
+    
     /**
      * This method will delete an user by it's username value.
      *
@@ -240,15 +252,7 @@ public class UserController extends RypController {
     public String deleteUser(@PathVariable String username, HttpServletRequest request) {
         validateRemoteAdmin(request);
         userService.deleteUserByUsername(username);
-        return "redirect:/list";
-    }
-
-    /**
-     * This method handles Access-Denied redirect.
-     */
-    @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
-    public String accessDeniedPage(ModelMap model) {
-        return "accessDenied";
+        return "redirect:/admin/list";
     }
 
     /**
@@ -336,4 +340,5 @@ public class UserController extends RypController {
     public List<Role> initializeProfiles() {
         return roleService.findAll();
     }
+    
 }

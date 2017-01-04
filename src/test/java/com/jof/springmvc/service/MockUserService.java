@@ -126,4 +126,10 @@ public class MockUserService implements UserService {
 		userEx.remove(disclude);
 		return users;
 	}
+
+	@Override
+	public void negateActivationByUsername(String username) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -1,5 +1,6 @@
 package com.jof.springmvc.dao;
 
+import com.jof.springmvc.model.Match;
 import com.jof.springmvc.model.User;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -39,6 +40,7 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
     @SuppressWarnings("unchecked")
     public List<User> findAllUsers() {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("username"));
+        criteria.add(Restrictions.eq("removed", false));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
         List<User> users = (List<User>) criteria.list();
 
@@ -55,11 +57,14 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
         persist(user);
     }
 
+    @Override
     public void deleteByUsername(String username) {
         Criteria crit = createEntityCriteria();
         crit.add(Restrictions.eq("username", username));
         User user = (User) crit.uniqueResult();
-        delete(user);
+        user.setRemoved(true);
+        user.setActive(false);
+        update(user);
     }
 
     @SuppressWarnings("unchecked")
@@ -67,9 +72,24 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
     public List<User> findAllUsersButMe(long userId) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("username"));
         criteria.add(Restrictions.ne("id", userId));
+        criteria.add(Restrictions.eq("removed", false));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
         List<User> users = (List<User>) criteria.list();
         return users;
     }
+
+	@Override
+	public void deactivateUserByUserName(String username) {
+		Criteria crit = createEntityCriteria();
+        crit.add(Restrictions.eq("username", username));
+        User user = (User) crit.uniqueResult();
+        user.setActive(false);
+        update(user);
+	}
+
+	@Override
+	public void negateActivationByUsername(String username) {
+		getSession().createSQLQuery("CALL negateActiveUser('" + username + "')").executeUpdate();
+	}
 
 }

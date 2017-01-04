@@ -7,8 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -58,6 +61,14 @@ public class RypController {
             userName = principal.toString();
         }
         return userName;
+    }
+    
+    /**
+     * This method handles Access-Denied redirect.
+     */
+    @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
+    public String accessDeniedPage(ModelMap model) {
+        return "accessDenied";
     }
 
 }

@@ -19,7 +19,9 @@ public interface UserService {
     List<User> findAllUsersButMe(User disclude);
 
     void deleteUserByUsername(String username);
-
+    
+    void negateActivationByUsername(String username);
+    
     List<User> findAllUsers();
 
     List<User> getFriendsAsUsers(List<Friendship> friends, User disclude);
