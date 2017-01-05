@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.UUID;
 
+import com.jof.springmvc.service.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -33,10 +34,6 @@ import org.springframework.validation.BindingResult;
 
 import com.jof.springmvc.model.Role;
 import com.jof.springmvc.model.User;
-import com.jof.springmvc.service.MockRoleService;
-import com.jof.springmvc.service.MockUserService;
-import com.jof.springmvc.service.RoleService;
-import com.jof.springmvc.service.UserService;
 
 /**
  * Created by Ferenc_S on 12/13/2016.
@@ -47,9 +44,13 @@ public class UserControllerTest {
 	
     @Spy
     UserService service = new MockUserService();
-    
+
     @Spy
     RoleService roleService = new MockRoleService();
+
+    @Spy
+    RiotApiService riotApiService = new RiotApiServiceImplMock();
+
 
     @InjectMocks
     UserController userController;
