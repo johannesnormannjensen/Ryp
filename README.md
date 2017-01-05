@@ -22,15 +22,16 @@ Installation of Apache Tomcat 8.5.X installed on your system (preferably 8.5.8).
 		Running in test mode (mock services etc..):
 			Add following arguments to jvm: 
 				spring.profiles.active=test
-				db.relative.url="-test"
 				
 		Running in prod mode (USING THE REAL RIOT API):
 			Add following arguments to jvm: 
 				spring.profiles.active=prod
-				db.relative.url=""
 	
 	Run server run.
 	
+
+(JDBC_CONNECTION_STRING example: jdbc:mysql://localhost:3306/ryp)
+
 3. Deploying
 	Environments:
 	We deploy differently based on which environment we deploy to, but one file is 
