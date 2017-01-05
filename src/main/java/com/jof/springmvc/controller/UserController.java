@@ -103,6 +103,7 @@ public class UserController extends RypController {
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST)
     public String registerUser(@Valid User user, BindingResult result,
                                ModelMap model) {
+        validateSummonerRunePage(result, user.getUsername());
         if (result.hasErrors()) {
             return "register";
         }
