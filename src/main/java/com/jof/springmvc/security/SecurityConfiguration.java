@@ -49,7 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     			.and()
     				.authorizeRequests()
 	    				.antMatchers("/static/**").permitAll()
-	    				.antMatchers("/login").permitAll()
+	    				.antMatchers("/login", "/register").permitAll()
     					.antMatchers("/**").authenticated()
 				.and().exceptionHandling().accessDeniedPage("/Access_Denied");
     }
