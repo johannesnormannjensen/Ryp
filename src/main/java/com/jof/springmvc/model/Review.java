@@ -32,9 +32,9 @@ public class Review implements Serializable {
     @Column(name = "target_user_id", nullable = false, columnDefinition = "BIGINT(20)")
     private Long target_user_id;
 
-
-    @Column(name = "game_id", nullable = false, columnDefinition = "BIGINT(20)")
-    private Long game_id;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "game_id", nullable = false, foreignKey = @ForeignKey(name = "FK_GAME_ID"))
+    private Match match;
 
 
     @Column(name = "title", nullable = false, columnDefinition = "VARCHAR(45)")
@@ -87,12 +87,12 @@ public class Review implements Serializable {
         this.target_user_id = target_user_id;
     }
 
-    public Long getGame_id() {
-        return game_id;
+    public Match getMatch() {
+        return match;
     }
 
-    public void setGame_id(Long game_id) {
-        this.game_id = game_id;
+    public void setMatch(Match match) {
+        this.match = match;
     }
 
     public String getTitle() {

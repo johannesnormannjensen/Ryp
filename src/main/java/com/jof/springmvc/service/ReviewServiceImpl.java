@@ -34,7 +34,7 @@ public class ReviewServiceImpl implements ReviewService {
             entity.setSource_user_id(review.getSource_user_id());
             entity.setTarget_user_id(review.getTarget_user_id());
             entity.setTitle(review.getTitle());
-            entity.setGame_id(review.getGame_id());
+            entity.setMatch(review.getMatch());
             entity.setBody(review.getBody());
         }
 

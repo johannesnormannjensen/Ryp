@@ -35,6 +35,9 @@ public class ReviewController extends RypController {
 
     @Autowired
     CommentService commentService;
+    
+    @Autowired
+    MatchService matchService;
 
     @Autowired
     RoleService roleService;
@@ -132,7 +135,7 @@ public class ReviewController extends RypController {
 
         Review review = new Review();
 
-        review.setGame_id(rf.getGame_id());
+        review.setMatch( matchService.findById(rf.getGame_id()));
         review.setBody(rf.getBody());
         review.setTitle(rf.getTitle());
         review.setSource_user_id(userService.findById(rf.getSource_user_id()));
