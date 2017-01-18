@@ -28,4 +28,9 @@ public class MockMatchService implements MatchService{
     public List<Match> getRecentCachedGames(Long id) throws RiotApiException {
         return null;
     }
+
+    @Override
+    public List<Match> generateMatchesFor(Long id) {
+        return null;
+    }
 }

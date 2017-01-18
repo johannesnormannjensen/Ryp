@@ -16,4 +16,6 @@ public interface MatchService {
     Match findById(Long id);
 
     List<Match> getRecentCachedGames(Long id) throws RiotApiException;
+
+    List<Match> generateMatchesFor(Long id);
 }

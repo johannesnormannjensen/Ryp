@@ -305,6 +305,14 @@ public class UserController extends RypController {
         return "matchHistory";
     }
 
+    @RequestMapping(value = "/user/generateData", method = RequestMethod.GET)
+    public String generateData(HttpServletRequest request, HttpServletResponse response) {
+        User remoteUser = (User) request.getSession().getAttribute("remoteUser");
+        List<Match> matches = matchService.generateMatchesFor(remoteUser.getId());
+        matchService.saveAll(matches);
+        return matchHistory(request, response);
+    }
+
     /**
      * This method returns true if users is already authenticated [logged-in], else false.
      */
