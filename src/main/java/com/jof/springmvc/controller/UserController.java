@@ -296,7 +296,6 @@ public class UserController extends RypController {
             } else {
                 matches = matchService.getRecentCachedGames(remoteUser.getId());
             }
-            matchService.saveAll(matches);
             request.setAttribute("matches", matches);
             request.setAttribute("playerId", remoteUser.getId());
         } catch (RiotApiException e) {

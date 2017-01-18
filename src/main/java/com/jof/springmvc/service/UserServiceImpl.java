@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService {
 
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(user.getId() != null) throw new UnsupportedOperationException();
         dao.save(user);
     }
 

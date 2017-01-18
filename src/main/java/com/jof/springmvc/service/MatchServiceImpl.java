@@ -54,7 +54,7 @@ public class MatchServiceImpl implements MatchService {
         for (int i = 0; i < 1500; i++) {
             Match match = new Match();
             match.setId(Long.valueOf(id.toString() + i));
-            match.setCreated_at(new Date(i * 1000));
+            match.setCreated_at(new Date(1474740958886l + (i * 36000000)));
 
             List<PlayerInfo> playerInfos = new ArrayList<>();
             PlayerInfo playerInfo = new PlayerInfo();
